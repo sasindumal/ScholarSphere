@@ -43,34 +43,26 @@ export default function StudentDashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Available Scholarships</CardTitle>
-            <Award className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">12</div>
-            <p className="text-xs text-muted-foreground">matching your profile</p>
-          </CardContent>
+        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <Link href="/available-applications">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Available Applications</CardTitle>
+              <Award className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">12</div>
+              <p className="text-xs text-muted-foreground">matching your profile</p>
+            </CardContent>
+          </Link>
         </Card>
         <Card className="hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Applications Submitted</CardTitle>
+            <CardTitle className="text-sm font-medium">My Applications</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">4</div>
             <p className="text-xs text-muted-foreground">2 awaiting review</p>
-          </CardContent>
-        </Card>
-        <Card className="hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Profile Completion</CardTitle>
-            <CheckCircle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">75%</div>
-            <Progress value={75} className="mt-2 h-2" />
           </CardContent>
         </Card>
         <Card className="hover:shadow-lg transition-shadow">
@@ -134,29 +126,6 @@ export default function StudentDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="col-span-1 lg:col-span-3">
-          <CardHeader>
-            <CardTitle>Featured Scholarship</CardTitle>
-            <CardDescription>An opportunity you might be interested in.</CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-4">
-            <Image 
-                src="https://placehold.co/600x400.png" 
-                alt="Featured Scholarship"
-                width={600}
-                height={400}
-                className="rounded-lg object-cover"
-                data-ai-hint="university students campus"
-            />
-            <h3 className="font-semibold text-lg">Global Citizen Grant</h3>
-            <p className="text-sm text-muted-foreground">For students passionate about creating global change. Covers full tuition and provides a stipend for international projects.</p>
-            <Button asChild className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
-              <Link href="#">
-                Learn More <ArrowUpRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

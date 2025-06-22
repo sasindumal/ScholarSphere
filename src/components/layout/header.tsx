@@ -36,6 +36,9 @@ export default function AppHeader() {
                 </SheetTrigger>
                 <SheetContent side="left" className="flex flex-col p-0 w-64">
                     <AppSidebar />
+                     <Link href="/available-applications" className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                        Available Applications
+                    </Link>
                 </SheetContent>
             </Sheet>
         </div>

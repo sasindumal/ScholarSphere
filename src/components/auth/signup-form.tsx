@@ -26,10 +26,10 @@ const formSchema = z.object({
   lastName: z.string().min(1, { message: 'Last name is required.' }),
   username: z.string().min(3, { message: 'Username must be at least 3 characters.' }),
   email: z.string().email({ message: 'Please enter a valid university email.' }).refine(
-    (email) => email.endsWith('.edu'),
-    { message: 'Please use a valid university email (.edu)' }
+    (email) => email.endsWith('@eng.jfn.ac.lk'),
+    { message: 'Please use a valid university email (@eng.jfn.ac.lk)' } // Change this line
   ),
-  password: z.string().min(8, { message: 'Password must be at least 8 characters.' }),
+  password: z.string().min(8, { message: 'Password must be at least 8 characters.' }), // Keep this line
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
@@ -120,7 +120,7 @@ export function SignupForm() {
                 <FormItem>
                   <FormLabel>University Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="jane.doe@university.edu" {...field} />
+                    <Input placeholder="20XXeXXX@eng.jfn.ac.lk" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

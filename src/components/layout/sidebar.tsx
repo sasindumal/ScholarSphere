@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: Home },
-  { href: '/dashboard/scholarships', label: 'Scholarships', icon: GraduationCap },
+ { href: '/available-applications', label: 'Available Applications', icon: BookMarked },
   { href: '/dashboard/applications', label: 'My Applications', icon: FileText },
   { href: '/dashboard/profile', label: 'My Profile', icon: User },
 ];
