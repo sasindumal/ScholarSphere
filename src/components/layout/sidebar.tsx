@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BookMarked, Home, FileText, User, Settings, LogOut, GraduationCap } from 'lucide-react';
+import { BookMarked, Home, FileText, User, Settings, LogOut, GraduationCap, Bell } from 'lucide-react';
 
 import {
   SidebarHeader,
@@ -19,9 +19,10 @@ import { Button } from '@/components/ui/button';
 
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: Home },
- { href: '/available-applications', label: 'Available Applications', icon: BookMarked },
+  { href: '/available-applications', label: 'Available Applications', icon: BookMarked },
   { href: '/my-applications', label: 'My Applications', icon: FileText },
   { href: '/my-profile', label: 'My Profile', icon: User },
+  { href: '/dashboard/notifications', label: 'Notifications', icon: Bell },
 ];
 
 export default function AppSidebar() {
