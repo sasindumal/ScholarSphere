@@ -1,7 +1,10 @@
+'use client';
 import type { ReactNode } from 'react';
-import { Sidebar, SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
+import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
 import AppSidebar from '@/components/layout/sidebar';
 import AppHeader from '@/components/layout/header';
+import PageTransition from './page-transition';
+import { AnimatePresence } from 'framer-motion';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
@@ -12,9 +15,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         </Sidebar>
         <div className="flex flex-1 flex-col">
           <AppHeader />
-          <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
-            {children}
-          </main>
+          <AnimatePresence mode="wait">
+            <PageTransition>{children}</PageTransition>
+          </AnimatePresence>
         </div>
       </div>
     </SidebarProvider>
