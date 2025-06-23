@@ -28,23 +28,32 @@ import { DollarSign } from 'lucide-react';
 import {
   getAllPayments,
   type PaymentStatus,
+  type PaymentMethod,
   statusConfig,
+  methodConfig,
   formatCurrency,
   formatDate,
 } from '@/lib/data/payments';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function PaymentsPage() {
   const [statusFilter, setStatusFilter] = useState<PaymentStatus | 'all'>('all');
+  const [methodFilter, setMethodFilter] = useState<PaymentMethod | 'all'>('all');
   const payments = getAllPayments();
 
   const filteredPayments = payments
-    .filter(payment => statusFilter === 'all' || payment.status === statusFilter);
+    .filter(payment => 
+      (statusFilter === 'all' || payment.status === statusFilter) &&
+      (methodFilter === 'all' || payment.payment_method === methodFilter)
+    );
 
   const totalAmount = payments.reduce((sum, payment) => sum + payment.amount, 0);
   const completedAmount = payments
     .filter(payment => payment.status === 'completed')
     .reduce((sum, payment) => sum + payment.amount, 0);
-  const pendingAmount = totalAmount - completedAmount;
+  const pendingAmount = payments
+    .filter(payment => payment.status === 'pending' || payment.status === 'processing')
+    .reduce((sum, payment) => sum + payment.amount, 0);
 
   return (
     <div className="space-y-8">
@@ -66,7 +75,7 @@ export default function PaymentsPage() {
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(totalAmount)}</div>
             <p className="text-xs text-muted-foreground">
-              Across all scholarships
+              Total amount awarded
             </p>
           </CardContent>
         </Card>
@@ -101,21 +110,39 @@ export default function PaymentsPage() {
       </div>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <Select
-          value={statusFilter}
-          onValueChange={(value) => setStatusFilter(value as PaymentStatus | 'all')}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Filter by status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="scheduled">Scheduled</SelectItem>
-            <SelectItem value="processing">Processing</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
-            <SelectItem value="failed">Failed</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <Select
+            value={statusFilter}
+            onValueChange={(value) => setStatusFilter(value as PaymentStatus | 'all')}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Filter by status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="processing">Processing</SelectItem>
+              <SelectItem value="completed">Completed</SelectItem>
+              <SelectItem value="failed">Failed</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={methodFilter}
+            onValueChange={(value) => setMethodFilter(value as PaymentMethod | 'all')}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Filter by method" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Methods</SelectItem>
+              <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
+              <SelectItem value="check">Check</SelectItem>
+              <SelectItem value="direct_deposit">Direct Deposit</SelectItem>
+              <SelectItem value="wire_transfer">Wire Transfer</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         <p className="text-sm text-muted-foreground">
           Showing {filteredPayments.length} payments
@@ -135,21 +162,31 @@ export default function PaymentsPage() {
               <TableRow>
                 <TableHead>Scholarship</TableHead>
                 <TableHead>Amount</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Date</TableHead>
+                <TableHead>Payment Date</TableHead>
+                <TableHead>Payment Method</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Transaction ID</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredPayments.map((payment) => (
-                <TableRow key={payment.id}>
+                <TableRow key={payment.payment_id}>
                   <TableCell className="font-medium">
-                    {payment.scholarship?.title}
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger className="text-left hover:underline">
+                          {payment.application?.scholarship?.title || 'Unknown Scholarship'}
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Application ID: {payment.application_id}</p>
+                          <p>{payment.application?.scholarship?.organization || 'Unknown Organization'}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </TableCell>
                   <TableCell>{formatCurrency(payment.amount)}</TableCell>
-                  <TableCell>{payment.description}</TableCell>
-                  <TableCell>{formatDate(payment.scheduledDate)}</TableCell>
+                  <TableCell>{formatDate(payment.payment_date)}</TableCell>
+                  <TableCell>{methodConfig[payment.payment_method]}</TableCell>
                   <TableCell>
                     <Badge
                       variant="outline"
@@ -159,7 +196,7 @@ export default function PaymentsPage() {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-muted-foreground">
-                    {payment.transactionId || '-'}
+                    {payment.transaction_id || '-'}
                   </TableCell>
                 </TableRow>
               ))}

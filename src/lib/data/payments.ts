@@ -1,108 +1,95 @@
+import { type Application, userApplications } from './applications';
 import { type Scholarship, scholarships } from './scholarships';
 
-export type PaymentStatus = 'scheduled' | 'processing' | 'completed' | 'failed';
-export type PaymentPeriod = 'one-time' | 'semester' | 'annual';
+export type PaymentStatus = 'pending' | 'processing' | 'completed' | 'failed';
+export type PaymentMethod = 'bank_transfer' | 'check' | 'direct_deposit' | 'wire_transfer';
 
 export interface Payment {
-  id: string;
-  scholarshipId: string;
+  payment_id: string;
+  application_id: string;
   amount: number;
+  payment_date: string;
+  payment_method: PaymentMethod;
+  transaction_id: string | null;
   status: PaymentStatus;
-  scheduledDate: string;
-  completedDate?: string;
-  period: PaymentPeriod;
-  description: string;
-  transactionId?: string;
 }
 
 export const mockPayments: Payment[] = [
   {
-    id: '1',
-    scholarshipId: '1',
+    payment_id: '1',
+    application_id: '2', // Reference to approved application
     amount: 12500,
-    status: 'completed',
-    scheduledDate: '2024-01-15',
-    completedDate: '2024-01-15',
-    period: 'semester',
-    description: 'Spring 2024 Semester Payment',
-    transactionId: 'TXN123456',
+    payment_date: '2024-01-15',
+    payment_method: 'direct_deposit',
+    transaction_id: 'TXN123456',
+    status: 'completed'
   },
   {
-    id: '2',
-    scholarshipId: '1',
+    payment_id: '2',
+    application_id: '2', // Second payment for same approved application
     amount: 12500,
-    status: 'scheduled',
-    scheduledDate: '2024-06-15',
-    period: 'semester',
-    description: 'Fall 2024 Semester Payment',
+    payment_date: '2024-06-15',
+    payment_method: 'direct_deposit',
+    transaction_id: null,
+    status: 'pending'
   },
   {
-    id: '3',
-    scholarshipId: '2',
+    payment_id: '3',
+    application_id: '4', // Reference to pending application
     amount: 35000,
-    status: 'processing',
-    scheduledDate: '2024-03-20',
-    period: 'one-time',
-    description: 'Research Grant Disbursement',
-  },
-  {
-    id: '4',
-    scholarshipId: '4',
-    amount: 20000,
-    status: 'completed',
-    scheduledDate: '2024-02-01',
-    completedDate: '2024-02-01',
-    period: 'semester',
-    description: 'Spring 2024 Fellowship Payment',
-    transactionId: 'TXN789012',
-  },
-  {
-    id: '5',
-    scholarshipId: '4',
-    amount: 20000,
-    status: 'scheduled',
-    scheduledDate: '2024-07-01',
-    period: 'semester',
-    description: 'Fall 2024 Fellowship Payment',
-  },
+    payment_date: '2024-03-20',
+    payment_method: 'bank_transfer',
+    transaction_id: 'TXN789012',
+    status: 'processing'
+  }
 ];
 
 export const statusConfig = {
-  scheduled: { label: 'Scheduled', color: 'bg-blue-500/10 text-blue-500' },
+  pending: { label: 'Pending', color: 'bg-blue-500/10 text-blue-500' },
   processing: { label: 'Processing', color: 'bg-yellow-500/10 text-yellow-500' },
   completed: { label: 'Completed', color: 'bg-green-500/10 text-green-500' },
   failed: { label: 'Failed', color: 'bg-red-500/10 text-red-500' },
 };
 
-export const periodConfig = {
-  'one-time': 'One-time Payment',
-  'semester': 'Per Semester',
-  'annual': 'Annual',
+export const methodConfig = {
+  bank_transfer: 'Bank Transfer',
+  check: 'Check',
+  direct_deposit: 'Direct Deposit',
+  wire_transfer: 'Wire Transfer'
 };
 
-export function getPaymentWithScholarship(payment: Payment) {
-  const scholarship = scholarships.find((s: Scholarship) => s.id === payment.scholarshipId);
+// Helper function to get payment with application details
+export function getPaymentWithApplication(payment: Payment) {
+  const application = userApplications.find(app => app.id === payment.application_id);
+  let scholarship: Scholarship | undefined;
+  
+  if (application) {
+    scholarship = scholarships.find(s => s.id === application.scholarshipId);
+  }
+
   return {
     ...payment,
-    scholarship,
+    application: application ? { ...application, scholarship } : undefined
   };
 }
 
+// Helper function to get all payments with application details
 export function getAllPayments() {
   return mockPayments
-    .sort((a, b) => new Date(b.scheduledDate).getTime() - new Date(a.scheduledDate).getTime())
-    .map(getPaymentWithScholarship);
+    .sort((a, b) => new Date(b.payment_date).getTime() - new Date(a.payment_date).getTime())
+    .map(getPaymentWithApplication);
 }
 
+// Helper function to get upcoming payments
 export function getUpcomingPayments() {
   const now = new Date();
   return mockPayments
     .filter(payment => 
-      (payment.status === 'scheduled' || payment.status === 'processing') &&
-      new Date(payment.scheduledDate) >= now
+      (payment.status === 'pending' || payment.status === 'processing') &&
+      new Date(payment.payment_date) >= now
     )
-    .sort((a, b) => new Date(a.scheduledDate).getTime() - new Date(b.scheduledDate).getTime())
-    .map(getPaymentWithScholarship);
+    .sort((a, b) => new Date(a.payment_date).getTime() - new Date(b.payment_date).getTime())
+    .map(getPaymentWithApplication);
 }
 
 export function formatCurrency(amount: number) {
