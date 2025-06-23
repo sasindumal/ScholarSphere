@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/sidebar';
 import { Logo } from '@/components/icons/logo';
 import { Separator } from '@/components/ui/separator';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 
 const menuItems = [
@@ -54,10 +53,6 @@ export default function AppSidebar() {
       <SidebarFooter className="p-4">
         <Separator className="my-2" />
         <div className="flex items-center gap-3">
-            <Avatar>
-                <AvatarImage src="https://placehold.co/40x40.png" alt="User" data-ai-hint="user avatar" />
-                <AvatarFallback>JD</AvatarFallback>
-            </Avatar>
             <div className="flex flex-col">
                 <span className="font-semibold text-sm">Jane Doe</span>
                 <span className="text-xs text-muted-foreground">Student</span>
