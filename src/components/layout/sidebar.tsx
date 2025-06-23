@@ -20,8 +20,8 @@ import { Button } from '@/components/ui/button';
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: Home },
  { href: '/available-applications', label: 'Available Applications', icon: BookMarked },
-  { href: '/dashboard/applications', label: 'My Applications', icon: FileText },
-  { href: '/dashboard/profile', label: 'My Profile', icon: User },
+  { href: '/my-applications', label: 'My Applications', icon: FileText },
+  { href: '/my-profile', label: 'My Profile', icon: User },
 ];
 
 export default function AppSidebar() {
@@ -39,14 +39,12 @@ export default function AppSidebar() {
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.href}>
-              <Link href={item.href} legacyBehavior passHref>
-                <SidebarMenuButton
-                  isActive={pathname === item.href}
-                  className="w-full"
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span>{item.label}</span>
-                </SidebarMenuButton>
+              <Link href={item.href} className="w-full">
+                <SidebarMenuButton isActive={pathname === item.href} className="w-full">
+                  <item.icon className="h-5 w-5" /> {/* Icon */}
+                  <span>{item.label}</span> {/* Label */}
+
+                </SidebarMenuButton> {/* Correctly wrap SidebarMenuButton */}
               </Link>
             </SidebarMenuItem>
           ))}
