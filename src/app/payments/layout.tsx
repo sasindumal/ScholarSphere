@@ -1,6 +1,9 @@
 import DashboardLayout from '@/components/layout/dashboard-layout';
-import type { ReactNode } from 'react';
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function PaymentsLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return <DashboardLayout>{children}</DashboardLayout>;
-}
+} 
