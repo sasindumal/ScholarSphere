@@ -1,16 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { ApplicationCard } from '@/components/applications/application-card';
-import { getAllApplications, type ApplicationStatus, type Application } from '@/lib/data/applications';
-import type { Scholarship } from '@/lib/data/scholarships';
+import { getAllApplications, type ApplicationStatus, statusConfig } from '@/lib/data/applications';
 
 export default function MyApplicationsPage() {
   const [statusFilter, setStatusFilter] = useState<ApplicationStatus | 'all'>('all');
@@ -18,13 +9,13 @@ export default function MyApplicationsPage() {
 
   // Get applications and filter out any with missing scholarship data
   const applications = getAllApplications()
-    .filter((app): app is Application & { scholarship: Scholarship } => app.scholarship !== undefined);
+    .filter((app) => app.scholarship !== undefined);
 
   const filteredApplications = applications
     .filter(app => statusFilter === 'all' || app.status === statusFilter)
     .sort((a, b) => {
       if (sortBy === 'date') {
-        return new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime();
+        return new Date(b.submission_date).getTime() - new Date(a.submission_date).getTime();
       }
       // Sort by status priority: draft -> pending -> under-review -> approved -> rejected
       const statusPriority: Record<ApplicationStatus, number> = {
@@ -48,35 +39,27 @@ export default function MyApplicationsPage() {
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <Select
+          <select
             value={statusFilter}
-            onValueChange={(value) => setStatusFilter(value as ApplicationStatus | 'all')}
+            onChange={e => setStatusFilter(e.target.value as ApplicationStatus | 'all')}
+            className="border rounded px-2 py-1"
           >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="draft">Draft</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="under-review">Under Review</SelectItem>
-              <SelectItem value="approved">Approved</SelectItem>
-              <SelectItem value="rejected">Rejected</SelectItem>
-            </SelectContent>
-          </Select>
+            <option value="all">All Status</option>
+            <option value="draft">Draft</option>
+            <option value="pending">Pending</option>
+            <option value="under-review">Under Review</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
 
-          <Select
+          <select
             value={sortBy}
-            onValueChange={(value) => setSortBy(value as 'date' | 'status')}
+            onChange={e => setSortBy(e.target.value as 'date' | 'status')}
+            className="border rounded px-2 py-1"
           >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="date">Sort by Date</SelectItem>
-              <SelectItem value="status">Sort by Status</SelectItem>
-            </SelectContent>
-          </Select>
+            <option value="date">Sort by Date</option>
+            <option value="status">Sort by Status</option>
+          </select>
         </div>
 
         <p className="text-sm text-muted-foreground">
@@ -87,7 +70,16 @@ export default function MyApplicationsPage() {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredApplications.length > 0 ? (
           filteredApplications.map((application) => (
-            <ApplicationCard key={application.id} application={application} />
+            <div key={application.application_id} className="border rounded-lg p-4 bg-card">
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="text-lg font-semibold">{application.scholarship?.name}</h2>
+                <span className="text-xs px-2 py-1 rounded font-bold {statusConfig[application.status].color}">{statusConfig[application.status].label}</span>
+              </div>
+              <div className="text-sm mb-1">Submitted: {application.submission_date ? new Date(application.submission_date).toLocaleDateString() : 'Not submitted'}</div>
+              <div className="text-sm mb-1">Total Points: {application.total_points ?? '-'}</div>
+              <div className="text-sm mb-1">Review Date: {application.review_date ? new Date(application.review_date).toLocaleDateString() : '-'}</div>
+              <div className="text-sm mb-1">Reviewer Comments: {application.reviewer_comments ?? '-'}</div>
+            </div>
           ))
         ) : (
           <div className="col-span-full text-center py-12">

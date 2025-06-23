@@ -1,96 +1,64 @@
 export type Scholarship = {
-  id: string;
-  title: string;
-  organization: string;
-  amount: number;
-  deadline: string;
+  scholarship_id: string;
+  name: string;
   description: string;
-  requirements: string[];
-  category: 'undergraduate' | 'postgraduate' | 'research' | 'merit' | 'needs-based';
-  location: string;
-  status: 'open' | 'closing-soon' | 'closed';
+  amount: number;
+  no_of_students: number;
+  application_deadline: string;
+  start_date: string;
+  end_date: string;
+  provider_id: string;
+  is_active: boolean;
 };
 
 export const scholarships: Scholarship[] = [
   {
-    id: '1',
-    title: 'Global Excellence Scholarship',
-    organization: 'International Education Foundation',
-    amount: 25000,
-    deadline: '2024-08-15',
+    scholarship_id: '1',
+    name: 'Global Excellence Scholarship',
     description: 'Full scholarship for outstanding students pursuing undergraduate studies in any field.',
-    requirements: [
-      'Minimum GPA of 3.5',
-      'Strong leadership experience',
-      'International student status',
-    ],
-    category: 'undergraduate',
-    location: 'Worldwide',
-    status: 'open',
+    amount: 25000,
+    no_of_students: 10,
+    application_deadline: '2024-08-15',
+    start_date: '2024-09-01',
+    end_date: '2025-06-30',
+    provider_id: 'provider1',
+    is_active: true,
   },
   {
-    id: '2',
-    title: 'Research Innovation Grant',
-    organization: 'Advanced Research Institute',
-    amount: 35000,
-    deadline: '2024-07-01',
+    scholarship_id: '2',
+    name: 'Research Innovation Grant',
     description: 'Grant for innovative research projects in STEM fields.',
-    requirements: [
-      'Research proposal',
-      'Letter of recommendation',
-      'Published academic work',
-    ],
-    category: 'research',
-    location: 'United States',
-    status: 'open',
+    amount: 35000,
+    no_of_students: 5,
+    application_deadline: '2024-07-01',
+    start_date: '2024-09-01',
+    end_date: '2025-06-30',
+    provider_id: 'provider2',
+    is_active: true,
   },
   {
-    id: '3',
-    title: 'Merit Scholarship Program',
-    organization: 'Academic Excellence Foundation',
-    amount: 15000,
-    deadline: '2024-06-30',
+    scholarship_id: '3',
+    name: 'Merit Scholarship Program',
     description: 'Merit-based scholarship for high-achieving students.',
-    requirements: [
-      'Top 10% of class',
-      'Extracurricular achievements',
-      'Essay submission',
-    ],
-    category: 'merit',
-    location: 'Europe',
-    status: 'closing-soon',
+    amount: 15000,
+    no_of_students: 20,
+    application_deadline: '2024-06-30',
+    start_date: '2024-09-01',
+    end_date: '2025-06-30',
+    provider_id: 'provider3',
+    is_active: false,
   },
   {
-    id: '4',
-    title: 'Graduate Studies Fellowship',
-    organization: 'Advanced Education Society',
-    amount: 40000,
-    deadline: '2024-09-15',
+    scholarship_id: '4',
+    name: 'Graduate Studies Fellowship',
     description: 'Fellowship for outstanding graduate students in any discipline.',
-    requirements: [
-      'Masters or PhD enrollment',
-      'Research proposal',
-      'Academic excellence',
-    ],
-    category: 'postgraduate',
-    location: 'Canada',
-    status: 'open',
-  },
-  {
-    id: '5',
-    title: 'Community Support Scholarship',
-    organization: 'Community Foundation',
-    amount: 10000,
-    deadline: '2024-05-30',
-    description: 'Scholarship for students from underserved communities.',
-    requirements: [
-      'Financial need documentation',
-      'Community service record',
-      'Academic standing',
-    ],
-    category: 'needs-based',
-    location: 'United States',
-    status: 'closing-soon',
+    amount: 40000,
+    no_of_students: 3,
+    application_deadline: '2024-09-15',
+    start_date: '2024-10-01',
+    end_date: '2025-07-31',
+    provider_id: 'provider4',
+    is_active: true,
   },
 ];
 

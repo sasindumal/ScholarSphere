@@ -1,4 +1,4 @@
-import { scholarships } from './scholarships';
+import { scholarships, type Scholarship } from './scholarships';
 
 export type ApplicationStatus = 
   | 'pending'
@@ -8,66 +8,67 @@ export type ApplicationStatus =
   | 'draft';
 
 export type Application = {
-  id: string;
-  scholarshipId: string;
-  userId: string;
+  application_id: string;
+  student_id: string;
+  scholarship_id: string;
+  submission_date: string;
   status: ApplicationStatus;
-  submittedAt: string;
-  lastUpdated: string;
-  notes?: string;
+  total_points?: number;
+  reviewer_comments?: string;
+  review_date?: string;
 };
 
 // Mock data for a user's applications
 export const userApplications: Application[] = [
   {
-    id: '1',
-    scholarshipId: '1',
-    userId: 'user1',
+    application_id: '1',
+    student_id: 'user1',
+    scholarship_id: '1',
+    submission_date: '2024-03-15T10:00:00Z',
     status: 'under-review',
-    submittedAt: '2024-03-15T10:00:00Z',
-    lastUpdated: '2024-03-16T14:30:00Z',
-    notes: 'Documents under review by the scholarship committee.',
+    reviewer_comments: 'Documents under review by the scholarship committee.',
+    review_date: '2024-03-16T14:30:00Z',
+    total_points: 85,
   },
   {
-    id: '2',
-    scholarshipId: '2',
-    userId: 'user1',
+    application_id: '2',
+    student_id: 'user1',
+    scholarship_id: '2',
+    submission_date: '2024-02-20T09:15:00Z',
     status: 'approved',
-    submittedAt: '2024-02-20T09:15:00Z',
-    lastUpdated: '2024-03-10T16:45:00Z',
-    notes: 'Congratulations! Your application has been approved.',
+    reviewer_comments: 'Congratulations! Your application has been approved.',
+    review_date: '2024-03-10T16:45:00Z',
+    total_points: 92,
   },
   {
-    id: '3',
-    scholarshipId: '3',
-    userId: 'user1',
+    application_id: '3',
+    student_id: 'user1',
+    scholarship_id: '3',
+    submission_date: '2024-01-05T11:30:00Z',
     status: 'rejected',
-    submittedAt: '2024-01-05T11:30:00Z',
-    lastUpdated: '2024-02-01T13:20:00Z',
-    notes: 'Unfortunately, your application was not selected for this scholarship.',
+    reviewer_comments: 'Unfortunately, your application was not selected for this scholarship.',
+    review_date: '2024-02-01T13:20:00Z',
+    total_points: 60,
   },
   {
-    id: '4',
-    scholarshipId: '4',
-    userId: 'user1',
+    application_id: '4',
+    student_id: 'user1',
+    scholarship_id: '4',
+    submission_date: '2024-03-18T08:45:00Z',
     status: 'pending',
-    submittedAt: '2024-03-18T08:45:00Z',
-    lastUpdated: '2024-03-18T08:45:00Z',
   },
   {
-    id: '5',
-    scholarshipId: '5',
-    userId: 'user1',
+    application_id: '5',
+    student_id: 'user1',
+    scholarship_id: '1',
+    submission_date: '',
     status: 'draft',
-    submittedAt: '',
-    lastUpdated: '2024-03-17T15:20:00Z',
-    notes: 'Application saved as draft.',
   },
 ];
 
 // Helper function to get application with scholarship details
 export function getApplicationWithScholarship(application: Application) {
-  const scholarship = scholarships.find(s => s.id === application.scholarshipId);
+  const scholarship = scholarships.find(s => s.scholarship_id === application.scholarship_id);
   return {
     ...application,
     scholarship,
@@ -78,7 +79,7 @@ export function getApplicationWithScholarship(application: Application) {
 export function getRecentApplications(limit: number = 5) {
   return userApplications
     .filter(app => app.status !== 'draft')
-    .sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime())
+    .sort((a, b) => new Date(b.submission_date).getTime() - new Date(a.submission_date).getTime())
     .slice(0, limit)
     .map(getApplicationWithScholarship);
 }
@@ -86,7 +87,7 @@ export function getRecentApplications(limit: number = 5) {
 // Helper function to get all applications
 export function getAllApplications() {
   return userApplications
-    .sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime())
+    .sort((a, b) => new Date(b.submission_date).getTime() - new Date(a.submission_date).getTime())
     .map(getApplicationWithScholarship);
 }
 
