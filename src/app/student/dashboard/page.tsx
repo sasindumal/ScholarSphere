@@ -3,18 +3,27 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/use-auth';
 import { Calendar, User, Award, FileText } from 'lucide-react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
-export default function DashboardPage() {
+export default function StudentDashboardPage() {
   const { user } = useAuth();
+  const router = useRouter();
 
-  if (!user) {
+  useEffect(() => {
+    if (user && user.role !== 'student') {
+      router.replace('/dashboard');
+    }
+  }, [user, router]);
+
+  if (!user || user.role !== 'student') {
     return null;
   }
 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+        <h2 className="text-3xl font-bold tracking-tight">Student Dashboard</h2>
         <div className="flex items-center space-x-2">
           <Calendar className="h-4 w-4 text-muted-foreground" />
           <span className="text-sm text-muted-foreground">
@@ -27,7 +36,6 @@ export default function DashboardPage() {
           </span>
         </div>
       </div>
-      
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -43,7 +51,6 @@ export default function DashboardPage() {
             </p>
           </CardContent>
         </Card>
-        
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Available Scholarships</CardTitle>
@@ -56,7 +63,6 @@ export default function DashboardPage() {
             </p>
           </CardContent>
         </Card>
-        
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">My Applications</CardTitle>
@@ -69,7 +75,6 @@ export default function DashboardPage() {
             </p>
           </CardContent>
         </Card>
-        
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Awarded</CardTitle>
@@ -83,7 +88,6 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-      
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="col-span-4">
           <CardHeader>
@@ -118,7 +122,6 @@ export default function DashboardPage() {
             </div>
           </CardContent>
         </Card>
-        
         <Card className="col-span-3">
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
@@ -146,4 +149,4 @@ export default function DashboardPage() {
       </div>
     </div>
   );
-}
+} 
