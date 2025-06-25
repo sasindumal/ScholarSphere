@@ -198,6 +198,10 @@ ul {
   cursor: pointer;
 }
 
+.sidebar-toggle-btn {
+  display: none; /* Hidden by default */
+}
+
 /* --- Main Content --- */
 .main-content {
   padding: 32px;
@@ -422,6 +426,14 @@ ul {
   /* Add a class to toggle sidebar on mobile */
   .sidebar.open {
     width: 260px;
+  }
+
+  .sidebar-toggle-btn {
+    display: block;
+  }
+
+  .app-header {
+    justify-content: space-between;
   }
 }
 
