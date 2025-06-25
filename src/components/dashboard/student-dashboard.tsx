@@ -1,3 +1,5 @@
+'use client';
+
 import { ArrowUpRight, Award, FileText, Bell, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 
@@ -19,6 +21,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { getRecentApplications, statusConfig } from '@/lib/data/applications';
 
 const applications = [
   { id: 1, name: 'Innovators of Tomorrow Scholarship', status: 'In Review', date: '2023-10-15' },
@@ -34,99 +37,131 @@ const notifications = [
 ];
 
 export default function StudentDashboard() {
-  return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight font-headline">Welcome, Jane!</h1>
-        <p className="text-muted-foreground">Here&apos;s your scholarship journey at a glance.</p>
-      </div>
+  const recentApplications = getRecentApplications(3);
 
+  return (
+    <div className="grid gap-4 md:gap-8">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-          <Link href="/available-applications">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Available Applications</CardTitle>
-              <Award className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">12</div>
-              <p className="text-xs text-muted-foreground">matching your profile</p>
-            </CardContent>
-          </Link>
-        </Card>
-        <Card className="hover:shadow-lg transition-shadow">
- <Link href="/my-applications">
- <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
- <CardTitle className="text-sm font-medium">My Applications</CardTitle>
- <FileText className="h-4 w-4 text-muted-foreground" />
- </CardHeader>
- <CardContent>
- <div className="text-2xl font-bold">4</div>
- <p className="text-xs text-muted-foreground">2 awaiting review</p>
- </CardContent>
- </Link>
-        </Card>
-        <Card className="hover:shadow-lg transition-shadow">
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Notifications</CardTitle>
-            <Bell className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Total Applications</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">12</div>
+            <p className="text-xs text-muted-foreground">
+              +2 from last month
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Pending Review</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">3</div>
-            <p className="text-xs text-muted-foreground">unread notifications</p>
+            <p className="text-xs text-muted-foreground">
+              2 under review
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Approved</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">4</div>
+            <p className="text-xs text-muted-foreground">
+              +1 this month
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">33%</div>
+            <p className="text-xs text-muted-foreground">
+              +4% from last month
+            </p>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-1 lg:col-span-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <Card className="col-span-4">
           <CardHeader>
-            <CardTitle>Recent Applications</CardTitle>
-            <CardDescription>Track the status of your latest submissions.</CardDescription>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle>Recent Applications</CardTitle>
+                <CardDescription>
+                  Your recently submitted applications
+                </CardDescription>
+              </div>
+              <Button variant="outline" asChild>
+                <Link href="/my-applications">View All</Link>
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Scholarship</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date Applied</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {applications.map((app) => (
-                  <TableRow key={app.id}>
-                    <TableCell className="font-medium">{app.name}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={
-                          app.status === 'Awarded'
-                            ? 'default'
-                            : app.status === 'In Review'
-                            ? 'secondary'
-                            : 'destructive'
-                        }
-                        className={`${
-                            app.status === 'Awarded'
-                            ? 'bg-accent text-accent-foreground'
-                            : app.status === 'In Review'
-                            ? 'bg-blue-200 text-blue-800'
-                            : app.status === 'Submitted'
-                            ? 'bg-yellow-200 text-yellow-800'
-                            : 'bg-red-200 text-red-800'
-                        }`}
-                      >
-                        {app.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{app.date}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <div className="space-y-4">
+              {recentApplications.map((application) => (
+                <div
+                  key={application.id}
+                  className="flex items-center justify-between space-x-4"
+                >
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {application.scholarship?.title}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {application.scholarship?.organization}
+                    </p>
+                  </div>
+                  <Badge
+                    variant="outline"
+                    className={statusConfig[application.status].color}
+                  >
+                    {statusConfig[application.status].label}
+                  </Badge>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
 
+        <Card className="col-span-3">
+          <CardHeader>
+            <CardTitle>Upcoming Deadlines</CardTitle>
+            <CardDescription>
+              Applications that need your attention
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center">
+                <div className="ml-4 space-y-1">
+                  <p className="text-sm font-medium leading-none">
+                    Research Innovation Grant
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Due in 3 days
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <div className="ml-4 space-y-1">
+                  <p className="text-sm font-medium leading-none">
+                    Merit Scholarship Program
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Due in 5 days
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
