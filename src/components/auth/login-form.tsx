@@ -55,7 +55,7 @@ export function LoginForm() {
 
       // Role-based redirection
       if (user?.role === 'student') {
-        router.push('/dashboard');
+        router.push('/student/dashboard');
       } else if (user?.role === 'admin') {
         router.push('/admin/dashboard');
       } else if (user?.role === 'coordinator') {

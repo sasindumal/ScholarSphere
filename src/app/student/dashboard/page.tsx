@@ -3,20 +3,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/use-auth';
 import { Calendar, User, Award, FileText } from 'lucide-react';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  const router = useRouter();
 
-  useEffect(() => {
-    if (user && user.role === 'student') {
-      router.replace('/student/dashboard');
-    }
-  }, [user, router]);
-
-  if (!user || user.role === 'student') {
+  if (!user) {
     return null;
   }
 
