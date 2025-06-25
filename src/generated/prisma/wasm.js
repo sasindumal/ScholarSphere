@@ -120,120 +120,18 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.APPLICATIONScalarFieldEnum = {
-  application_id: 'application_id',
-  student_id: 'student_id',
-  scholarship_id: 'scholarship_id',
-  submission_date: 'submission_date',
-  status: 'status',
-  total_points: 'total_points',
-  reviewer_comments: 'reviewer_comments',
-  review_date: 'review_date'
-};
-
-exports.Prisma.COMMITTEE_REVIEWScalarFieldEnum = {
-  review_id: 'review_id',
-  application_id: 'application_id',
-  reviewer_id: 'reviewer_id',
-  review_date: 'review_date',
-  points_awarded: 'points_awarded',
-  comments: 'comments',
-  status: 'status',
-  is_read: 'is_read'
-};
-
-exports.Prisma.DOCUMENTScalarFieldEnum = {
-  document_id: 'document_id',
-  application_id: 'application_id',
-  document_type: 'document_type',
-  file_name: 'file_name',
-  file_path: 'file_path',
-  upload_date: 'upload_date',
-  verification_status: 'verification_status'
-};
-
-exports.Prisma.ELIGIBILITY_CRITERIAScalarFieldEnum = {
-  criteria_id: 'criteria_id',
-  scholarship_id: 'scholarship_id',
-  criteria_name: 'criteria_name',
-  criteria_description: 'criteria_description',
-  min_value: 'min_value',
-  max_value: 'max_value',
-  weight: 'weight'
-};
-
-exports.Prisma.FAMILY_MEMBERScalarFieldEnum = {
-  member_id: 'member_id',
-  student_id: 'student_id',
-  full_name: 'full_name',
-  age: 'age',
-  relationship: 'relationship',
-  designation: 'designation',
-  annual_income: 'annual_income',
-  workplace: 'workplace',
-  phone_number: 'phone_number'
-};
-
-exports.Prisma.NOTIFICATIONScalarFieldEnum = {
-  notification_id: 'notification_id',
+exports.Prisma.UserScalarFieldEnum = {
   user_id: 'user_id',
-  message: 'message',
-  created_at: 'created_at',
-  is_read: 'is_read'
-};
-
-exports.Prisma.OTHER_FUNDINGScalarFieldEnum = {
-  funding_id: 'funding_id',
-  student_id: 'student_id',
-  funding_name: 'funding_name',
-  organization: 'organization',
-  annual_amount: 'annual_amount',
-  start_date: 'start_date',
-  end_date: 'end_date'
-};
-
-exports.Prisma.PAYMENTScalarFieldEnum = {
-  payment_id: 'payment_id',
-  application_id: 'application_id',
-  amount: 'amount',
-  payment_date: 'payment_date',
-  payment_method: 'payment_method',
-  transaction_id: 'transaction_id',
-  status: 'status'
-};
-
-exports.Prisma.SCHOLARSHIPScalarFieldEnum = {
-  scholarship_id: 'scholarship_id',
-  name: 'name',
-  description: 'description',
-  amount: 'amount',
-  no_of_students: 'no_of_students',
-  application_deadline: 'application_deadline',
-  start_date: 'start_date',
-  end_date: 'end_date',
-  provider_id: 'provider_id',
-  is_active: 'is_active'
-};
-
-exports.Prisma.SCHOLARSHIP_PROVIDERScalarFieldEnum = {
-  provider_id: 'provider_id',
-  name: 'name',
-  contact_person: 'contact_person',
-  phone: 'phone',
+  first_name: 'first_name',
+  last_name: 'last_name',
   email: 'email',
-  address: 'address'
+  username: 'username',
+  password: 'password',
+  role: 'role',
+  created_at: 'created_at'
 };
 
-exports.Prisma.SIBLING_EDUCATIONScalarFieldEnum = {
-  education_id: 'education_id',
-  student_id: 'student_id',
-  member_id: 'member_id',
-  institution: 'institution',
-  year_grade: 'year_grade',
-  registration_course: 'registration_course'
-};
-
-exports.Prisma.STUDENTScalarFieldEnum = {
+exports.Prisma.StudentScalarFieldEnum = {
   student_id: 'student_id',
   user_id: 'user_id',
   full_name: 'full_name',
@@ -249,74 +147,8 @@ exports.Prisma.STUDENTScalarFieldEnum = {
   unmarried_siblings: 'unmarried_siblings'
 };
 
-exports.Prisma.USERScalarFieldEnum = {
-  user_id: 'user_id',
-  first_name: 'first_name',
-  last_name: 'last_name',
-  email: 'email',
-  username: 'username',
-  password: 'password',
-  role: 'role',
-  created_at: 'created_at'
-};
-
-exports.Prisma.SortOrder = {
-  asc: 'asc',
-  desc: 'desc'
-};
-
-exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
-};
-
-exports.Prisma.APPLICATIONOrderByRelevanceFieldEnum = {
-  reviewer_comments: 'reviewer_comments'
-};
-
-exports.Prisma.COMMITTEE_REVIEWOrderByRelevanceFieldEnum = {
-  comments: 'comments'
-};
-
-exports.Prisma.DOCUMENTOrderByRelevanceFieldEnum = {
-  document_type: 'document_type',
-  file_name: 'file_name',
-  file_path: 'file_path'
-};
-
-exports.Prisma.ELIGIBILITY_CRITERIAOrderByRelevanceFieldEnum = {
-  criteria_name: 'criteria_name',
-  criteria_description: 'criteria_description'
-};
-
-exports.Prisma.FAMILY_MEMBEROrderByRelevanceFieldEnum = {
-  full_name: 'full_name',
-  relationship: 'relationship',
-  designation: 'designation',
-  workplace: 'workplace',
-  phone_number: 'phone_number'
-};
-
-exports.Prisma.NOTIFICATIONOrderByRelevanceFieldEnum = {
-  message: 'message'
-};
-
-exports.Prisma.OTHER_FUNDINGOrderByRelevanceFieldEnum = {
-  funding_name: 'funding_name',
-  organization: 'organization'
-};
-
-exports.Prisma.PAYMENTOrderByRelevanceFieldEnum = {
-  payment_method: 'payment_method',
-  transaction_id: 'transaction_id'
-};
-
-exports.Prisma.SCHOLARSHIPOrderByRelevanceFieldEnum = {
-  name: 'name',
-  description: 'description'
-};
-
-exports.Prisma.SCHOLARSHIP_PROVIDEROrderByRelevanceFieldEnum = {
+exports.Prisma.ScholarshipProviderScalarFieldEnum = {
+  provider_id: 'provider_id',
   name: 'name',
   contact_person: 'contact_person',
   phone: 'phone',
@@ -324,13 +156,124 @@ exports.Prisma.SCHOLARSHIP_PROVIDEROrderByRelevanceFieldEnum = {
   address: 'address'
 };
 
-exports.Prisma.SIBLING_EDUCATIONOrderByRelevanceFieldEnum = {
+exports.Prisma.ScholarshipScalarFieldEnum = {
+  scholarship_id: 'scholarship_id',
+  name: 'name',
+  description: 'description',
+  amount: 'amount',
+  no_of_students: 'no_of_students',
+  application_deadline: 'application_deadline',
+  start_date: 'start_date',
+  end_date: 'end_date',
+  provider_id: 'provider_id',
+  is_active: 'is_active'
+};
+
+exports.Prisma.EligibilityCriteriaScalarFieldEnum = {
+  criteria_id: 'criteria_id',
+  scholarship_id: 'scholarship_id',
+  criteria_name: 'criteria_name',
+  criteria_description: 'criteria_description',
+  min_value: 'min_value',
+  max_value: 'max_value',
+  weight: 'weight'
+};
+
+exports.Prisma.ApplicationScalarFieldEnum = {
+  application_id: 'application_id',
+  student_id: 'student_id',
+  scholarship_id: 'scholarship_id',
+  submission_date: 'submission_date',
+  status: 'status',
+  total_points: 'total_points',
+  reviewer_comments: 'reviewer_comments',
+  review_date: 'review_date'
+};
+
+exports.Prisma.DocumentScalarFieldEnum = {
+  document_id: 'document_id',
+  application_id: 'application_id',
+  document_type: 'document_type',
+  file_name: 'file_name',
+  file_path: 'file_path',
+  upload_date: 'upload_date',
+  verification_status: 'verification_status'
+};
+
+exports.Prisma.FamilyMemberScalarFieldEnum = {
+  member_id: 'member_id',
+  student_id: 'student_id',
+  full_name: 'full_name',
+  age: 'age',
+  relationship: 'relationship',
+  designation: 'designation',
+  annual_income: 'annual_income',
+  workplace: 'workplace',
+  phone_number: 'phone_number'
+};
+
+exports.Prisma.OtherFundingScalarFieldEnum = {
+  funding_id: 'funding_id',
+  student_id: 'student_id',
+  funding_name: 'funding_name',
+  organization: 'organization',
+  annual_amount: 'annual_amount',
+  start_date: 'start_date',
+  end_date: 'end_date'
+};
+
+exports.Prisma.CommitteeReviewScalarFieldEnum = {
+  review_id: 'review_id',
+  application_id: 'application_id',
+  reviewer_id: 'reviewer_id',
+  review_date: 'review_date',
+  points_awarded: 'points_awarded',
+  comments: 'comments',
+  status: 'status',
+  is_read: 'is_read'
+};
+
+exports.Prisma.PaymentScalarFieldEnum = {
+  payment_id: 'payment_id',
+  application_id: 'application_id',
+  amount: 'amount',
+  payment_date: 'payment_date',
+  payment_method: 'payment_method',
+  transaction_id: 'transaction_id',
+  status: 'status'
+};
+
+exports.Prisma.SiblingEducationScalarFieldEnum = {
+  education_id: 'education_id',
+  student_id: 'student_id',
+  member_id: 'member_id',
   institution: 'institution',
   year_grade: 'year_grade',
   registration_course: 'registration_course'
 };
 
-exports.Prisma.STUDENTOrderByRelevanceFieldEnum = {
+exports.Prisma.NotificationScalarFieldEnum = {
+  notification_id: 'notification_id',
+  user_id: 'user_id',
+  message: 'message',
+  created_at: 'created_at',
+  is_read: 'is_read'
+};
+
+exports.Prisma.SortOrder = {
+  asc: 'asc',
+  desc: 'desc'
+};
+
+exports.Prisma.UserOrderByRelevanceFieldEnum = {
+  first_name: 'first_name',
+  last_name: 'last_name',
+  email: 'email',
+  username: 'username',
+  password: 'password'
+};
+
+exports.Prisma.StudentOrderByRelevanceFieldEnum = {
   full_name: 'full_name',
   registration_no: 'registration_no',
   permanent_address: 'permanent_address',
@@ -339,63 +282,120 @@ exports.Prisma.STUDENTOrderByRelevanceFieldEnum = {
   school_name: 'school_name'
 };
 
-exports.Prisma.USEROrderByRelevanceFieldEnum = {
-  first_name: 'first_name',
-  last_name: 'last_name',
+exports.Prisma.ScholarshipProviderOrderByRelevanceFieldEnum = {
+  name: 'name',
+  contact_person: 'contact_person',
+  phone: 'phone',
   email: 'email',
-  username: 'username',
-  password: 'password'
+  address: 'address'
 };
-exports.APPLICATION_status = exports.$Enums.APPLICATION_status = {
+
+exports.Prisma.ScholarshipOrderByRelevanceFieldEnum = {
+  name: 'name',
+  description: 'description'
+};
+
+exports.Prisma.EligibilityCriteriaOrderByRelevanceFieldEnum = {
+  criteria_name: 'criteria_name',
+  criteria_description: 'criteria_description'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
+exports.Prisma.ApplicationOrderByRelevanceFieldEnum = {
+  reviewer_comments: 'reviewer_comments'
+};
+
+exports.Prisma.DocumentOrderByRelevanceFieldEnum = {
+  document_type: 'document_type',
+  file_name: 'file_name',
+  file_path: 'file_path'
+};
+
+exports.Prisma.FamilyMemberOrderByRelevanceFieldEnum = {
+  full_name: 'full_name',
+  relationship: 'relationship',
+  designation: 'designation',
+  workplace: 'workplace',
+  phone_number: 'phone_number'
+};
+
+exports.Prisma.OtherFundingOrderByRelevanceFieldEnum = {
+  funding_name: 'funding_name',
+  organization: 'organization'
+};
+
+exports.Prisma.CommitteeReviewOrderByRelevanceFieldEnum = {
+  comments: 'comments'
+};
+
+exports.Prisma.PaymentOrderByRelevanceFieldEnum = {
+  payment_method: 'payment_method',
+  transaction_id: 'transaction_id'
+};
+
+exports.Prisma.SiblingEducationOrderByRelevanceFieldEnum = {
+  institution: 'institution',
+  year_grade: 'year_grade',
+  registration_course: 'registration_course'
+};
+
+exports.Prisma.NotificationOrderByRelevanceFieldEnum = {
+  message: 'message'
+};
+exports.Role = exports.$Enums.Role = {
+  student: 'student',
+  coordinator: 'coordinator',
+  admin: 'admin'
+};
+
+exports.Gender = exports.$Enums.Gender = {
+  male: 'male',
+  female: 'female',
+  other: 'other'
+};
+
+exports.ApplicationStatus = exports.$Enums.ApplicationStatus = {
   pending: 'pending',
   reviewed: 'reviewed',
   approved: 'approved',
   rejected: 'rejected'
 };
 
-exports.COMMITTEE_REVIEW_status = exports.$Enums.COMMITTEE_REVIEW_status = {
-  read: 'read',
-  unread: 'unread'
-};
-
-exports.DOCUMENT_verification_status = exports.$Enums.DOCUMENT_verification_status = {
+exports.VerificationStatus = exports.$Enums.VerificationStatus = {
   pending: 'pending',
   verified: 'verified',
   rejected: 'rejected'
 };
 
-exports.PAYMENT_status = exports.$Enums.PAYMENT_status = {
+exports.ReviewStatus = exports.$Enums.ReviewStatus = {
+  read: 'read',
+  unread: 'unread'
+};
+
+exports.PaymentStatus = exports.$Enums.PaymentStatus = {
   pending: 'pending',
   completed: 'completed',
   failed: 'failed'
 };
 
-exports.STUDENT_gender = exports.$Enums.STUDENT_gender = {
-  male: 'male',
-  female: 'female',
-  other: 'other'
-};
-
-exports.USER_role = exports.$Enums.USER_role = {
-  student: 'student',
-  coordinator: 'coordinator',
-  admin: 'admin'
-};
-
 exports.Prisma.ModelName = {
-  APPLICATION: 'APPLICATION',
-  COMMITTEE_REVIEW: 'COMMITTEE_REVIEW',
-  DOCUMENT: 'DOCUMENT',
-  ELIGIBILITY_CRITERIA: 'ELIGIBILITY_CRITERIA',
-  FAMILY_MEMBER: 'FAMILY_MEMBER',
-  NOTIFICATION: 'NOTIFICATION',
-  OTHER_FUNDING: 'OTHER_FUNDING',
-  PAYMENT: 'PAYMENT',
-  SCHOLARSHIP: 'SCHOLARSHIP',
-  SCHOLARSHIP_PROVIDER: 'SCHOLARSHIP_PROVIDER',
-  SIBLING_EDUCATION: 'SIBLING_EDUCATION',
-  STUDENT: 'STUDENT',
-  USER: 'USER'
+  User: 'User',
+  Student: 'Student',
+  ScholarshipProvider: 'ScholarshipProvider',
+  Scholarship: 'Scholarship',
+  EligibilityCriteria: 'EligibilityCriteria',
+  Application: 'Application',
+  Document: 'Document',
+  FamilyMember: 'FamilyMember',
+  OtherFunding: 'OtherFunding',
+  CommitteeReview: 'CommitteeReview',
+  Payment: 'Payment',
+  SiblingEducation: 'SiblingEducation',
+  Notification: 'Notification'
 };
 
 /**

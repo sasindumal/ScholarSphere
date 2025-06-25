@@ -20,6 +20,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/use-auth';
 
 const formSchema = z.object({
   firstName: z.string().min(1, { message: 'First name is required.' }),
@@ -27,9 +28,9 @@ const formSchema = z.object({
   username: z.string().min(3, { message: 'Username must be at least 3 characters.' }),
   email: z.string().email({ message: 'Please enter a valid university email.' }).refine(
     (email) => email.endsWith('@eng.jfn.ac.lk'),
-    { message: 'Please use a valid university email (@eng.jfn.ac.lk)' } // Change this line
+    { message: 'Please use a valid university email (@eng.jfn.ac.lk)' }
   ),
-  password: z.string().min(8, { message: 'Password must be at least 8 characters.' }), // Keep this line
+  password: z.string().min(8, { message: 'Password must be at least 8 characters.' }),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
@@ -39,6 +40,7 @@ const formSchema = z.object({
 export function SignupForm() {
   const router = useRouter();
   const { toast } = useToast();
+  const { signup, isLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -55,12 +57,27 @@ export function SignupForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast({
-      title: 'Account Created',
-      description: 'Your account has been successfully created.',
+    const result = await signup({
+      firstName: values.firstName,
+      lastName: values.lastName,
+      username: values.username,
+      email: values.email,
+      password: values.password,
     });
-    router.push('/login');
+    
+    if (result.success) {
+      toast({
+        title: 'Account Created',
+        description: 'Your account has been successfully created.',
+      });
+      router.push('/dashboard');
+    } else {
+      toast({
+        title: 'Signup Failed',
+        description: result.message,
+        variant: 'destructive',
+      });
+    }
   }
 
   return (
@@ -162,8 +179,12 @@ export function SignupForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
-              Create Account
+            <Button 
+              type="submit" 
+              className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Creating Account...' : 'Create Account'}
             </Button>
           </form>
         </Form>

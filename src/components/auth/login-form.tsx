@@ -20,6 +20,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth, getDashboardRouteForRole } from '@/hooks/use-auth';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.' }),
@@ -29,6 +30,7 @@ const formSchema = z.object({
 export function LoginForm() {
   const router = useRouter();
   const { toast } = useToast();
+  const { login, isLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -40,18 +42,26 @@ export function LoginForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Here you would typically handle authentication, e.g., an API call.
-    // On success, store the JWT token and redirect.
-    console.log(values);
+    const result = await login(values.email, values.password);
 
-    toast({
-      title: "Login Successful",
-      description: "Redirecting to your dashboard...",
-    });
-    
-    // Simulate role-based redirection
-    // const userRole = 'student'; // This would come from your auth response
-    router.push('/dashboard');
+    if (result.success) {
+      toast({
+        title: "Login Successful",
+        description: "Redirecting to your dashboard...",
+      });
+
+      // Fetch the user from the store
+      const { user } = useAuth.getState();
+
+      // Role-based redirection
+      router.push(getDashboardRouteForRole(user?.role || 'student'));
+    } else {
+      toast({
+        title: "Login Failed",
+        description: result.message,
+        variant: "destructive",
+      });
+    }
   }
 
   return (
@@ -112,8 +122,12 @@ export function LoginForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
-              Sign In
+            <Button 
+              type="submit" 
+              className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Signing In...' : 'Sign In'}
             </Button>
           </form>
         </Form>
