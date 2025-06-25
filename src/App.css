@@ -79,8 +79,18 @@ ul {
 }
 
 .sidebar-logo {
+  width: 40px;
   height: 40px;
   margin-right: 12px;
+  border-radius: 10px;
+  background: linear-gradient(45deg, #4a90e2, #8a2be2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  flex-shrink: 0; /* Prevents shrinking */
 }
 
 .sidebar-title {
@@ -377,13 +387,15 @@ ul {
   .sidebar .sidebar-title, .sidebar-nav span, .logout-btn span {
     display: none;
   }
-  .sidebar:hover .sidebar-title, .sidebar:hover .sidebar-nav span, .sidebar:hover .logout-btn span {
+  .sidebar:hover .sidebar-title, .sidebar:hover .sidebar-nav span, .sidebar:hover .logout-btn span,
+  .sidebar.open .sidebar-title, .sidebar.open .sidebar-nav span, .sidebar.open .logout-btn span {
     display: inline;
   }
   .sidebar-header {
     justify-content: center;
   }
-   .sidebar:hover .sidebar-header {
+   .sidebar:hover .sidebar-header,
+   .sidebar.open .sidebar-header {
     justify-content: flex-start;
   }
   .sidebar-logo {
@@ -395,7 +407,8 @@ ul {
   .sidebar-nav li a {
     justify-content: center;
   }
-  .sidebar:hover .sidebar-nav li a {
+  .sidebar:hover .sidebar-nav li a,
+  .sidebar.open .sidebar-nav li a {
     justify-content: flex-start;
   }
   .main-wrapper {
