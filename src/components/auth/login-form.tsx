@@ -20,7 +20,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth, getDashboardRouteForRole } from '@/hooks/use-auth';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.' }),
@@ -54,15 +54,7 @@ export function LoginForm() {
       const { user } = useAuth.getState();
 
       // Role-based redirection
-      if (user?.role === 'student') {
-        router.push('/student/dashboard');
-      } else if (user?.role === 'admin') {
-        router.push('/admin/dashboard');
-      } else if (user?.role === 'coordinator') {
-        router.push('/coordinator/dashboard');
-      } else {
-        router.push('/dashboard');
-      }
+      router.push(getDashboardRouteForRole(user?.role || 'student'));
     } else {
       toast({
         title: "Login Failed",

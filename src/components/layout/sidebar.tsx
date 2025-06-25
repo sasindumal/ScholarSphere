@@ -12,6 +12,7 @@ import {
   LogOut,
   Menu
 } from 'lucide-react';
+import { useAuth } from '@/hooks/use-auth';
 
 import {
   Sheet,
@@ -24,10 +25,10 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Logo } from '@/components/icons/logo';
 
-const navItems = [
+const studentNavItems = [
   {
     label: 'Dashboard',
-    href: '/dashboard',
+    href: '/student/dashboard',
     icon: LayoutDashboard,
   },
   {
@@ -52,7 +53,58 @@ const navItems = [
   },
   {
     label: 'Notifications',
-    href: '/dashboard/notifications',
+    href: '/student/dashboard/notifications',
+    icon: Bell,
+  },
+];
+
+const coordinatorNavItems = [
+  {
+    label: 'Dashboard',
+    href: '/coordinator/dashboard',
+    icon: LayoutDashboard,
+  },
+  {
+    label: 'Manage Scholarships',
+    href: '/coordinator/scholarships',
+    icon: GraduationCap,
+  },
+  {
+    label: 'Review Applications',
+    href: '/coordinator/applications',
+    icon: FileText,
+  },
+  {
+    label: 'Notifications',
+    href: '/coordinator/dashboard/notifications',
+    icon: Bell,
+  },
+];
+
+const adminNavItems = [
+  {
+    label: 'Dashboard',
+    href: '/admin/dashboard',
+    icon: LayoutDashboard,
+  },
+  {
+    label: 'Manage Users',
+    href: '/admin/users',
+    icon: User,
+  },
+  {
+    label: 'Manage Scholarships',
+    href: '/admin/scholarships',
+    icon: GraduationCap,
+  },
+  {
+    label: 'System Reports',
+    href: '/admin/reports',
+    icon: FileText,
+  },
+  {
+    label: 'Notifications',
+    href: '/admin/dashboard/notifications',
     icon: Bell,
   },
 ];
@@ -63,6 +115,11 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname();
+  const { user } = useAuth();
+  const role = user?.role || 'student';
+  let navItems = studentNavItems;
+  if (role === 'coordinator') navItems = coordinatorNavItems;
+  if (role === 'admin') navItems = adminNavItems;
 
   return (
     <nav className={className}>

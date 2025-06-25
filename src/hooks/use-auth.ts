@@ -149,39 +149,45 @@ export const useAuth = create<AuthState>()(
 // Mock users for testing
 export const MOCK_USERS: User[] = [
   {
-    user_id: '1',
-    first_name: 'John',
-    last_name: 'Doe',
+    id: 1,
+    firstName: 'John',
+    lastName: 'Doe',
     email: 'john.doe@example.com',
     username: 'student',
     role: 'student',
-    created_at: '2024-01-01T00:00:00Z'
+    createdAt: '2024-01-01T00:00:00Z'
   },
   {
-    user_id: '2',
-    first_name: 'Admin',
-    last_name: 'User',
+    id: 2,
+    firstName: 'Admin',
+    lastName: 'User',
     email: 'admin@example.com',
     username: 'admin',
     role: 'admin',
-    created_at: '2024-01-01T00:00:00Z'
+    createdAt: '2024-01-01T00:00:00Z'
   },
   {
-    user_id: '3',
-    first_name: 'Review',
-    last_name: 'Committee',
+    id: 3,
+    firstName: 'Review',
+    lastName: 'Committee',
     email: 'reviewer@example.com',
     username: 'reviewer',
     role: 'reviewer',
-    created_at: '2024-01-01T00:00:00Z'
+    createdAt: '2024-01-01T00:00:00Z'
   },
   {
-    user_id: '4',
-    first_name: 'Scholarship',
-    last_name: 'Provider',
+    id: 4,
+    firstName: 'Scholarship',
+    lastName: 'Provider',
     email: 'provider@example.com',
     username: 'provider',
     role: 'provider',
-    created_at: '2024-01-01T00:00:00Z'
+    createdAt: '2024-01-01T00:00:00Z'
   }
-]; 
+];
+
+export function getDashboardRouteForRole(role: string) {
+  if (role === 'admin') return '/admin/dashboard';
+  if (role === 'coordinator') return '/coordinator/dashboard';
+  return '/student/dashboard';
+} 

@@ -4,14 +4,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Calendar, User, Award, FileText } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 
-export default function StudentDashboardPage() {
+export default function AdminDashboardPage() {
   const { user } = useAuth();
   if (!user) return null;
   return (
-    <DashboardLayout role="student">
+    <DashboardLayout role="admin">
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
         <div className="flex items-center justify-between space-y-2">
-          <h2 className="text-3xl font-bold tracking-tight">Student Dashboard</h2>
+          <h2 className="text-3xl font-bold tracking-tight">Admin Dashboard</h2>
           <div className="flex items-center space-x-2">
             <Calendar className="h-4 w-4 text-muted-foreground" />
             <span className="text-sm text-muted-foreground">
@@ -41,11 +41,23 @@ export default function StudentDashboardPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Available Scholarships</CardTitle>
+              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+              <User className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">120</div>
+              <p className="text-xs text-muted-foreground">
+                +10 from last month
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Scholarships</CardTitle>
               <Award className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">12</div>
+              <div className="text-2xl font-bold">30</div>
               <p className="text-xs text-muted-foreground">
                 +2 from last month
               </p>
@@ -53,25 +65,13 @@ export default function StudentDashboardPage() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">My Applications</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">3</div>
-              <p className="text-xs text-muted-foreground">
-                1 pending review
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Awarded</CardTitle>
+              <CardTitle className="text-sm font-medium">System Stats</CardTitle>
               <Award className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$2,500</div>
+              <div className="text-2xl font-bold">99.9% uptime</div>
               <p className="text-xs text-muted-foreground">
-                +$500 from last month
+                No major incidents
               </p>
             </CardContent>
           </Card>
@@ -81,7 +81,7 @@ export default function StudentDashboardPage() {
             <CardHeader>
               <CardTitle>Recent Activity</CardTitle>
               <CardDescription>
-                Your recent scholarship applications and updates
+                Recent system and user activity
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -89,21 +89,21 @@ export default function StudentDashboardPage() {
                 <div className="flex items-center space-x-4">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium">Application submitted for Engineering Excellence Scholarship</p>
+                    <p className="text-sm font-medium">New user registered: Jane Smith</p>
                     <p className="text-xs text-muted-foreground">2 hours ago</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
                   <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium">Application under review for Academic Merit Award</p>
+                    <p className="text-sm font-medium">Scholarship "Tech Leaders" added</p>
                     <p className="text-xs text-muted-foreground">1 day ago</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium">Awarded $1,000 for Community Service Scholarship</p>
+                    <p className="text-sm font-medium">System maintenance completed</p>
                     <p className="text-xs text-muted-foreground">3 days ago</p>
                   </div>
                 </div>
@@ -120,16 +120,16 @@ export default function StudentDashboardPage() {
             <CardContent>
               <div className="space-y-2">
                 <button className="w-full text-left p-3 rounded-lg border hover:bg-muted transition-colors">
-                  <div className="font-medium">Browse Scholarships</div>
-                  <div className="text-sm text-muted-foreground">Find new opportunities</div>
+                  <div className="font-medium">Manage Users</div>
+                  <div className="text-sm text-muted-foreground">View and edit users</div>
                 </button>
                 <button className="w-full text-left p-3 rounded-lg border hover:bg-muted transition-colors">
-                  <div className="font-medium">Submit Application</div>
-                  <div className="text-sm text-muted-foreground">Apply for scholarships</div>
+                  <div className="font-medium">Manage Scholarships</div>
+                  <div className="text-sm text-muted-foreground">View and edit scholarships</div>
                 </button>
                 <button className="w-full text-left p-3 rounded-lg border hover:bg-muted transition-colors">
-                  <div className="font-medium">View Profile</div>
-                  <div className="text-sm text-muted-foreground">Update your information</div>
+                  <div className="font-medium">View Reports</div>
+                  <div className="text-sm text-muted-foreground">System analytics</div>
                 </button>
               </div>
             </CardContent>

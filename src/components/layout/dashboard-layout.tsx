@@ -10,9 +10,10 @@ import { AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/hooks/use-auth';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default function DashboardLayout({ children, role: propRole }: { children: ReactNode, role?: string }) {
   const { user, isAuthenticated, isLoading, checkAuth } = useAuth();
   const router = useRouter();
+  const role = propRole || user?.role || 'student';
 
   useEffect(() => {
     checkAuth();
@@ -53,7 +54,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-muted/30 dark:bg-muted/10">
-        <Sidebar className="bg-card border-r">
+        <Sidebar className="bg-card border-r" role={role}>
           <AppSidebar />
         </Sidebar>
         <div className="flex flex-1 flex-col">
