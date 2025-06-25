@@ -17,6 +17,8 @@ const authRoutes = ['/login', '/signup'];
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('auth-token')?.value;
+  const payload = token ? verifyToken(token) : null;
+  console.log('MIDDLEWARE: token:', token, 'payload:', payload, 'pathname:', pathname);
 
   // Check if the route is protected
   const isProtectedRoute = protectedRoutes.some(route => 
@@ -37,7 +39,6 @@ export function middleware(request: NextRequest) {
 
   // If accessing auth routes with a valid token, redirect to dashboard
   if (isAuthRoute && token) {
-    const payload = verifyToken(token);
     if (payload) {
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
@@ -45,7 +46,6 @@ export function middleware(request: NextRequest) {
 
   // If accessing protected routes with an invalid token, redirect to login
   if (isProtectedRoute && token) {
-    const payload = verifyToken(token);
     if (!payload) {
       const loginUrl = new URL('/login', request.url);
       loginUrl.searchParams.set('redirect', pathname);

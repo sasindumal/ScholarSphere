@@ -50,11 +50,9 @@ export const useAuth = create<AuthState>()(
           const data = await response.json();
 
           if (response.ok) {
-            set({
-              user: data.user,
-              isAuthenticated: true,
-              isLoading: false,
-            });
+            await get().checkAuth();
+            set({ isLoading: false });
+            console.log('login: checkAuth finished, user:', get().user);
             return { success: true, message: data.message };
           } else {
             set({ isLoading: false });
@@ -115,8 +113,9 @@ export const useAuth = create<AuthState>()(
       checkAuth: async () => {
         set({ isLoading: true });
         try {
-          const response = await fetch('/api/auth/me');
+          const response = await fetch('/api/auth/me', { credentials: 'include' });
           const data = await response.json();
+          console.log('checkAuth response:', data);
 
           if (response.ok) {
             set({

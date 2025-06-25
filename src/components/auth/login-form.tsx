@@ -43,15 +43,26 @@ export function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const result = await login(values.email, values.password);
-    
+
     if (result.success) {
       toast({
         title: "Login Successful",
         description: "Redirecting to your dashboard...",
       });
-      
-      // Redirect based on user role
-      router.push('/dashboard');
+
+      // Fetch the user from the store
+      const { user } = useAuth.getState();
+
+      // Role-based redirection
+      if (user?.role === 'student') {
+        router.push('/dashboard');
+      } else if (user?.role === 'admin') {
+        router.push('/admin/dashboard');
+      } else if (user?.role === 'coordinator') {
+        router.push('/coordinator/dashboard');
+      } else {
+        router.push('/dashboard');
+      }
     } else {
       toast({
         title: "Login Failed",
