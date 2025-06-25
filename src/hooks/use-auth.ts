@@ -1,31 +1,148 @@
+'use client';
+
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type UserRole = 'admin' | 'student' | 'reviewer' | 'provider';
-
 export interface User {
-  user_id: string;
-  first_name: string;
-  last_name: string;
+  id: number;
   email: string;
+  role: string;
+  firstName: string;
+  lastName: string;
   username: string;
-  role: UserRole;
-  created_at: string;
+  createdAt?: string;
 }
 
 interface AuthState {
   user: User | null;
-  setUser: (user: User | null) => void;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (email: string, password: string) => Promise<{ success: boolean; message: string }>;
+  signup: (userData: {
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    password: string;
+  }) => Promise<{ success: boolean; message: string }>;
+  logout: () => Promise<void>;
+  checkAuth: () => Promise<void>;
 }
 
 export const useAuth = create<AuthState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
-      setUser: (user) => set({ user }),
+      isAuthenticated: false,
+      isLoading: false,
+
+      login: async (email: string, password: string) => {
+        set({ isLoading: true });
+        try {
+          const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            set({
+              user: data.user,
+              isAuthenticated: true,
+              isLoading: false,
+            });
+            return { success: true, message: data.message };
+          } else {
+            set({ isLoading: false });
+            return { success: false, message: data.error };
+          }
+        } catch (error) {
+          set({ isLoading: false });
+          return { success: false, message: 'Network error occurred' };
+        }
+      },
+
+      signup: async (userData) => {
+        set({ isLoading: true });
+        try {
+          const response = await fetch('/api/auth/signup', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            set({
+              user: data.user,
+              isAuthenticated: true,
+              isLoading: false,
+            });
+            return { success: true, message: data.message };
+          } else {
+            set({ isLoading: false });
+            return { success: false, message: data.error };
+          }
+        } catch (error) {
+          set({ isLoading: false });
+          return { success: false, message: 'Network error occurred' };
+        }
+      },
+
+      logout: async () => {
+        try {
+          await fetch('/api/auth/logout', {
+            method: 'POST',
+          });
+        } catch (error) {
+          console.error('Logout error:', error);
+        } finally {
+          set({
+            user: null,
+            isAuthenticated: false,
+            isLoading: false,
+          });
+        }
+      },
+
+      checkAuth: async () => {
+        set({ isLoading: true });
+        try {
+          const response = await fetch('/api/auth/me');
+          const data = await response.json();
+
+          if (response.ok) {
+            set({
+              user: data.user,
+              isAuthenticated: true,
+              isLoading: false,
+            });
+          } else {
+            set({
+              user: null,
+              isAuthenticated: false,
+              isLoading: false,
+            });
+          }
+        } catch (error) {
+          set({
+            user: null,
+            isAuthenticated: false,
+            isLoading: false,
+          });
+        }
+      },
     }),
     {
       name: 'auth-storage',
+      partialize: (state) => ({ user: state.user, isAuthenticated: state.isAuthenticated }),
     }
   )
 );
