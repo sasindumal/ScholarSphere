@@ -1,212 +1,70 @@
-# ScholarSphere
+# Getting Started with Create React App
 
-A comprehensive scholarship management system built with Next.js, Prisma, and MySQL.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Features
+## Available Scripts
 
-- 🔐 **Secure Authentication**: JWT-based authentication with bcrypt password hashing
-- 👥 **User Management**: Student, Coordinator, and Admin roles
-- 📚 **Scholarship Management**: Browse and apply for scholarships
-- 📊 **Dashboard**: Real-time statistics and activity tracking
-- 🔒 **Route Protection**: Middleware-based authentication guards
-- 📱 **Responsive Design**: Modern UI with Tailwind CSS
+In the project directory, you can run:
 
-## Tech Stack
+### `npm start`
 
-- **Frontend**: Next.js 15, React 18, TypeScript
-- **Styling**: Tailwind CSS, shadcn/ui components
-- **Database**: MySQL with Prisma ORM
-- **Authentication**: JWT tokens with HTTP-only cookies
-- **State Management**: Zustand
-- **Form Handling**: React Hook Form with Zod validation
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-## Prerequisites
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-- Node.js 18+ 
-- MySQL 8.0+
-- npm or yarn
+### `npm test`
 
-## Setup Instructions
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### 1. Clone the Repository
+### `npm run build`
 
-```bash
-git clone <repository-url>
-cd ScholarSphere
-```
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-### 2. Install Dependencies
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-```bash
-npm install
-```
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### 3. Environment Configuration
+### `npm run eject`
 
-Copy the environment template and configure your variables:
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-```bash
-cp env.example .env
-```
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Update the `.env` file with your configuration:
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-```env
-# Database
-DATABASE_URL="mysql://username:password@localhost:3306/scholarsphere"
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-# JWT Secret (generate a secure random string)
-JWT_SECRET="your-super-secret-jwt-key-here"
+## Learn More
 
-# Next.js
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-nextauth-secret-here"
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-# Environment
-NODE_ENV="development"
-```
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-### 4. Database Setup
+### Code Splitting
 
-#### Create MySQL Database
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-```sql
-CREATE DATABASE scholarsphere;
-CREATE USER 'scholarsphere_user'@'localhost' IDENTIFIED BY 'your_password';
-GRANT ALL PRIVILEGES ON scholarsphere.* TO 'scholarsphere_user'@'localhost';
-FLUSH PRIVILEGES;
-```
+### Analyzing the Bundle Size
 
-#### Run Database Migrations
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-```bash
-# Generate Prisma client
-npx prisma generate
+### Making a Progressive Web App
 
-# Run migrations
-npx prisma migrate dev
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-# (Optional) Seed the database
-npx prisma db seed
-```
+### Advanced Configuration
 
-### 5. Start Development Server
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-```bash
-npm run dev
-```
+### Deployment
 
-The application will be available at `http://localhost:3000`
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-## API Endpoints
+### `npm run build` fails to minify
 
-### Authentication
-
-- `POST /api/auth/signup` - User registration
-- `POST /api/auth/login` - User login
-- `POST /api/auth/logout` - User logout
-- `GET /api/auth/me` - Get current user info
-
-### Request/Response Examples
-
-#### Signup
-```json
-POST /api/auth/signup
-{
-  "firstName": "John",
-  "lastName": "Doe",
-  "username": "johndoe",
-  "email": "20XXeXXX@eng.jfn.ac.lk",
-  "password": "securepassword123"
-}
-```
-
-#### Login
-```json
-POST /api/auth/login
-{
-  "email": "20XXeXXX@eng.jfn.ac.lk",
-  "password": "securepassword123"
-}
-```
-
-## Database Schema
-
-The application uses a comprehensive database schema with the following main entities:
-
-- **Users**: Authentication and user management
-- **Students**: Student-specific information
-- **Scholarships**: Available scholarship opportunities
-- **Applications**: Student scholarship applications
-- **Documents**: Application supporting documents
-- **Payments**: Scholarship payment tracking
-- **Reviews**: Application review process
-
-## Authentication Flow
-
-1. **Registration**: Users sign up with university email
-2. **Login**: JWT token stored in HTTP-only cookie
-3. **Route Protection**: Middleware validates tokens
-4. **Logout**: Clears authentication cookie
-
-## Security Features
-
-- Password hashing with bcrypt (12 rounds)
-- JWT tokens with expiration
-- HTTP-only cookies for token storage
-- CSRF protection
-- Input validation with Zod
-- SQL injection prevention with Prisma
-
-## Development
-
-### Available Scripts
-
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run typecheck    # Run TypeScript check
-```
-
-### Database Commands
-
-```bash
-npx prisma generate  # Generate Prisma client
-npx prisma migrate dev  # Run migrations
-npx prisma studio    # Open database GUI
-npx prisma db push   # Push schema changes
-```
-
-## Deployment
-
-### Environment Variables
-
-Ensure all environment variables are set in production:
-
-- `DATABASE_URL`: Production MySQL connection string
-- `JWT_SECRET`: Strong secret key for JWT signing
-- `NODE_ENV`: Set to "production"
-
-### Database Migration
-
-```bash
-npx prisma migrate deploy
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## License
-
-This project is licensed under the MIT License.
-
-## Support
-
-For support and questions, please open an issue in the repository.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
