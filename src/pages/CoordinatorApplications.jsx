@@ -102,6 +102,165 @@ const CoordinatorApplications = () => {
                 <p><strong>Email:</strong> {app.student.email}</p>
                 <p><strong>Year:</strong> {app.student.year_of_study}</p>
               </div>
+
+              <div className="review-section">
+                <h4>Scholarship Details</h4>
+                <table style={{ width: '100%', marginBottom: 10 }}>
+                  <tbody>
+                    <tr>
+                      <td><strong>Name</strong></td>
+                      <td>{app.scholarship.name}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Description</strong></td>
+                      <td>{app.scholarship.description}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Amount</strong></td>
+                      <td>LKR {app.scholarship.amount} /month</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Available Slots</strong></td>
+                      <td>{app.scholarship.no_of_students}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Deadline</strong></td>
+                      <td>{new Date(app.scholarship.application_deadline).toLocaleDateString()}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Provider</strong></td>
+                      <td>{app.scholarship.provider?.name || '-'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="review-section">
+                <h4>Student Details</h4>
+                <table style={{ width: '100%', marginBottom: 10 }}>
+                  <tbody>
+                    <tr>
+                      <td><strong>Full Name</strong></td>
+                      <td>{app.student.full_name}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Registration No</strong></td>
+                      <td>{app.student.registration_no}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Date of Birth</strong></td>
+                      <td>{new Date(app.student.date_of_birth).toLocaleDateString()}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Gender</strong></td>
+                      <td>{app.student.gender}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Email</strong></td>
+                      <td>{app.student.email}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Phone</strong></td>
+                      <td>{app.student.phone_number}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Year of Study</strong></td>
+                      <td>{app.student.year_of_study}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>School Name</strong></td>
+                      <td>{app.student.school_name}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Admission Date</strong></td>
+                      <td>{new Date(app.student.admission_date).toLocaleDateString()}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Permanent Address</strong></td>
+                      <td>{app.student.permanent_address}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Unmarried Siblings</strong></td>
+                      <td>{app.student.unmarried_siblings}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Family Details */}
+              <div className="review-section">
+                <h4>Family Details</h4>
+                {app.student.familyMembers && app.student.familyMembers.length > 0 ? (
+                  <table style={{ width: '100%', marginBottom: 10 }}>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Relationship</th>
+                        <th>Age</th>
+                        <th>Designation</th>
+                        <th>Annual Income</th>
+                        <th>Workplace</th>
+                        <th>Phone</th>
+                        <th>Siblings Education</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {app.student.familyMembers.map(member => (
+                        <tr key={member.member_id}>
+                          <td>{member.full_name}</td>
+                          <td>{member.relationship}</td>
+                          <td>{member.age}</td>
+                          <td>{member.designation}</td>
+                          <td>{member.annual_income}</td>
+                          <td>{member.workplace}</td>
+                          <td>{member.phone_number}</td>
+                          <td>
+                            {member.siblingEducation && member.siblingEducation.length > 0 ? (
+                              <ul style={{ paddingLeft: 16 }}>
+                                {member.siblingEducation.map(edu => (
+                                  <li key={edu.education_id}>
+                                    {edu.institution} ({edu.year_grade}, {edu.registration_course})
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : '—'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : <p>No family details provided.</p>}
+              </div>
+
+              {/* Other Fundings */}
+              <div className="review-section">
+                <h4>Other Fundings</h4>
+                {app.student.otherFunding && app.student.otherFunding.length > 0 ? (
+                  <table style={{ width: '100%', marginBottom: 10 }}>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Organization</th>
+                        <th>Annual Amount</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {app.student.otherFunding.map(funding => (
+                        <tr key={funding.funding_id}>
+                          <td>{funding.funding_name}</td>
+                          <td>{funding.organization}</td>
+                          <td>{funding.annual_amount}</td>
+                          <td>{new Date(funding.start_date).toLocaleDateString()}</td>
+                          <td>{new Date(funding.end_date).toLocaleDateString()}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : <p>No other fundings reported.</p>}
+              </div>
+
               {app.reviewer_comments && (
                 <div className="review-section">
                   <h4>Coordinator Comment</h4>

@@ -74,4 +74,32 @@ router.get('/count', authenticateToken, async (req, res) => {
     }
   });
 
+// Get all applications for coordinators (with full student, family, and funding details)
+router.get('/all', authenticateToken, async (req, res) => {
+  try {
+    // Only coordinators can access
+    if (req.user.role !== 'coordinator') {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+    const applications = await prisma.application.findMany({
+      include: {
+        scholarship: true,
+        student: {
+          include: {
+            familyMembers: {
+              include: { siblingEducation: true }
+            },
+            otherFunding: true,
+          }
+        },
+      },
+      orderBy: { submission_date: 'desc' },
+    });
+    res.json(applications);
+  } catch (error) {
+    console.error('Error fetching all applications:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router; 
