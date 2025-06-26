@@ -94,6 +94,132 @@
   margin-top: 8px;
 }
 
+/* --- Modern Card Styles for Family Members & Fundings --- */
+.profile-section {
+  margin-top: 40px;
+}
+.profile-section-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+.profile-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.profile-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(49,130,206,0.07), 0 1.5px 4px rgba(0,0,0,0.04);
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-left: 5px solid #2563eb;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+.profile-card:hover {
+  box-shadow: 0 6px 24px rgba(49,130,206,0.13), 0 2px 8px rgba(0,0,0,0.06);
+}
+.profile-card .profile-card-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 10px;
+}
+.profile-card-action-btn {
+  background: #f1f5f9;
+  color: #2563eb;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 18px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.profile-card-action-btn:hover {
+  background: #2563eb;
+  color: #fff;
+}
+.profile-card .profile-card-label {
+  font-weight: 600;
+  color: #374151;
+}
+.profile-card .profile-card-sub {
+  color: #64748b;
+  font-size: 0.98rem;
+}
+
+/* Modern inline form for add/edit */
+.profile-inline-form {
+  background: #f9fafb;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px 20px;
+  margin-top: 10px;
+  margin-bottom: 18px;
+  max-width: 480px;
+  box-shadow: 0 1px 6px rgba(49,130,206,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.profile-inline-form label {
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.profile-inline-form input,
+.profile-inline-form select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fff;
+  margin-top: 2px;
+  margin-bottom: 0;
+  height: 38px;
+}
+.profile-inline-form .profile-inline-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+.profile-inline-form button {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: auto;
+  min-width: 120px;
+  height: 40px;
+}
+.profile-inline-form button[type="button"] {
+  background: #e5e7eb;
+  color: #374151;
+}
+.profile-inline-form button[type="button"]:hover {
+  background: #cbd5e1;
+}
+.profile-inline-form button[type="submit"]:hover {
+  background: #1d4ed8;
+}
+
 @media (max-width: 600px) {
   .profile-page {
     padding: 10px 2px;
@@ -111,5 +237,11 @@
   }
   .profile-form {
     max-width: 100%;
+  }
+  .profile-card, .profile-inline-form {
+    padding: 10px 6px;
+  }
+  .profile-section-title {
+    font-size: 1.05rem;
   }
 } 
