@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 // Icons for navigation (reusing from Dashboard)
@@ -24,6 +24,26 @@ const Layout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        const res = await fetch('http://localhost:5001/api/user/profile', {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data);
+        }
+      } catch (e) {
+        // ignore
+      }
+    };
+    fetchUser();
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -32,6 +52,15 @@ const Layout = ({ children }) => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
+  };
+
+  // Modern avatar: show initials or photo
+  const getInitials = () => {
+    if (!user) return 'U';
+    const { first_name, last_name } = user;
+    if (first_name && last_name) return `${first_name[0]}${last_name[0]}`.toUpperCase();
+    if (first_name) return first_name[0].toUpperCase();
+    return 'U';
   };
 
   return (
@@ -70,7 +99,9 @@ const Layout = ({ children }) => {
             <button className="icon-btn">
               <NotificationsIcon />
             </button>
-            <Link to="/profile" className="user-avatar" style={{ textDecoration: 'none', color: 'inherit' }}>DA</Link>
+            <Link to="/profile" className="user-avatar modern-avatar" style={{ textDecoration: 'none', color: 'inherit' }}>
+              {getInitials()}
+            </Link>
           </div>
         </header>
 

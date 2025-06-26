@@ -239,6 +239,27 @@ ul {
   cursor: pointer;
 }
 
+.user-avatar.modern-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb 60%, #60a5fa 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+  border: 2px solid #fff;
+}
+.user-avatar.modern-avatar:hover {
+  box-shadow: 0 4px 16px rgba(37,99,235,0.18);
+  transform: scale(1.07);
+  background: linear-gradient(135deg, #1d4ed8 60%, #38bdf8 100%);
+}
+
 .sidebar-toggle-btn {
   display: none;
 }
