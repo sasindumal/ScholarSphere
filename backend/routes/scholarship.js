@@ -108,4 +108,73 @@ router.post('/apply', authenticateToken, async (req, res) => {
   }
 });
 
+// Create a new scholarship
+router.post('/', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'coordinator' && req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  try {
+    const { name, description, amount, no_of_students, application_deadline, start_date, end_date, provider_id, is_active } = req.body;
+    const scholarship = await prisma.scholarship.create({
+      data: {
+        name,
+        description,
+        amount: parseFloat(amount),
+        no_of_students: parseInt(no_of_students),
+        application_deadline: new Date(application_deadline),
+        start_date: new Date(start_date),
+        end_date: new Date(end_date),
+        provider_id: parseInt(provider_id),
+        is_active: is_active !== undefined ? is_active : true,
+      },
+    });
+    res.status(201).json(scholarship);
+  } catch (error) {
+    console.error('Error creating scholarship:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Edit an existing scholarship
+router.put('/:id', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'coordinator' && req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  try {
+    const { id } = req.params;
+    const { name, description, amount, no_of_students, application_deadline, start_date, end_date, provider_id, is_active } = req.body;
+    const scholarship = await prisma.scholarship.update({
+      where: { scholarship_id: parseInt(id) },
+      data: {
+        name,
+        description,
+        amount: parseFloat(amount),
+        no_of_students: parseInt(no_of_students),
+        application_deadline: new Date(application_deadline),
+        start_date: new Date(start_date),
+        end_date: new Date(end_date),
+        provider_id: parseInt(provider_id),
+        is_active: is_active !== undefined ? is_active : true,
+      },
+    });
+    res.json(scholarship);
+  } catch (error) {
+    console.error('Error updating scholarship:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Get all scholarship providers
+router.get('/providers', authenticateToken, async (req, res) => {
+  try {
+    const providers = await prisma.scholarshipProvider.findMany({
+      select: { provider_id: true, name: true }
+    });
+    res.json(providers);
+  } catch (error) {
+    console.error('Error fetching providers:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router; 

@@ -2,12 +2,30 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import './MyApplications.css';
 
+const statusOptions = [
+  { value: '', label: 'All Statuses' },
+  { value: 'pending', label: 'Pending' },
+  { value: 'approved', label: 'Approved' },
+  { value: 'rejected', label: 'Rejected' },
+  { value: 'under_review', label: 'Under Review' },
+];
+
+const orderOptions = [
+  { value: 'date_desc', label: 'Submission Date (Newest)' },
+  { value: 'date_asc', label: 'Submission Date (Oldest)' },
+  { value: 'amount_desc', label: 'Scholarship Amount (High to Low)' },
+  { value: 'amount_asc', label: 'Scholarship Amount (Low to High)' },
+];
+
 const CoordinatorApplications = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [actionLoading, setActionLoading] = useState({});
   const [commentInputs, setCommentInputs] = useState({});
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [order, setOrder] = useState('date_desc');
 
   useEffect(() => {
     fetchApplications();
@@ -69,6 +87,35 @@ const CoordinatorApplications = () => {
     return <span className={`status-badge ${statusClass}`}>{status}</span>;
   };
 
+  // Filtering, searching, and ordering logic
+  const getFilteredApplications = () => {
+    let filtered = [...applications];
+    // Search
+    if (search.trim()) {
+      const s = search.trim().toLowerCase();
+      filtered = filtered.filter(app =>
+        (app.student.full_name && app.student.full_name.toLowerCase().includes(s)) ||
+        (app.student.registration_no && app.student.registration_no.toLowerCase().includes(s)) ||
+        (app.scholarship.name && app.scholarship.name.toLowerCase().includes(s))
+      );
+    }
+    // Status filter
+    if (statusFilter) {
+      filtered = filtered.filter(app => app.status === statusFilter);
+    }
+    // Order
+    if (order === 'date_desc') {
+      filtered.sort((a, b) => new Date(b.submission_date) - new Date(a.submission_date));
+    } else if (order === 'date_asc') {
+      filtered.sort((a, b) => new Date(a.submission_date) - new Date(b.submission_date));
+    } else if (order === 'amount_desc') {
+      filtered.sort((a, b) => Number(b.scholarship.amount) - Number(a.scholarship.amount));
+    } else if (order === 'amount_asc') {
+      filtered.sort((a, b) => Number(a.scholarship.amount) - Number(b.scholarship.amount));
+    }
+    return filtered;
+  };
+
   const renderContent = () => {
     if (loading) {
       return <div className="loading-container"><div className="loading-spinner"></div><p>Loading applications...</p></div>;
@@ -76,7 +123,8 @@ const CoordinatorApplications = () => {
     if (error) {
       return <div className="error-container"><p>{error}</p><button onClick={fetchApplications}>Try Again</button></div>;
     }
-    if (applications.length === 0) {
+    const filteredApplications = getFilteredApplications();
+    if (filteredApplications.length === 0) {
       return (
         <div className="no-applications-container">
           <h2>No Applications Found</h2>
@@ -86,7 +134,7 @@ const CoordinatorApplications = () => {
     }
     return (
       <div className="applications-list">
-        {applications.map((app) => (
+        {filteredApplications.map((app) => (
           <div key={app.application_id} className="application-card">
             <div className="application-card-header">
               <h3>{app.scholarship.name}</h3>
@@ -315,6 +363,22 @@ const CoordinatorApplications = () => {
         <div className="my-applications-header">
           <h1>Application Reviews</h1>
           <p>Review, approve, or reject student scholarship applications in real time.</p>
+        </div>
+        {/* Search, Filter, and Order Controls */}
+        <div style={{ display: 'flex', gap: 16, marginBottom: 24, flexWrap: 'wrap', alignItems: 'center' }}>
+          <input
+            type="text"
+            placeholder="Search by student, reg. no, or scholarship..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{ padding: 8, minWidth: 220, borderRadius: 6, border: '1px solid #ccc' }}
+          />
+          <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }}>
+            {statusOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+          </select>
+          <select value={order} onChange={e => setOrder(e.target.value)} style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc' }}>
+            {orderOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+          </select>
         </div>
         {renderContent()}
       </div>
