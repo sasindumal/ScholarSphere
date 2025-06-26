@@ -77,6 +77,7 @@ const Notifications = () => {
           <ul className="notifications-list">
             {filteredNotifications.map((notification) => (
               <li key={notification.notification_id} className={`notification-item ${notification.is_read ? 'read' : 'unread'}`}>
+                <span className="notif-dot" />
                 <div className="notification-content">
                   <p>{notification.message}</p>
                   <span className="notification-time">
