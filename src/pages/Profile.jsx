@@ -358,7 +358,9 @@ const Profile = () => {
                 <div className="profile-section-title">Family Members</div>
                 <button onClick={openAddMember} className="profile-card-action-btn" style={{ marginBottom: 10 }}>Add Family Member</button>
                 <div className="profile-card-list">
-                  {familyMembers.map(m => (
+                  {familyMembers.length === 0 ? (
+                    <div style={{ color: '#64748b', fontStyle: 'italic', margin: '12px 0' }}>No family members yet.</div>
+                  ) : familyMembers.map(m => (
                     <div key={m.member_id} className="profile-card">
                       <div className="profile-card-label">{m.full_name} <span className="profile-card-sub">({m.relationship}) - {m.designation} | Age: {m.age}</span></div>
                       <div className="profile-card-sub">Income: LKR {m.annual_income} | Workplace: {m.workplace} | Phone: {m.phone_number}</div>
@@ -403,7 +405,9 @@ const Profile = () => {
                 <div className="profile-section-title">Other Fundings</div>
                 <button onClick={openAddFunding} className="profile-card-action-btn" style={{ marginBottom: 10 }}>Add Funding</button>
                 <div className="profile-card-list">
-                  {fundings.map(f => (
+                  {fundings.length === 0 ? (
+                    <div style={{ color: '#64748b', fontStyle: 'italic', margin: '12px 0' }}>No fundings yet.</div>
+                  ) : fundings.map(f => (
                     <div key={f.funding_id} className="profile-card">
                       <div className="profile-card-label">{f.funding_name} <span className="profile-card-sub">({f.organization})</span></div>
                       <div className="profile-card-sub">Amount: LKR {f.annual_amount} | {f.start_date?.slice(0,10)} - {f.end_date?.slice(0,10)}</div>
