@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import Layout from '../components/Layout';
 import { PrismaClient } from '../generated/prisma';
 // The logo is now created with CSS in App.css
 
@@ -91,132 +92,91 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard-container">
-      <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-        <div className="sidebar-header">
-          <div className="sidebar-logo">S</div>
-          <span className="sidebar-title">ScholarSphere</span>
-        </div>
-        <nav className="sidebar-nav">
-          <ul>
-            {navItems.map((item) => (
-              <li key={item.path} className={location.pathname === item.path ? 'active' : ''}>
-                <Link to={item.path}>
-                  {item.icon}
-                  <span>{item.label}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <div className="sidebar-footer">
-          <button onClick={handleLogout} className="logout-btn">
-            <LogoutIcon />
-            <span>Logout</span>
-          </button>
-        </div>
-      </aside>
-
-      <div className="main-wrapper">
-        <header className="app-header">
-          <button className="icon-btn sidebar-toggle-btn" onClick={toggleSidebar}>
-            <MenuIcon />
-          </button>
-          <div className="header-actions">
-            <button className="icon-btn">
-              <NotificationsIcon />
-            </button>
-            <div className="user-avatar">DA</div>
-          </div>
-        </header>
-
-        <main className="main-content">
-          <div className="main-header">
-            <h1>Student Dashboard</h1>
-            <div className="date-display">Wednesday, June 25, 2025</div>
-          </div>
-
-          <section className="stats-grid">
-            <div className="card">
-              <div className="card-header"><span>Welcome</span><ProfileIcon /></div>
-              <div className="card-body">
-                <p className="user-name">{userData ? `${userData.first_name} ${userData.last_name}` : 'Loading...'}</p>
-                <p className="user-role">Student</p>
-              </div>
-            </div>
-            <div className="card" onClick={() => navigate('/scholarships')} style={{ cursor: 'pointer' }}>
-              <div className="card-header"><span>Available Scholarships</span><ScholarshipsIcon /></div>
-              <div className="card-body">
-                <p className="stat-number">{scholarshipCount}</p>
-                <p className="stat-change">Click to view all</p>
-              </div>
-            </div>
-            <div className="card">
-              <div className="card-header"><span>My Applications</span><ApplicationsIcon /></div>
-              <div className="card-body">
-                <p className="stat-number">3</p>
-                <p className="stat-change">1 pending review</p>
-              </div>
-            </div>
-            <div className="card">
-              <div className="card-header"><span>Total Awarded</span><PaymentsIcon /></div>
-              <div className="card-body">
-                <p className="stat-number">$2,500</p>
-                <p className="stat-change">+$500 from last month</p>
-              </div>
-            </div>
-          </section>
-
-          <section className="bottom-sections">
-            <div className="card recent-activity">
-              <h2>Recent Activity</h2>
-              <p className="section-subtitle">Your recent scholarship applications and updates</p>
-              <ul>
-                <li>
-                  <span className="status-dot green"></span>
-                  <p>Application submitted for Engineering Excellence Scholarship</p>
-                  <span className="time">2 hours ago</span>
-                </li>
-                <li>
-                  <span className="status-dot yellow"></span>
-                  <p>Application under review for Academic Merit Award</p>
-                  <span className="time">1 day ago</span>
-                </li>
-                <li>
-                  <span className="status-dot green"></span>
-                  <p>Awarded $1,000 for Community Service Scholarship</p>
-                  <span className="time">3 days ago</span>
-                </li>
-              </ul>
-            </div>
-            <div className="card quick-actions">
-              <h2>Quick Actions</h2>
-              <p className="section-subtitle">Common tasks and shortcuts</p>
-              <ul>
-                <li>
-                  <Link to="/scholarships">
-                    <span className="quick-action-title">Browse Scholarships</span>
-                    <span className="quick-action-subtitle">Find new opportunities</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/applications">
-                    <span className="quick-action-title">Submit Application</span>
-                    <span className="quick-action-subtitle">Apply for scholarships</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/profile">
-                    <span className="quick-action-title">View Profile</span>
-                    <span className="quick-action-subtitle">Update your information</span>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </section>
-        </main>
+    <Layout>
+      <div className="main-header">
+        <h1>Student Dashboard</h1>
+        <div className="date-display">Wednesday, June 25, 2025</div>
       </div>
-    </div>
+
+      <section className="stats-grid">
+        <div className="card">
+          <div className="card-header"><span>Welcome</span><ProfileIcon /></div>
+          <div className="card-body">
+            <p className="user-name">{userData ? `${userData.first_name} ${userData.last_name}` : 'Loading...'}</p>
+            <p className="user-role">Student</p>
+          </div>
+        </div>
+        <div className="card" onClick={() => navigate('/scholarships')} style={{ cursor: 'pointer' }}>
+          <div className="card-header"><span>Available Scholarships</span><ScholarshipsIcon /></div>
+          <div className="card-body">
+            <p className="stat-number">{scholarshipCount}</p>
+            <p className="stat-change">Click to view all</p>
+          </div>
+        </div>
+        <div className="card">
+          <div className="card-header"><span>My Applications</span><ApplicationsIcon /></div>
+          <div className="card-body">
+            <p className="stat-number">3</p>
+            <p className="stat-change">1 pending review</p>
+          </div>
+        </div>
+        <div className="card">
+          <div className="card-header"><span>Total Awarded</span><PaymentsIcon /></div>
+          <div className="card-body">
+            <p className="stat-number">$2,500</p>
+            <p className="stat-change">+$500 from last month</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bottom-sections">
+        <div className="card recent-activity">
+          <h2>Recent Activity</h2>
+          <p className="section-subtitle">Your recent scholarship applications and updates</p>
+          <ul>
+            <li>
+              <span className="status-dot green"></span>
+              <p>Application submitted for Engineering Excellence Scholarship</p>
+              <span className="time">2 hours ago</span>
+            </li>
+            <li>
+              <span className="status-dot yellow"></span>
+              <p>Application under review for Academic Merit Award</p>
+              <span className="time">1 day ago</span>
+            </li>
+            <li>
+              <span className="status-dot green"></span>
+              <p>Awarded $1,000 for Community Service Scholarship</p>
+              <span className="time">3 days ago</span>
+            </li>
+          </ul>
+        </div>
+        <div className="card quick-actions">
+          <h2>Quick Actions</h2>
+          <p className="section-subtitle">Common tasks and shortcuts</p>
+          <ul>
+            <li>
+              <Link to="/scholarships">
+                <span className="quick-action-title">Browse Scholarships</span>
+                <span className="quick-action-subtitle">Find new opportunities</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/applications">
+                <span className="quick-action-title">Submit Application</span>
+                <span className="quick-action-subtitle">Apply for scholarships</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/profile">
+                <span className="quick-action-title">View Profile</span>
+                <span className="quick-action-subtitle">Update your information</span>
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </Layout>
   );
 };
 
