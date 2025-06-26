@@ -70,4 +70,82 @@ router.get('/total', authenticateToken, async (req, res) => {
   }
 });
 
+// Admin: Get all payments
+router.get('/all', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  try {
+    const payments = await prisma.payment.findMany({
+      include: {
+        application: {
+          include: {
+            student: {
+              include: {
+                user: true
+              }
+            },
+            scholarship: true
+          }
+        }
+      },
+      orderBy: { payment_date: 'desc' }
+    });
+    res.json(payments);
+  } catch (error) {
+    console.error('Error fetching all payments:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Admin: Get payment details
+router.get('/:id', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  try {
+    const { id } = req.params;
+    const payment = await prisma.payment.findUnique({
+      where: { payment_id: parseInt(id) },
+      include: {
+        application: {
+          include: {
+            student: { include: { user: true } },
+            scholarship: true
+          }
+        }
+      }
+    });
+    if (!payment) return res.status(404).json({ error: 'Payment not found' });
+    res.json(payment);
+  } catch (error) {
+    console.error('Error fetching payment details:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Admin: Update payment (status or details)
+router.put('/:id', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  try {
+    const { id } = req.params;
+    const { status, payment_date, payment_method, transaction_id } = req.body;
+    const payment = await prisma.payment.update({
+      where: { payment_id: parseInt(id) },
+      data: {
+        ...(status && { status }),
+        ...(payment_date && { payment_date: new Date(payment_date) }),
+        ...(payment_method && { payment_method }),
+        ...(transaction_id && { transaction_id })
+      }
+    });
+    res.json(payment);
+  } catch (error) {
+    console.error('Error updating payment:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router; 

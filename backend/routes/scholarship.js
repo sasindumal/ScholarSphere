@@ -171,15 +171,66 @@ router.put('/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Get all scholarship providers
+// Get all scholarship providers (full info)
 router.get('/providers', authenticateToken, async (req, res) => {
   try {
     const providers = await prisma.scholarshipProvider.findMany({
-      select: { provider_id: true, name: true }
+      orderBy: { name: 'asc' },
     });
     res.json(providers);
   } catch (error) {
     console.error('Error fetching providers:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Admin: Create a new provider
+router.post('/providers', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  try {
+    const { name, contact_person, phone, email, address } = req.body;
+    const provider = await prisma.scholarshipProvider.create({
+      data: { name, contact_person, phone, email, address },
+    });
+    res.status(201).json(provider);
+  } catch (error) {
+    console.error('Error creating provider:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Admin: Update a provider
+router.put('/providers/:id', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  try {
+    const { id } = req.params;
+    const { name, contact_person, phone, email, address } = req.body;
+    const provider = await prisma.scholarshipProvider.update({
+      where: { provider_id: parseInt(id) },
+      data: { name, contact_person, phone, email, address },
+    });
+    res.json(provider);
+  } catch (error) {
+    console.error('Error updating provider:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Admin: Delete a provider
+router.delete('/providers/:id', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  try {
+    const { id } = req.params;
+    await prisma.scholarshipProvider.delete({ where: { provider_id: parseInt(id) } });
+    res.json({ message: 'Provider deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting provider:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
