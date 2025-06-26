@@ -20,6 +20,7 @@ const CoordinatorScholarships = () => {
   const [editingId, setEditingId] = useState(null);
   const [formError, setFormError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     fetchAll();
@@ -107,6 +108,24 @@ const CoordinatorScholarships = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this scholarship?')) return;
+    setDeletingId(id);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`http://localhost:5001/api/scholarships/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('Failed to delete scholarship');
+      await fetchAll();
+    } catch (err) {
+      alert('Failed to delete scholarship.');
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   return (
     <Layout>
       <div style={{ padding: 40, maxWidth: 1100, margin: '0 auto', background: '#f7fafd', minHeight: '100vh' }}>
@@ -148,7 +167,12 @@ const CoordinatorScholarships = () => {
                           }}>{sch.is_active ? 'Active' : 'Inactive'}</span>
                         </td>
                         <td style={{ padding: '14px 18px' }}>
-                          <button onClick={() => handleEdit(sch)} style={{ background: '#3182ce', color: '#fff', border: 'none', borderRadius: 6, padding: '7px 18px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 1px 4px rgba(49,130,206,0.08)' }}>Edit</button>
+                          <button onClick={() => handleEdit(sch)} style={{ background: '#3182ce', color: '#fff', border: 'none', borderRadius: 6, padding: '7px 18px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 1px 4px rgba(49,130,206,0.08)', marginRight: 8 }}>Edit</button>
+                          <button
+                            onClick={() => handleDelete(sch.scholarship_id)}
+                            style={{ background: '#e53e3e', color: '#fff', border: 'none', borderRadius: 6, padding: '7px 18px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 1px 4px rgba(229,62,62,0.08)' }}
+                            disabled={deletingId === sch.scholarship_id}
+                          >{deletingId === sch.scholarship_id ? 'Deleting...' : 'Delete'}</button>
                         </td>
                       </tr>
                     ))}

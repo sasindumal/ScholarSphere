@@ -177,4 +177,19 @@ router.get('/providers', authenticateToken, async (req, res) => {
   }
 });
 
+// Delete a scholarship
+router.delete('/:id', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'coordinator' && req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  try {
+    const { id } = req.params;
+    await prisma.scholarship.delete({ where: { scholarship_id: parseInt(id) } });
+    res.json({ message: 'Scholarship deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting scholarship:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router; 
