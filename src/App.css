@@ -17,6 +17,8 @@
   --success-color: #48bb78;
   --warning-color: #f6e05e;
   --danger-color: #f56565;
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 72px;
 }
 
 /* --- Global Styles & Resets --- */
@@ -47,10 +49,11 @@ ul {
 .dashboard-container {
   display: flex;
   min-height: 100vh;
+  position: relative;
 }
 
 .sidebar {
-  width: 260px;
+  width: var(--sidebar-width);
   background-color: var(--sidebar-bg);
   color: var(--sidebar-text);
   display: flex;
@@ -58,16 +61,20 @@ ul {
   position: fixed;
   top: 0;
   left: 0;
-  height: 100%;
-  transition: width 0.3s ease;
+  height: 100vh;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  overflow-x: hidden;
 }
 
 .main-wrapper {
   flex-grow: 1;
-  margin-left: 260px; /* Same as sidebar width */
+  margin-left: var(--sidebar-width);
   display: flex;
   flex-direction: column;
-  transition: margin-left 0.3s ease;
+  min-height: 100vh;
+  width: calc(100% - var(--sidebar-width));
+  transition: all 0.3s ease;
 }
 
 /* --- Sidebar --- */
@@ -76,6 +83,7 @@ ul {
   align-items: center;
   padding: 24px;
   border-bottom: 1px solid #2d3748;
+  min-height: 88px;
 }
 
 .sidebar-logo {
@@ -90,18 +98,22 @@ ul {
   justify-content: center;
   font-size: 1.5rem;
   font-weight: 700;
-  flex-shrink: 0; /* Prevents shrinking */
+  flex-shrink: 0;
 }
 
 .sidebar-title {
   font-size: 1.25rem;
   font-weight: 600;
   color: #ffffff;
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.3s ease;
 }
 
 .sidebar-nav {
   flex-grow: 1;
   padding: 16px 0;
+  overflow-y: auto;
 }
 
 .sidebar-nav ul {
@@ -117,6 +129,7 @@ ul {
   border-radius: 8px;
   font-weight: 500;
   transition: background-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
 }
 
 .sidebar-nav li a:hover {
@@ -132,6 +145,12 @@ ul {
 
 .sidebar-nav li a svg {
   margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.sidebar-nav li a span {
+  opacity: 1;
+  transition: opacity 0.3s ease;
 }
 
 .sidebar-footer {
@@ -152,6 +171,7 @@ ul {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .logout-btn:hover {
@@ -162,19 +182,26 @@ ul {
 
 .logout-btn svg {
   margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.logout-btn span {
+  opacity: 1;
+  transition: opacity 0.3s ease;
 }
 
 /* --- App Header --- */
 .app-header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: right;
   align-items: center;
   padding: 16px 32px;
   background-color: var(--card-bg);
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 100;
+  width: 100%;
 }
 
 .header-actions {
@@ -189,10 +216,14 @@ ul {
   color: var(--text-secondary);
   cursor: pointer;
   position: relative;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
 .icon-btn:hover {
   color: var(--primary-color);
+  background-color: rgba(74, 144, 226, 0.1);
 }
 
 .user-avatar {
@@ -209,12 +240,15 @@ ul {
 }
 
 .sidebar-toggle-btn {
-  display: none; /* Hidden by default */
+  display: none;
 }
 
 /* --- Main Content --- */
 .main-content {
   padding: 32px;
+  flex-grow: 1;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .main-header {
@@ -378,41 +412,82 @@ ul {
 }
 
 @media (max-width: 992px) {
-  .sidebar {
-    width: 72px;
+  :root {
+    --sidebar-width: var(--sidebar-collapsed-width);
   }
+  
+  .sidebar {
+    width: var(--sidebar-collapsed-width);
+  }
+  
   .sidebar:hover {
     width: 260px;
   }
-  .sidebar .sidebar-title, .sidebar-nav span, .logout-btn span {
-    display: none;
+  
+  .main-wrapper {
+    margin-left: var(--sidebar-collapsed-width);
+    width: calc(100% - var(--sidebar-collapsed-width));
   }
-  .sidebar:hover .sidebar-title, .sidebar:hover .sidebar-nav span, .sidebar:hover .logout-btn span,
-  .sidebar.open .sidebar-title, .sidebar.open .sidebar-nav span, .sidebar.open .logout-btn span {
-    display: inline;
+  
+  .sidebar .sidebar-title,
+  .sidebar-nav span,
+  .logout-btn span {
+    opacity: 0;
+    visibility: hidden;
   }
+  
+  .sidebar:hover .sidebar-title,
+  .sidebar:hover .sidebar-nav span,
+  .sidebar:hover .logout-btn span,
+  .sidebar.open .sidebar-title,
+  .sidebar.open .sidebar-nav span,
+  .sidebar.open .logout-btn span {
+    opacity: 1;
+    visibility: visible;
+  }
+  
   .sidebar-header {
     justify-content: center;
+    padding: 24px 12px;
   }
-   .sidebar:hover .sidebar-header,
-   .sidebar.open .sidebar-header {
+  
+  .sidebar:hover .sidebar-header,
+  .sidebar.open .sidebar-header {
     justify-content: flex-start;
+    padding: 24px;
   }
+  
   .sidebar-logo {
-     margin-right: 0;
+    margin-right: 0;
   }
-  .sidebar:hover .sidebar-logo {
-     margin-right: 12px;
+  
+  .sidebar:hover .sidebar-logo,
+  .sidebar.open .sidebar-logo {
+    margin-right: 12px;
   }
+  
   .sidebar-nav li a {
     justify-content: center;
+    margin: 4px 8px;
+    padding: 12px 8px;
   }
+  
   .sidebar:hover .sidebar-nav li a,
   .sidebar.open .sidebar-nav li a {
     justify-content: flex-start;
+    margin: 4px 16px;
+    padding: 12px 24px;
   }
-  .main-wrapper {
-    margin-left: 72px;
+  
+  .logout-btn {
+    justify-content: center;
+    padding: 12px 8px;
+  }
+  
+  .sidebar:hover .logout-btn,
+  .sidebar.open .logout-btn {
+    justify-content: center;
+    padding: 12px;
   }
 }
 
@@ -420,33 +495,70 @@ ul {
   .stats-grid {
     grid-template-columns: 1fr;
   }
+  
   .main-content {
-    padding: 24px;
+    padding: 24px 16px;
   }
+  
   .app-header {
-    padding: 16px 24px;
+    padding: 16px;
+  }
+  
+  .main-header h1 {
+    font-size: 1.75rem;
   }
 }
 
 @media (max-width: 576px) {
   .sidebar {
     width: 0;
-    overflow: hidden;
+    transform: translateX(-100%);
   }
-  .main-wrapper {
-    margin-left: 0;
-  }
-  /* Add a class to toggle sidebar on mobile */
+  
   .sidebar.open {
     width: 260px;
+    transform: translateX(0);
   }
-
+  
+  .main-wrapper {
+    margin-left: 0;
+    width: 100%;
+  }
+  
   .sidebar-toggle-btn {
     display: block;
   }
-
+  
   .app-header {
     justify-content: space-between;
+    padding: 12px 16px;
+  }
+  
+  .main-content {
+    padding: 20px 16px;
+  }
+  
+  .stats-grid {
+    gap: 16px;
+  }
+  
+  .card {
+    padding: 20px;
+  }
+  
+  .main-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  /* Mobile overlay */
+  .sidebar.open::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
   }
 }
-
