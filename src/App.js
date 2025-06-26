@@ -13,6 +13,8 @@ import './pages/MyApplications.css';
 import PaymentsHistory from './pages/PaymentsHistory';
 import Profile from './pages/Profile';
 import Notifications from './pages/Notifications';
+import CoordinatorDashboard from './pages/CoordinatorDashboard';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
@@ -24,8 +26,24 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute role="student">
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/coordinator-dashboard"
+          element={
+            <ProtectedRoute role="coordinator">
+              <CoordinatorDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin-dashboard"
+          element={
+            <ProtectedRoute role="admin">
+              <AdminDashboard />
             </ProtectedRoute>
           }
         />

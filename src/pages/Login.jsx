@@ -32,7 +32,16 @@ const Login = () => {
 
       // Store the token and redirect
       localStorage.setItem('token', data.token);
-      navigate('/dashboard'); // Redirect to a protected dashboard route
+      // Redirect based on role
+      if (data.role === 'student') {
+        navigate('/dashboard');
+      } else if (data.role === 'coordinator') {
+        navigate('/coordinator-dashboard');
+      } else if (data.role === 'admin') {
+        navigate('/admin-dashboard');
+      } else {
+        navigate('/login');
+      }
 
     } catch (err) {
       setError(err.message);
