@@ -10,6 +10,7 @@ import MyApplications from './pages/MyApplications';
 import ProtectedRoute from './components/ProtectedRoute';
 import './pages/AvailableScholarships.css';
 import './pages/MyApplications.css';
+import PaymentsHistory from './pages/PaymentsHistory';
 
 function App() {
   return (
@@ -39,6 +40,14 @@ function App() {
           element={
             <ProtectedRoute>
               <MyApplications />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/payments-history"
+          element={
+            <ProtectedRoute>
+              <PaymentsHistory />
             </ProtectedRoute>
           }
         />

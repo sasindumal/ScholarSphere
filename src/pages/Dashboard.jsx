@@ -30,6 +30,7 @@ const Dashboard = () => {
   const [userData, setUserData] = useState(null);
   const [scholarshipCount, setScholarshipCount] = useState(0);
   const [applicationCount, setApplicationCount] = useState(0);
+  const [totalPaid, setTotalPaid] = useState(0);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -70,9 +71,22 @@ const Dashboard = () => {
         }
       };
 
+    const fetchTotalPaid = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/payments/total', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (response.ok) setTotalPaid((await response.json()).total);
+        else console.error('Failed to fetch total paid');
+      } catch (error) {
+        console.error('Error fetching total paid:', error);
+      }
+    };
+
     fetchUserData();
     fetchScholarshipCount();
     fetchApplicationCount();
+    fetchTotalPaid();
   }, []);
 
   const toggleSidebar = () => {
@@ -113,11 +127,11 @@ const Dashboard = () => {
             <p className="stat-change">Click to track</p>
           </div>
         </div>
-        <div className="card">
+        <div className="card" onClick={() => navigate('/payments-history')} style={{ cursor: 'pointer' }}>
           <div className="card-header"><span>Total Awarded</span><PaymentsIcon /></div>
           <div className="card-body">
-            <p className="stat-number">$2,500</p>
-            <p className="stat-change">+$500 from last month</p>
+            <p className="stat-number">LKR {totalPaid} </p>
+            <p className="stat-change">Click to view history</p>
           </div>
         </div>
       </section>

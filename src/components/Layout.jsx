@@ -15,7 +15,7 @@ const navItems = [
   { label: 'Dashboard', path: '/dashboard', icon: <DashboardIcon /> },
   { label: 'My Applications', path: '/applications', icon: <ApplicationsIcon /> },
   { label: 'Scholarships', path: '/scholarships', icon: <ScholarshipsIcon /> },
-  { label: 'Payments', path: '/payments', icon: <PaymentsIcon /> },
+  { label: 'Payments', path: '/payments-history', icon: <PaymentsIcon /> },
   { label: 'My Profile', path: '/profile', icon: <ProfileIcon /> },
   { label: 'Notifications', path: '/notifications', icon: <NotificationsIcon /> },
 ];
