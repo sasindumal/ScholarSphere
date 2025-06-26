@@ -286,4 +286,34 @@ router.delete('/other-funding/:id', authenticateToken, async (req, res) => {
   }
 });
 
+// Get all students (for coordinators)
+router.get('/students', authenticateToken, async (req, res) => {
+  try {
+    if (req.user.role !== 'coordinator') {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+    const students = await prisma.user.findMany({
+      where: { role: 'student' },
+      select: {
+        user_id: true,
+        first_name: true,
+        last_name: true,
+        email: true,
+        username: true,
+        student: {
+          include: {
+            familyMembers: { include: { siblingEducation: true } },
+            otherFunding: true,
+          }
+        },
+      },
+      orderBy: { last_name: 'asc' },
+    });
+    res.json(students);
+  } catch (error) {
+    console.error('Error fetching students:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router; 

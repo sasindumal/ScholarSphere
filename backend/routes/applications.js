@@ -102,4 +102,55 @@ router.get('/all', authenticateToken, async (req, res) => {
   }
 });
 
+// Review, approve, or reject an application (coordinator only)
+router.post('/:id/review', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'coordinator') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  const { id } = req.params;
+  const { status, reviewer_comments } = req.body;
+  try {
+    // Update application
+    const application = await prisma.application.update({
+      where: { application_id: parseInt(id) },
+      data: {
+        status,
+        reviewer_comments,
+        review_date: new Date(),
+      },
+      include: {
+        student: { select: { user_id: true } },
+        scholarship: { select: { name: true } },
+      },
+    });
+    // Send notification to student
+    let notifMsg = `Your application for scholarship '${application.scholarship.name}' has been ${status}.`;
+    if (reviewer_comments) notifMsg += `\nComment: ${reviewer_comments}`;
+    await prisma.notification.create({
+      data: {
+        user_id: application.student.user_id,
+        message: notifMsg,
+      },
+    });
+    res.json({ message: 'Application reviewed and student notified.' });
+  } catch (error) {
+    console.error('Error reviewing application:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Get count of pending applications for coordinators
+router.get('/pending', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'coordinator') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  try {
+    const count = await prisma.application.count({ where: { status: 'pending' } });
+    res.json({ count });
+  } catch (error) {
+    console.error('Error fetching pending applications count:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router; 

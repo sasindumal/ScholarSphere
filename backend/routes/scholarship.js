@@ -128,6 +128,13 @@ router.post('/', authenticateToken, async (req, res) => {
         is_active: is_active !== undefined ? is_active : true,
       },
     });
+    // Notify all students
+    const students = await prisma.user.findMany({ where: { role: 'student' }, select: { user_id: true } });
+    const notifications = students.map(stu => ({
+      user_id: stu.user_id,
+      message: `A new scholarship '${scholarship.name}' is now available. Check it out and apply if eligible!`,
+    }));
+    await prisma.notification.createMany({ data: notifications });
     res.status(201).json(scholarship);
   } catch (error) {
     console.error('Error creating scholarship:', error);

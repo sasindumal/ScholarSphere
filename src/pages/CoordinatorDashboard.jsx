@@ -28,22 +28,28 @@ const CoordinatorDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setLoading(true);
-    Promise.all([
-      fetch('http://localhost:5001/api/applications/pending', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      }).then(res => res.ok ? res.json() : { count: 0 }),
-      fetch('http://localhost:5001/api/scholarships/count', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      }).then(res => res.ok ? res.json() : { count: 0 }),
-    ]).then(([pending, scholarships]) => {
-      setPendingCount(pending.count || 0);
-      setScholarshipCount(scholarships.count || 0);
-    }).catch(() => {
-      setPendingCount(0);
-      setScholarshipCount(0);
-    }).finally(() => setLoading(false));
+    let interval;
+    const fetchCounts = () => {
+      const token = localStorage.getItem('token');
+      setLoading(true);
+      Promise.all([
+        fetch('http://localhost:5001/api/applications/pending', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }).then(res => res.ok ? res.json() : { count: 0 }),
+        fetch('http://localhost:5001/api/scholarships/count', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }).then(res => res.ok ? res.json() : { count: 0 }),
+      ]).then(([pending, scholarships]) => {
+        setPendingCount(pending.count || 0);
+        setScholarshipCount(scholarships.count || 0);
+      }).catch(() => {
+        setPendingCount(0);
+        setScholarshipCount(0);
+      }).finally(() => setLoading(false));
+    };
+    fetchCounts();
+    interval = setInterval(fetchCounts, 10000); // Poll every 10 seconds
+    return () => clearInterval(interval);
   }, []);
 
   return (
