@@ -70,7 +70,7 @@ const Layout = ({ children }) => {
             <button className="icon-btn">
               <NotificationsIcon />
             </button>
-            <div className="user-avatar">DA</div>
+            <Link to="/profile" className="user-avatar" style={{ textDecoration: 'none', color: 'inherit' }}>DA</Link>
           </div>
         </header>
 

@@ -1,0 +1,115 @@
+/* Profile.css */
+
+.profile-page {
+  max-width: 700px;
+  margin: 40px auto 0 auto;
+  padding: 32px 24px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1.5px 4px rgba(0,0,0,0.04);
+}
+
+.profile-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 28px;
+  color: #2d3748;
+  letter-spacing: -1px;
+}
+
+.profile-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.profile-tabs button {
+  background: #f1f5f9;
+  border: none;
+  border-radius: 8px 8px 0 0;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.profile-tabs button.active {
+  background: #fff;
+  color: #2563eb;
+  border-bottom: 2px solid #2563eb;
+  font-weight: 700;
+}
+
+.profile-tab-content {
+  background: #f9fafb;
+  border-radius: 0 0 12px 12px;
+  padding: 28px 18px 18px 18px;
+  min-height: 320px;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 420px;
+}
+.profile-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #374151;
+  gap: 4px;
+}
+.profile-form input, .profile-form select {
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fff;
+  margin-top: 2px;
+}
+.profile-form button[type="submit"] {
+  margin-top: 10px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.profile-form button[type="submit"]:hover {
+  background: #1d4ed8;
+}
+.success-message {
+  color: #059669;
+  font-weight: 500;
+  margin-top: 8px;
+}
+.error-message {
+  color: #dc2626;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+  .profile-page {
+    padding: 10px 2px;
+  }
+  .profile-title {
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+  }
+  .profile-tabs button {
+    padding: 8px 10px;
+    font-size: 0.95rem;
+  }
+  .profile-tab-content {
+    padding: 12px 2px 8px 2px;
+  }
+  .profile-form {
+    max-width: 100%;
+  }
+} 
