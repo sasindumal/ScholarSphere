@@ -6,8 +6,10 @@ import Signup from './pages/Signup';
 import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import AvailableScholarships from './pages/AvailableScholarships';
+import MyApplications from './pages/MyApplications';
 import ProtectedRoute from './components/ProtectedRoute';
 import './pages/AvailableScholarships.css';
+import './pages/MyApplications.css';
 
 function App() {
   return (
@@ -29,6 +31,14 @@ function App() {
           element={
             <ProtectedRoute>
               <AvailableScholarships />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/applications"
+          element={
+            <ProtectedRoute>
+              <MyApplications />
             </ProtectedRoute>
           }
         />

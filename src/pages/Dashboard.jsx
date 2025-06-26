@@ -29,30 +29,18 @@ const Dashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [userData, setUserData] = useState(null);
   const [scholarshipCount, setScholarshipCount] = useState(0);
+  const [applicationCount, setApplicationCount] = useState(0);
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem('token');
-        console.log('Token:', token); // Debug log
-        
         const response = await fetch('http://localhost:5001/api/user/profile', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
         });
-        
-        console.log('Response status:', response.status); // Debug log
-        
-        if (response.ok) {
-          const data = await response.json();
-          console.log('User data:', data); // Debug log
-          setUserData(data);
-        } else {
-          const errorData = await response.json();
-          console.error('Failed to fetch user data:', errorData);
-        }
+        if (response.ok) setUserData(await response.json());
+        else console.error('Failed to fetch user data');
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -60,26 +48,31 @@ const Dashboard = () => {
 
     const fetchScholarshipCount = async () => {
       try {
-        const token = localStorage.getItem('token');
         const response = await fetch('http://localhost:5001/api/scholarships/count', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
+          headers: { 'Authorization': `Bearer ${token}` }
         });
-        
-        if (response.ok) {
-          const data = await response.json();
-          setScholarshipCount(data.count);
-        } else {
-          console.error('Failed to fetch scholarship count');
-        }
+        if (response.ok) setScholarshipCount((await response.json()).count);
+        else console.error('Failed to fetch scholarship count');
       } catch (error) {
         console.error('Error fetching scholarship count:', error);
       }
     };
 
+    const fetchApplicationCount = async () => {
+        try {
+          const response = await fetch('http://localhost:5001/api/applications/count', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (response.ok) setApplicationCount((await response.json()).count);
+          else console.error('Failed to fetch application count');
+        } catch (error) {
+          console.error('Error fetching application count:', error);
+        }
+      };
+
     fetchUserData();
     fetchScholarshipCount();
+    fetchApplicationCount();
   }, []);
 
   const toggleSidebar = () => {
@@ -113,11 +106,11 @@ const Dashboard = () => {
             <p className="stat-change">Click to view all</p>
           </div>
         </div>
-        <div className="card">
+        <div className="card" onClick={() => navigate('/applications')} style={{ cursor: 'pointer' }}>
           <div className="card-header"><span>My Applications</span><ApplicationsIcon /></div>
           <div className="card-body">
-            <p className="stat-number">3</p>
-            <p className="stat-change">1 pending review</p>
+            <p className="stat-number">{applicationCount}</p>
+            <p className="stat-change">Click to track</p>
           </div>
         </div>
         <div className="card">

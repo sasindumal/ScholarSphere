@@ -131,6 +131,11 @@
   background: #2980b9;
 }
 
+.apply-button.applied {
+  background-color: #7f8c8d;
+  cursor: not-allowed;
+}
+
 .scholarships-loading {
   display: flex;
   flex-direction: column;

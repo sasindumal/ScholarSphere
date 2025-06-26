@@ -4,31 +4,41 @@ import Layout from '../components/Layout';
 
 const AvailableScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
+  const [appliedScholarshipIds, setAppliedScholarshipIds] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchScholarships();
+    fetchInitialData();
   }, []);
 
-  const fetchScholarships = async () => {
+  const fetchInitialData = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/scholarships', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      // Fetch both scholarships and user's applications in parallel
+      const [scholarshipsRes, applicationsRes] = await Promise.all([
+        fetch('http://localhost:5001/api/scholarships', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }),
+        fetch('http://localhost:5001/api/applications', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+      ]);
 
-      if (response.ok) {
-        const data = await response.json();
-        setScholarships(data);
-      } else {
-        setError('Failed to fetch scholarships');
+      if (!scholarshipsRes.ok || !applicationsRes.ok) {
+        throw new Error('Failed to fetch data');
       }
+
+      const scholarshipsData = await scholarshipsRes.json();
+      const applicationsData = await applicationsRes.json();
+      
+      setScholarships(scholarshipsData);
+      setAppliedScholarshipIds(new Set(applicationsData.map(app => app.scholarship_id)));
+
     } catch (error) {
-      setError('Error fetching scholarships');
+      setError('Error fetching data');
       console.error('Error:', error);
     } finally {
       setLoading(false);
@@ -49,7 +59,8 @@ const AvailableScholarships = () => {
 
       if (response.ok) {
         alert('Application submitted successfully!');
-        fetchScholarships();
+        // Add the new application to our state to update the UI instantly
+        setAppliedScholarshipIds(prevIds => new Set(prevIds).add(scholarshipId));
       } else {
         const errorData = await response.json();
         alert(errorData.error || 'Failed to submit application');
@@ -75,7 +86,7 @@ const AvailableScholarships = () => {
         <div className="scholarships-error">
           <h2>Error</h2>
           <p>{error}</p>
-          <button onClick={fetchScholarships}>Try Again</button>
+          <button onClick={fetchInitialData}>Try Again</button>
         </div>
       );
     }
@@ -88,45 +99,49 @@ const AvailableScholarships = () => {
         </div>
 
         <div className="scholarships-grid">
-          {scholarships.map((scholarship) => (
-            <div key={scholarship.scholarship_id} className="scholarship-card">
-              <div className="scholarship-card-header">
-                <h2>{scholarship.name}</h2>
-                <span className="scholarship-amount">${scholarship.amount}</span>
-              </div>
-              
-              <div className="scholarship-card-body">
-                <p>{scholarship.description}</p>
+          {scholarships.map((scholarship) => {
+            const isApplied = appliedScholarshipIds.has(scholarship.scholarship_id);
+            return (
+              <div key={scholarship.scholarship_id} className="scholarship-card">
+                <div className="scholarship-card-header">
+                  <h2>{scholarship.name}</h2>
+                  <span className="scholarship-amount">${scholarship.amount}</span>
+                </div>
                 
-                <div className="scholarship-details">
-                  <div className="detail-item">
-                    <span className="detail-label">Deadline</span>
-                    <span className="detail-value">
-                      {new Date(scholarship.application_deadline).toLocaleDateString()}
-                    </span>
+                <div className="scholarship-card-body">
+                  <p>{scholarship.description}</p>
+                  
+                  <div className="scholarship-details">
+                    <div className="detail-item">
+                      <span className="detail-label">Deadline</span>
+                      <span className="detail-value">
+                        {new Date(scholarship.application_deadline).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Available Slots</span>
+                      <span className="detail-value">{scholarship.no_of_students}</span>
+                    </div>
                   </div>
-                  <div className="detail-item">
-                    <span className="detail-label">Available Slots</span>
-                    <span className="detail-value">{scholarship.no_of_students}</span>
+
+                  <div className="scholarship-provider">
+                    <span className="provider-label">Provided by:</span>
+                    <span className="provider-name">{scholarship.provider?.name}</span>
                   </div>
                 </div>
 
-                <div className="scholarship-provider">
-                  <span className="provider-label">Provided by:</span>
-                  <span className="provider-name">{scholarship.provider?.name}</span>
+                <div className="scholarship-card-footer">
+                  <button 
+                    onClick={() => handleApply(scholarship.scholarship_id)}
+                    className={`apply-button ${isApplied ? 'applied' : ''}`}
+                    disabled={isApplied}
+                  >
+                    {isApplied ? 'Applied' : 'Apply Now'}
+                  </button>
                 </div>
               </div>
-
-              <div className="scholarship-card-footer">
-                <button 
-                  onClick={() => handleApply(scholarship.scholarship_id)}
-                  className="apply-button"
-                >
-                  Apply Now
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </>
     );
