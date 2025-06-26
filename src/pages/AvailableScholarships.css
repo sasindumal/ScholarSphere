@@ -107,6 +107,12 @@
   color: #27ae60;
 }
 
+.amount-small {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #27ae60;
+}
+
 .scholarship-card-body {
   padding: 1.5rem;
 }

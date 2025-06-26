@@ -68,7 +68,7 @@ const MyApplications = () => {
             </div>
             <div className="application-card-body">
               <div className="application-details">
-                <p><strong>Amount:</strong> ${app.scholarship.amount}</p>
+                <p className="amount-small"><strong>Amount:</strong> LKR {app.scholarship.amount} /month</p>
                 <p><strong>Submitted:</strong> {new Date(app.submission_date).toLocaleDateString()}</p>
               </div>
               {app.reviews && app.reviews.length > 0 && (

@@ -149,7 +149,7 @@ const AvailableScholarships = () => {
               <div key={scholarship.scholarship_id} className="scholarship-card">
                 <div className="scholarship-card-header">
                   <h2>{scholarship.name}</h2>
-                  <span className="scholarship-amount">${scholarship.amount}</span>
+                  <span className="scholarship-amount amount-small">LKR {scholarship.amount} /month</span>
                 </div>
                 
                 <div className="scholarship-card-body">
