@@ -27,6 +27,7 @@ const Dashboard = () => {
   const location = useLocation();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [scholarshipCount, setScholarshipCount] = useState(0);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -56,7 +57,28 @@ const Dashboard = () => {
       }
     };
 
+    const fetchScholarshipCount = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:5001/api/scholarships/count', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setScholarshipCount(data.count);
+        } else {
+          console.error('Failed to fetch scholarship count');
+        }
+      } catch (error) {
+        console.error('Error fetching scholarship count:', error);
+      }
+    };
+
     fetchUserData();
+    fetchScholarshipCount();
   }, []);
 
   const toggleSidebar = () => {
@@ -125,7 +147,7 @@ const Dashboard = () => {
             <div className="card">
               <div className="card-header"><span>Available Scholarships</span><ScholarshipsIcon /></div>
               <div className="card-body">
-                <p className="stat-number">12</p>
+                <p className="stat-number">{scholarshipCount}</p>
                 <p className="stat-change">+2 from last month</p>
               </div>
             </div>
