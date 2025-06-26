@@ -25,6 +25,9 @@ const Layout = ({ children }) => {
   const location = useLocation();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [latestNotifications, setLatestNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -45,6 +48,40 @@ const Layout = ({ children }) => {
     fetchUser();
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const fetchNotificationData = async () => {
+      try {
+        // Fetch unread count
+        const countRes = await fetch('http://localhost:5001/api/notifications/unread-count', {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (countRes.ok) {
+          const countData = await countRes.json();
+          setUnreadCount(countData.count);
+        }
+
+        // Fetch recent notifications for the dropdown
+        const recentRes = await fetch('http://localhost:5001/api/notifications/recent', {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (recentRes.ok) {
+          const recentData = await recentRes.json();
+          setLatestNotifications(recentData);
+        }
+      } catch (error) {
+        console.error('Failed to fetch notification data:', error);
+      }
+    };
+
+    fetchNotificationData();
+    const interval = setInterval(fetchNotificationData, 30000); // Poll every 30 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
@@ -52,6 +89,39 @@ const Layout = ({ children }) => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
+  };
+
+  const handleNotifClick = async () => {
+    setNotifOpen(prev => !prev);
+
+    // If opening the panel and there are recent notifications to show.
+    // The 'recent' endpoint only gives us unread ones.
+    if (!notifOpen && latestNotifications.length > 0) {
+      const token = localStorage.getItem('token');
+      const notificationIdsToMark = latestNotifications.map(n => n.notification_id);
+
+      try {
+        const res = await fetch('http://localhost:5001/api/notifications/mark-as-read', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({ notificationIds: notificationIdsToMark }),
+        });
+
+        if (res.ok) {
+          // Update state locally for immediate UI feedback.
+          // The polling will sync with the server state eventually.
+          setUnreadCount(prev => Math.max(0, prev - notificationIdsToMark.length));
+          setLatestNotifications(prev =>
+            prev.map(n => ({ ...n, is_read: true }))
+          );
+        }
+      } catch (error) {
+        console.error('Failed to mark notifications as read:', error);
+      }
+    }
   };
 
   // Modern avatar: show initials or photo
@@ -95,10 +165,33 @@ const Layout = ({ children }) => {
           <button className="icon-btn sidebar-toggle-btn" onClick={toggleSidebar}>
             <MenuIcon />
           </button>
-          <div className="header-actions">
-            <button className="icon-btn">
+          <div className="header-actions" style={{ position: 'relative' }}>
+            <button className="icon-btn" onClick={handleNotifClick} style={{ position: 'relative' }}>
               <NotificationsIcon />
+              {unreadCount > 0 && (
+                <span style={{ position: 'absolute', top: 2, right: 2, background: '#e53e3e', color: '#fff', borderRadius: '50%', fontSize: 10, width: 16, height: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{unreadCount}</span>
+              )}
             </button>
+            {notifOpen && (
+              <div style={{ position: 'absolute', right: 0, top: 36, background: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', borderRadius: 8, width: 320, zIndex: 10, padding: 12 }}>
+                <div style={{ fontWeight: 600, marginBottom: 8 }}>Notifications</div>
+                {latestNotifications.length === 0 ? (
+                  <div style={{ color: '#888', fontSize: 14 }}>No notifications</div>
+                ) : (
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                    {latestNotifications.map(n => (
+                      <li key={n.notification_id} style={{ background: n.is_read ? '#f9f9f9' : '#e6f7ff', padding: 8, borderRadius: 5, marginBottom: 6 }}>
+                        <div style={{ fontWeight: n.is_read ? 400 : 600 }}>{n.message}</div>
+                        <div style={{ fontSize: 11, color: '#888' }}>{new Date(n.created_at).toLocaleString()}</div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <div style={{ textAlign: 'right', marginTop: 8 }}>
+                  <Link to="/notifications" onClick={() => setNotifOpen(false)} style={{ color: '#3182ce', fontWeight: 500, fontSize: 14 }}>View more</Link>
+                </div>
+              </div>
+            )}
             <Link to="/profile" className="user-avatar modern-avatar" style={{ textDecoration: 'none', color: 'inherit' }}>
               {getInitials()}
             </Link>

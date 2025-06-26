@@ -12,6 +12,7 @@ import './pages/AvailableScholarships.css';
 import './pages/MyApplications.css';
 import PaymentsHistory from './pages/PaymentsHistory';
 import Profile from './pages/Profile';
+import Notifications from './pages/Notifications';
 
 function App() {
   return (
@@ -57,6 +58,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <Notifications />
             </ProtectedRoute>
           }
         />
