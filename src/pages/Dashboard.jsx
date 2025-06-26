@@ -98,11 +98,16 @@ const Dashboard = () => {
     navigate('/login');
   };
 
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString(undefined, {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+
   return (
     <Layout>
       <div className="main-header">
         <h1>Student Dashboard</h1>
-        <div className="date-display">Wednesday, June 25, 2025</div>
+        <div className="date-display">{formattedDate}</div>
       </div>
 
       <section className="stats-grid">
