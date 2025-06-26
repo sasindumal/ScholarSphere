@@ -10,6 +10,9 @@ const ProfileIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="
 const NotificationsIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>;
 const LogoutIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>;
 const MenuIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>;
+const SettingsIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 5 15.4a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 5 8.6a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09c0 .66.39 1.25 1 1.51a1.65 1.65 0 0 0 1.82.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82c.22.63.22 1.31 0 1.94z"></path></svg>;
+const ProviderIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 3v4"></path><path d="M8 3v4"></path><path d="M2 11h20"></path></svg>;
+const UserIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>;
 
 const navItems = [
   { label: 'Dashboard', path: '/dashboard', icon: <DashboardIcon /> },
@@ -25,6 +28,14 @@ const navItemsCoordinator = [
   { label: 'Application Reviews', path: '/coordinator-applications', icon: <ApplicationsIcon /> },
   { label: 'Scholarships', path: '/coordinator-scholarships', icon: <ScholarshipsIcon /> },
   { label: 'Student Management', path: '/coordinator-students', icon: <ProfileIcon /> },
+];
+
+const navItemsAdmin = [
+  { label: 'Dashboard', path: '/admin-dashboard', icon: <DashboardIcon /> },
+  { label: 'User Management', path: '/admin-users', icon: <UserIcon /> },
+  { label: 'System Settings', path: '/admin-settings', icon: <SettingsIcon /> },
+  { label: 'Provider Management', path: '/admin-providers', icon: <ProviderIcon /> },
+  { label: 'Payment Management', path: '/admin-payments', icon: <PaymentsIcon /> },
 ];
 
 const Layout = ({ children }) => {
@@ -149,7 +160,7 @@ const Layout = ({ children }) => {
         </div>
         <nav className="sidebar-nav">
           <ul>
-            {(user && user.role === 'coordinator' ? navItemsCoordinator : navItems).map((item) => (
+            {(user && user.role === 'coordinator' ? navItemsCoordinator : user && user.role === 'admin' ? navItemsAdmin : navItems).map((item) => (
               <li key={item.path} className={location.pathname === item.path ? 'active' : ''}>
                 <Link to={item.path}>
                   {item.icon}

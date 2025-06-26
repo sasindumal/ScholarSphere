@@ -20,6 +20,10 @@ import CoordinatorReviewDetails from './pages/CoordinatorReviewDetails';
 import CoordinatorScholarships from './pages/CoordinatorScholarships';
 import CoordinatorStudents from './pages/CoordinatorStudents';
 import CoordinatorReports from './pages/CoordinatorReports';
+import AdminUsers from './pages/AdminUsers';
+import AdminSettings from './pages/AdminSettings';
+import AdminProviders from './pages/AdminProviders';
+import AdminPayments from './pages/AdminPayments';
 
 function App() {
   return (
@@ -129,6 +133,38 @@ function App() {
           element={
             <ProtectedRoute role="coordinator">
               <CoordinatorReports />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin-users"
+          element={
+            <ProtectedRoute role="admin">
+              <AdminUsers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin-settings"
+          element={
+            <ProtectedRoute role="admin">
+              <AdminSettings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin-providers"
+          element={
+            <ProtectedRoute role="admin">
+              <AdminProviders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin-payments"
+          element={
+            <ProtectedRoute role="admin">
+              <AdminPayments />
             </ProtectedRoute>
           }
         />

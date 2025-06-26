@@ -316,4 +316,88 @@ router.get('/students', authenticateToken, async (req, res) => {
   }
 });
 
+// Admin: Get all users
+router.get('/all', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  try {
+    const users = await prisma.user.findMany({
+      select: {
+        user_id: true,
+        first_name: true,
+        last_name: true,
+        email: true,
+        username: true,
+        role: true,
+      },
+      orderBy: { last_name: 'asc' },
+    });
+    res.json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Admin: Create user
+router.post('/', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  const { first_name, last_name, email, username, password, role } = req.body;
+  try {
+    const existing = await prisma.user.findUnique({ where: { email } });
+    if (existing) return res.status(400).json({ error: 'Email already in use.' });
+    const bcrypt = require('bcryptjs');
+    const hashed = await bcrypt.hash(password, 10);
+    const user = await prisma.user.create({
+      data: { first_name, last_name, email, username, password: hashed, role },
+    });
+    res.status(201).json(user);
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Admin: Update user
+router.put('/:id', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  const { id } = req.params;
+  const { first_name, last_name, email, username, role, password } = req.body;
+  try {
+    let data = { first_name, last_name, email, username, role };
+    if (password) {
+      const bcrypt = require('bcryptjs');
+      data.password = await bcrypt.hash(password, 10);
+    }
+    const user = await prisma.user.update({
+      where: { user_id: parseInt(id) },
+      data,
+    });
+    res.json(user);
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Admin: Delete user
+router.delete('/:id', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  const { id } = req.params;
+  try {
+    await prisma.user.delete({ where: { user_id: parseInt(id) } });
+    res.json({ message: 'User deleted' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router; 
