@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 
@@ -7,6 +7,11 @@ const AvailableScholarships = () => {
   const [appliedScholarshipIds, setAppliedScholarshipIds] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // New state for search and filter
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('application_deadline'); // Default sort
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,6 +76,25 @@ const AvailableScholarships = () => {
     }
   };
 
+  const filteredAndSortedScholarships = useMemo(() => {
+    let filtered = scholarships.filter(s =>
+        s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    switch (sortBy) {
+        case 'amount_desc':
+            return filtered.sort((a, b) => b.amount - a.amount);
+        case 'amount_asc':
+            return filtered.sort((a, b) => a.amount - b.amount);
+        case 'name_asc':
+            return filtered.sort((a, b) => a.name.localeCompare(b.name));
+        case 'application_deadline':
+        default:
+            return filtered.sort((a, b) => new Date(a.application_deadline) - new Date(b.application_deadline));
+    }
+  }, [scholarships, searchTerm, sortBy]);
+
   const renderContent = () => {
     if (loading) {
       return (
@@ -98,8 +122,28 @@ const AvailableScholarships = () => {
           <p>Explore and apply for scholarships that match your profile</p>
         </div>
 
+        <div className="scholarships-controls">
+          <input
+            type="text"
+            placeholder="Search by name, description..."
+            className="search-input"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <select
+            className="filter-select"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+          >
+            <option value="application_deadline">Sort by Deadline</option>
+            <option value="amount_desc">Sort by Amount (High to Low)</option>
+            <option value="amount_asc">Sort by Amount (Low to High)</option>
+            <option value="name_asc">Sort by Name (A-Z)</option>
+          </select>
+        </div>
+
         <div className="scholarships-grid">
-          {scholarships.map((scholarship) => {
+          {filteredAndSortedScholarships.map((scholarship) => {
             const isApplied = appliedScholarshipIds.has(scholarship.scholarship_id);
             return (
               <div key={scholarship.scholarship_id} className="scholarship-card">
@@ -142,6 +186,12 @@ const AvailableScholarships = () => {
               </div>
             );
           })}
+           {filteredAndSortedScholarships.length === 0 && (
+            <div className="no-results">
+              <h3>No scholarships match your search.</h3>
+              <p>Try clearing your search term or changing the filter.</p>
+            </div>
+          )}
         </div>
       </>
     );
