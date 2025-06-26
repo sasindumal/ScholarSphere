@@ -144,11 +144,11 @@ const Dashboard = () => {
                 <p className="user-role">Student</p>
               </div>
             </div>
-            <div className="card">
+            <div className="card" onClick={() => navigate('/scholarships')} style={{ cursor: 'pointer' }}>
               <div className="card-header"><span>Available Scholarships</span><ScholarshipsIcon /></div>
               <div className="card-body">
                 <p className="stat-number">{scholarshipCount}</p>
-                <p className="stat-change">+2 from last month</p>
+                <p className="stat-change">Click to view all</p>
               </div>
             </div>
             <div className="card">

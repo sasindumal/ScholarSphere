@@ -5,7 +5,9 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
+import AvailableScholarships from './pages/AvailableScholarships';
 import ProtectedRoute from './components/ProtectedRoute';
+import './pages/AvailableScholarships.css';
 
 function App() {
   return (
@@ -19,6 +21,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/scholarships"
+          element={
+            <ProtectedRoute>
+              <AvailableScholarships />
             </ProtectedRoute>
           }
         />
