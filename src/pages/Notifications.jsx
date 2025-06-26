@@ -5,6 +5,8 @@ import './Notifications.css';
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState("all"); // all, read, unread
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -35,16 +37,45 @@ const Notifications = () => {
     fetchNotifications();
   }, []);
 
+  // Filter and search notifications
+  const filteredNotifications = notifications.filter((notification) => {
+    const matchesSearch = notification.message.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter =
+      filter === "all" ||
+      (filter === "read" && notification.is_read) ||
+      (filter === "unread" && !notification.is_read);
+    return matchesSearch && matchesFilter;
+  });
+
   return (
     <Layout>
       <div className="notifications-container">
         <h1>Notifications</h1>
         <p>All your notifications in one place.</p>
+        {/* Search and Filter Controls */}
+        <div className="notifications-controls">
+          <input
+            type="text"
+            placeholder="Search notifications..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            className="notifications-search"
+          />
+          <select
+            value={filter}
+            onChange={e => setFilter(e.target.value)}
+            className="notifications-filter"
+          >
+            <option value="all">All</option>
+            <option value="unread">Unread</option>
+            <option value="read">Read</option>
+          </select>
+        </div>
         {loading ? (
           <p>Loading notifications...</p>
-        ) : notifications.length > 0 ? (
+        ) : filteredNotifications.length > 0 ? (
           <ul className="notifications-list">
-            {notifications.map((notification) => (
+            {filteredNotifications.map((notification) => (
               <li key={notification.notification_id} className={`notification-item ${notification.is_read ? 'read' : 'unread'}`}>
                 <div className="notification-content">
                   <p>{notification.message}</p>
@@ -56,7 +87,7 @@ const Notifications = () => {
             ))}
           </ul>
         ) : (
-          <p>You have no notifications.</p>
+          <p>No notifications found.</p>
         )}
       </div>
     </Layout>

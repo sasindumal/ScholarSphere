@@ -33,3 +33,44 @@
   display: block;
   margin-top: 0.5rem;
 }
+
+.notifications-controls {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.notifications-search {
+  padding: 10px 16px;
+  border-radius: 24px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.06);
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+  flex: 1;
+  min-width: 200px;
+}
+
+.notifications-search:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.15);
+}
+
+.notifications-filter {
+  padding: 10px 16px;
+  border-radius: 24px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.06);
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.notifications-filter:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.15);
+}
