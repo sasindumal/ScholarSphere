@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@faker-js/faker": "^9.8.0",
     "@prisma/client": "^6.10.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -24,7 +25,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "nodemon backend/server.js"
+    "dev": "nodemon backend/server.js",
+    "start:backend": "node backend/server.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "eslintConfig": {
     "extends": [
