@@ -190,6 +190,11 @@ model Notification {
   user            User     @relation(fields: [user_id], references: [user_id])
 }
 
+model Setting {
+  key   String @id
+  value String
+}
+
 // ENUMS
 
 enum Role {

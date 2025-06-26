@@ -33,7 +33,6 @@ const navItemsCoordinator = [
 const navItemsAdmin = [
   { label: 'Dashboard', path: '/admin-dashboard', icon: <DashboardIcon /> },
   { label: 'User Management', path: '/admin-users', icon: <UserIcon /> },
-  { label: 'System Settings', path: '/admin-settings', icon: <SettingsIcon /> },
   { label: 'Provider Management', path: '/admin-providers', icon: <ProviderIcon /> },
   { label: 'Payment Management', path: '/admin-payments', icon: <PaymentsIcon /> },
 ];

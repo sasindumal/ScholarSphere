@@ -260,6 +260,11 @@ exports.Prisma.NotificationScalarFieldEnum = {
   is_read: 'is_read'
 };
 
+exports.Prisma.SettingScalarFieldEnum = {
+  key: 'key',
+  value: 'value'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -346,6 +351,11 @@ exports.Prisma.SiblingEducationOrderByRelevanceFieldEnum = {
 exports.Prisma.NotificationOrderByRelevanceFieldEnum = {
   message: 'message'
 };
+
+exports.Prisma.SettingOrderByRelevanceFieldEnum = {
+  key: 'key',
+  value: 'value'
+};
 exports.Role = exports.$Enums.Role = {
   student: 'student',
   coordinator: 'coordinator',
@@ -395,7 +405,8 @@ exports.Prisma.ModelName = {
   CommitteeReview: 'CommitteeReview',
   Payment: 'Payment',
   SiblingEducation: 'SiblingEducation',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  Setting: 'Setting'
 };
 
 /**

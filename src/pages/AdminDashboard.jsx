@@ -29,11 +29,6 @@ const AdminDashboard = () => {
             <button onClick={() => navigate('/admin-users')} style={{ background: '#3182ce', color: '#fff', border: 'none', borderRadius: 8, padding: '12px 32px', fontWeight: 700, fontSize: 16, cursor: 'pointer', marginTop: 12 }}>Go to User Management</button>
           </div>
           <div style={cardStyle}>
-            <h2>System Settings</h2>
-            <p>Configure system-wide parameters and settings for ScholarSphere.</p>
-            <button onClick={() => navigate('/admin-settings')} style={{ background: '#805ad5', color: '#fff', border: 'none', borderRadius: 8, padding: '12px 32px', fontWeight: 700, fontSize: 16, cursor: 'pointer', marginTop: 12 }}>Go to System Settings</button>
-          </div>
-          <div style={cardStyle}>
             <h2>Provider Management</h2>
             <p>Manage scholarship providers, add new providers, and edit provider details.</p>
             <button onClick={() => navigate('/admin-providers')} style={{ background: '#38a169', color: '#fff', border: 'none', borderRadius: 8, padding: '12px 32px', fontWeight: 700, fontSize: 16, cursor: 'pointer', marginTop: 12 }}>Go to Provider Management</button>
