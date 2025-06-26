@@ -20,6 +20,13 @@ const navItems = [
   { label: 'Notifications', path: '/notifications', icon: <NotificationsIcon /> },
 ];
 
+const navItemsCoordinator = [
+  { label: 'Dashboard', path: '/coordinator-dashboard', icon: <DashboardIcon /> },
+  { label: 'Application Reviews', path: '/coordinator-applications', icon: <ApplicationsIcon /> },
+  { label: 'Scholarships', path: '/coordinator-scholarships', icon: <ScholarshipsIcon /> },
+  { label: 'Student Management', path: '/coordinator-students', icon: <ProfileIcon /> },
+];
+
 const Layout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -142,7 +149,7 @@ const Layout = ({ children }) => {
         </div>
         <nav className="sidebar-nav">
           <ul>
-            {navItems.map((item) => (
+            {(user && user.role === 'coordinator' ? navItemsCoordinator : navItems).map((item) => (
               <li key={item.path} className={location.pathname === item.path ? 'active' : ''}>
                 <Link to={item.path}>
                   {item.icon}

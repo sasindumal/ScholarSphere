@@ -15,6 +15,11 @@ import Profile from './pages/Profile';
 import Notifications from './pages/Notifications';
 import CoordinatorDashboard from './pages/CoordinatorDashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import CoordinatorApplications from './pages/CoordinatorApplications';
+import CoordinatorReviewDetails from './pages/CoordinatorReviewDetails';
+import CoordinatorScholarships from './pages/CoordinatorScholarships';
+import CoordinatorStudents from './pages/CoordinatorStudents';
+import CoordinatorReports from './pages/CoordinatorReports';
 
 function App() {
   return (
@@ -84,6 +89,46 @@ function App() {
           element={
             <ProtectedRoute>
               <Notifications />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/coordinator-applications"
+          element={
+            <ProtectedRoute role="coordinator">
+              <CoordinatorApplications />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/coordinator-review-details"
+          element={
+            <ProtectedRoute role="coordinator">
+              <CoordinatorReviewDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/coordinator-scholarships"
+          element={
+            <ProtectedRoute role="coordinator">
+              <CoordinatorScholarships />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/coordinator-students"
+          element={
+            <ProtectedRoute role="coordinator">
+              <CoordinatorStudents />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/coordinator-reports"
+          element={
+            <ProtectedRoute role="coordinator">
+              <CoordinatorReports />
             </ProtectedRoute>
           }
         />
