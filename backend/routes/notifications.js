@@ -40,13 +40,12 @@ router.get('/', authenticateToken, async (req, res) => {
   }
 });
 
-// Get recent (last 5) unread notifications
+// Get recent (last 5) notifications, regardless of read status
 router.get('/recent', authenticateToken, async (req, res) => {
   try {
     const notifications = await prisma.notification.findMany({
       where: {
         user_id: parseInt(req.user.userId),
-        is_read: false,
       },
       orderBy: {
         created_at: 'desc',

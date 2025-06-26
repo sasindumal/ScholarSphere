@@ -174,7 +174,10 @@ const Layout = ({ children }) => {
             </button>
             {notifOpen && (
               <div style={{ position: 'absolute', right: 0, top: 36, background: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', borderRadius: 8, width: 320, zIndex: 10, padding: 12 }}>
-                <div style={{ fontWeight: 600, marginBottom: 8 }}>Notifications</div>
+                <div style={{ fontWeight: 600, marginBottom: 4 }}>Notifications</div>
+                <div style={{ color: '#888', fontSize: 12, marginBottom: 8 }}>
+                  Showing your 5 most recent notifications
+                </div>
                 {latestNotifications.length === 0 ? (
                   <div style={{ color: '#888', fontSize: 14 }}>No notifications</div>
                 ) : (
