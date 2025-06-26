@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { PrismaClient } from '../generated/prisma';
 // The logo is now created with CSS in App.css
 
 // Icons for navigation
@@ -25,6 +26,38 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        console.log('Token:', token); // Debug log
+        
+        const response = await fetch('http://localhost:5001/api/user/profile', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        console.log('Response status:', response.status); // Debug log
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log('User data:', data); // Debug log
+          setUserData(data);
+        } else {
+          const errorData = await response.json();
+          console.error('Failed to fetch user data:', errorData);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -85,7 +118,7 @@ const Dashboard = () => {
             <div className="card">
               <div className="card-header"><span>Welcome</span><ProfileIcon /></div>
               <div className="card-body">
-                <p className="user-name">daaf afA</p>
+                <p className="user-name">{userData ? `${userData.first_name} ${userData.last_name}` : 'Loading...'}</p>
                 <p className="user-role">Student</p>
               </div>
             </div>
