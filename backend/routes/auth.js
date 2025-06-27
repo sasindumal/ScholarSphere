@@ -9,6 +9,10 @@ const router = express.Router();
 router.post('/signup', async (req, res) => {
   const { firstName, lastName, username, email, password } = req.body;
 
+  if (!password || password.length < 8) {
+    return res.status(400).json({ error: 'Password must be at least 8 characters long.' });
+  }
+
   try {
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {

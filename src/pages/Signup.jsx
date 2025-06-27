@@ -94,7 +94,7 @@ const Signup = () => {
           </div>
           <div className="form-group">
             <label htmlFor="email">University Email</label>
-            <input id="email" name="email" type="email" placeholder="you@university.edu" value={form.email} onChange={handleChange} required disabled={loading} />
+            <input id="email" name="email" type="email" placeholder="20YYEXX@eng.jfn.ac.lk" value={form.email} onChange={handleChange} required disabled={loading} />
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
