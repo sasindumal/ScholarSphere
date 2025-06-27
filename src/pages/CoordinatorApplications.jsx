@@ -181,6 +181,29 @@ const CoordinatorApplications = () => {
     setPreviewModal({ open: false, url: '', type: '', name: '' });
   };
 
+  // Manual override for eligibility status
+  const handleOverrideEligibility = async (applicationId, newStatus) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5001/api/applications/${applicationId}/eligibility-status`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ eligibility_status: newStatus })
+      });
+      if (response.ok) {
+        await fetchApplications();
+      } else {
+        alert('Failed to update eligibility status.');
+      }
+    } catch (err) {
+      alert('Error updating eligibility status.');
+      console.error(err);
+    }
+  };
+
   const renderContent = () => {
     if (loading) {
       return <div className="loading-container"><div className="loading-spinner"></div><p>Loading applications...</p></div>;
@@ -458,6 +481,49 @@ const CoordinatorApplications = () => {
                     </tbody>
                   </table>
                 ) : <p>No documents uploaded.</p>}
+              </div>
+
+              {/* Eligibility Breakdown */}
+              <div className="review-section">
+                <h4>Eligibility Evaluation</h4>
+                {app.eligibility_breakdown && app.eligibility_breakdown.length > 0 ? (
+                  <table style={{ width: '100%', marginBottom: 10, background: '#f9fafb', borderRadius: 8 }}>
+                    <thead>
+                      <tr style={{ background: '#f1f5f9' }}>
+                        <th style={{ padding: '8px 12px', textAlign: 'left' }}>Criteria</th>
+                        <th style={{ padding: '8px 12px', textAlign: 'left' }}>Required</th>
+                        <th style={{ padding: '8px 12px', textAlign: 'left' }}>Student Value</th>
+                        <th style={{ padding: '8px 12px', textAlign: 'left' }}>Points</th>
+                        <th style={{ padding: '8px 12px', textAlign: 'left' }}>Met?</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {app.eligibility_breakdown.map((row, idx) => (
+                        <tr key={idx}>
+                          <td style={{ padding: '8px 12px' }}>{row.criteria}</td>
+                          <td style={{ padding: '8px 12px' }}>{row.required}</td>
+                          <td style={{ padding: '8px 12px' }}>{row.studentValue}</td>
+                          <td style={{ padding: '8px 12px' }}>{row.points}</td>
+                          <td style={{ padding: '8px 12px' }}>{row.met ? '✅' : '❌'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : <p>No eligibility criteria found for this scholarship.</p>}
+                <div style={{ marginTop: 8, fontWeight: 600 }}>
+                  <span>Total Points: {app.total_points ?? '-'}</span>
+                  <span style={{ marginLeft: 24 }}>Status: <span style={{ color: app.eligibility_status === 'eligible' ? '#059669' : app.eligibility_status === 'eligible_by_points' ? '#2563eb' : '#b91c1c', fontWeight: 700 }}>{app.eligibility_status?.replace(/_/g, ' ') ?? '-'}</span></span>
+                </div>
+                {/* Manual override for eligibility status */}
+                <div style={{ marginTop: 10 }}>
+                  <label style={{ fontWeight: 500, marginRight: 8 }}>Override Eligibility Status:</label>
+                  <select value={app.eligibility_status || ''} onChange={e => handleOverrideEligibility(app.application_id, e.target.value)} style={{ padding: 6, borderRadius: 6, border: '1px solid #ccc' }}>
+                    <option value="">(No Override)</option>
+                    <option value="eligible">Eligible (All Criteria Met)</option>
+                    <option value="eligible_by_points">Eligible by Points</option>
+                    <option value="not_eligible">Not Eligible</option>
+                  </select>
+                </div>
               </div>
 
               {app.reviewer_comments && (

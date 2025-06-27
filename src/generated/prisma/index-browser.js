@@ -186,6 +186,7 @@ exports.Prisma.ApplicationScalarFieldEnum = {
   submission_date: 'submission_date',
   status: 'status',
   total_points: 'total_points',
+  eligibility_status: 'eligibility_status',
   reviewer_comments: 'reviewer_comments',
   review_date: 'review_date'
 };
@@ -312,6 +313,7 @@ exports.Prisma.NullsOrder = {
 };
 
 exports.Prisma.ApplicationOrderByRelevanceFieldEnum = {
+  eligibility_status: 'eligibility_status',
   reviewer_comments: 'reviewer_comments'
 };
 

@@ -94,6 +94,7 @@ model Application {
   submission_date   DateTime
   status            ApplicationStatus @default(pending)
   total_points      Int?
+  eligibility_status String?
   reviewer_comments String?
   review_date       DateTime?
 

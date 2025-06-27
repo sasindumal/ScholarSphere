@@ -17,6 +17,57 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+// Helper: Evaluate eligibility and points
+async function evaluateEligibility(application, student, scholarship_id) {
+  // Fetch criteria for the scholarship
+  const criteria = await prisma.eligibilityCriteria.findMany({ where: { scholarship_id: parseInt(scholarship_id) } });
+  let totalPoints = 0;
+  let maxPoints = 0;
+  let allCriteriaMet = true;
+  const breakdown = [];
+  for (const crit of criteria) {
+    let studentValue = null;
+    // Map criteria_name to student fields (customize as needed)
+    switch (crit.criteria_name.toLowerCase()) {
+      case 'minimum gpa':
+      case 'gpa':
+        studentValue = student.gpa || 0;
+        break;
+      case 'family annual income':
+      case 'income':
+        studentValue = student.annual_income || 0;
+        break;
+      case 'year of study':
+        studentValue = student.year_of_study || 0;
+        break;
+      default:
+        studentValue = student[crit.criteria_name.replace(/\s+/g, '_').toLowerCase()] || 0;
+    }
+    let met = true;
+    if (studentValue < crit.min_value || studentValue > crit.max_value) {
+      met = false;
+      allCriteriaMet = false;
+    }
+    const points = met ? crit.weight : 0;
+    totalPoints += points;
+    maxPoints += crit.weight;
+    breakdown.push({
+      criteria: crit.criteria_name,
+      required: `${crit.min_value} - ${crit.max_value}`,
+      studentValue,
+      points,
+      met
+    });
+  }
+  // Points threshold (e.g., 70% of max)
+  const threshold = 0.7;
+  const pointsEligible = maxPoints > 0 ? (totalPoints / maxPoints) >= threshold : false;
+  let status = 'not_eligible';
+  if (allCriteriaMet) status = 'eligible';
+  else if (pointsEligible) status = 'eligible_by_points';
+  return { totalPoints, status, breakdown };
+}
+
 // Get all applications for the logged-in student
 router.get('/', authenticateToken, async (req, res) => {
   try {
@@ -104,6 +155,13 @@ router.get('/all', authenticateToken, async (req, res) => {
       },
       orderBy: { submission_date: 'desc' },
     });
+    // For each application, evaluate eligibility and attach breakdown
+    for (const app of applications) {
+      const eligibility = await evaluateEligibility(app, app.student, app.scholarship.scholarship_id);
+      app.eligibility_breakdown = eligibility.breakdown;
+      app.total_points = eligibility.totalPoints;
+      app.eligibility_status = eligibility.status;
+    }
     res.json(applications);
   } catch (error) {
     console.error('Error fetching all applications:', error);
@@ -189,17 +247,22 @@ router.post('/', authenticateToken, async (req, res) => {
   try {
     const student = await prisma.student.findUnique({
       where: { user_id: parseInt(req.user.userId) },
+      include: { familyMembers: true, otherFunding: true },
     });
     if (!student) {
       return res.status(404).json({ error: 'Student profile not found.' });
     }
     const { scholarship_id } = req.body;
+    // Evaluate eligibility
+    const eligibility = await evaluateEligibility({}, student, scholarship_id);
     const application = await prisma.application.create({
       data: {
         student_id: student.student_id,
         scholarship_id: parseInt(scholarship_id),
         submission_date: new Date(),
         status: 'pending',
+        total_points: eligibility.totalPoints,
+        eligibility_status: eligibility.status,
       },
     });
     // Notify all coordinators
@@ -243,6 +306,25 @@ router.post('/notify-student', authenticateToken, async (req, res) => {
     res.json({ message: 'Notification sent to student.' });
   } catch (error) {
     console.error('Error sending custom notification:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/applications/:id/eligibility-status
+router.post('/:id/eligibility-status', authenticateToken, async (req, res) => {
+  try {
+    if (req.user.role !== 'coordinator') {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+    const { eligibility_status } = req.body;
+    const { id } = req.params;
+    const updated = await prisma.application.update({
+      where: { application_id: parseInt(id) },
+      data: { eligibility_status },
+    });
+    res.json(updated);
+  } catch (error) {
+    console.error('Error updating eligibility status:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

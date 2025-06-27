@@ -7680,6 +7680,7 @@ export namespace Prisma {
     submission_date: Date | null
     status: $Enums.ApplicationStatus | null
     total_points: number | null
+    eligibility_status: string | null
     reviewer_comments: string | null
     review_date: Date | null
   }
@@ -7691,6 +7692,7 @@ export namespace Prisma {
     submission_date: Date | null
     status: $Enums.ApplicationStatus | null
     total_points: number | null
+    eligibility_status: string | null
     reviewer_comments: string | null
     review_date: Date | null
   }
@@ -7702,6 +7704,7 @@ export namespace Prisma {
     submission_date: number
     status: number
     total_points: number
+    eligibility_status: number
     reviewer_comments: number
     review_date: number
     _all: number
@@ -7729,6 +7732,7 @@ export namespace Prisma {
     submission_date?: true
     status?: true
     total_points?: true
+    eligibility_status?: true
     reviewer_comments?: true
     review_date?: true
   }
@@ -7740,6 +7744,7 @@ export namespace Prisma {
     submission_date?: true
     status?: true
     total_points?: true
+    eligibility_status?: true
     reviewer_comments?: true
     review_date?: true
   }
@@ -7751,6 +7756,7 @@ export namespace Prisma {
     submission_date?: true
     status?: true
     total_points?: true
+    eligibility_status?: true
     reviewer_comments?: true
     review_date?: true
     _all?: true
@@ -7849,6 +7855,7 @@ export namespace Prisma {
     submission_date: Date
     status: $Enums.ApplicationStatus
     total_points: number | null
+    eligibility_status: string | null
     reviewer_comments: string | null
     review_date: Date | null
     _count: ApplicationCountAggregateOutputType | null
@@ -7879,6 +7886,7 @@ export namespace Prisma {
     submission_date?: boolean
     status?: boolean
     total_points?: boolean
+    eligibility_status?: boolean
     reviewer_comments?: boolean
     review_date?: boolean
     student?: boolean | StudentDefaultArgs<ExtArgs>
@@ -7898,11 +7906,12 @@ export namespace Prisma {
     submission_date?: boolean
     status?: boolean
     total_points?: boolean
+    eligibility_status?: boolean
     reviewer_comments?: boolean
     review_date?: boolean
   }
 
-  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"application_id" | "student_id" | "scholarship_id" | "submission_date" | "status" | "total_points" | "reviewer_comments" | "review_date", ExtArgs["result"]["application"]>
+  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"application_id" | "student_id" | "scholarship_id" | "submission_date" | "status" | "total_points" | "eligibility_status" | "reviewer_comments" | "review_date", ExtArgs["result"]["application"]>
   export type ApplicationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     student?: boolean | StudentDefaultArgs<ExtArgs>
     scholarship?: boolean | ScholarshipDefaultArgs<ExtArgs>
@@ -7928,6 +7937,7 @@ export namespace Prisma {
       submission_date: Date
       status: $Enums.ApplicationStatus
       total_points: number | null
+      eligibility_status: string | null
       reviewer_comments: string | null
       review_date: Date | null
     }, ExtArgs["result"]["application"]>
@@ -8310,6 +8320,7 @@ export namespace Prisma {
     readonly submission_date: FieldRef<"Application", 'DateTime'>
     readonly status: FieldRef<"Application", 'ApplicationStatus'>
     readonly total_points: FieldRef<"Application", 'Int'>
+    readonly eligibility_status: FieldRef<"Application", 'String'>
     readonly reviewer_comments: FieldRef<"Application", 'String'>
     readonly review_date: FieldRef<"Application", 'DateTime'>
   }
@@ -16697,6 +16708,7 @@ export namespace Prisma {
     submission_date: 'submission_date',
     status: 'status',
     total_points: 'total_points',
+    eligibility_status: 'eligibility_status',
     reviewer_comments: 'reviewer_comments',
     review_date: 'review_date'
   };
@@ -16871,6 +16883,7 @@ export namespace Prisma {
 
 
   export const ApplicationOrderByRelevanceFieldEnum: {
+    eligibility_status: 'eligibility_status',
     reviewer_comments: 'reviewer_comments'
   };
 
@@ -17464,6 +17477,7 @@ export namespace Prisma {
     submission_date?: DateTimeFilter<"Application"> | Date | string
     status?: EnumApplicationStatusFilter<"Application"> | $Enums.ApplicationStatus
     total_points?: IntNullableFilter<"Application"> | number | null
+    eligibility_status?: StringNullableFilter<"Application"> | string | null
     reviewer_comments?: StringNullableFilter<"Application"> | string | null
     review_date?: DateTimeNullableFilter<"Application"> | Date | string | null
     student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
@@ -17480,6 +17494,7 @@ export namespace Prisma {
     submission_date?: SortOrder
     status?: SortOrder
     total_points?: SortOrderInput | SortOrder
+    eligibility_status?: SortOrderInput | SortOrder
     reviewer_comments?: SortOrderInput | SortOrder
     review_date?: SortOrderInput | SortOrder
     student?: StudentOrderByWithRelationInput
@@ -17500,6 +17515,7 @@ export namespace Prisma {
     submission_date?: DateTimeFilter<"Application"> | Date | string
     status?: EnumApplicationStatusFilter<"Application"> | $Enums.ApplicationStatus
     total_points?: IntNullableFilter<"Application"> | number | null
+    eligibility_status?: StringNullableFilter<"Application"> | string | null
     reviewer_comments?: StringNullableFilter<"Application"> | string | null
     review_date?: DateTimeNullableFilter<"Application"> | Date | string | null
     student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
@@ -17516,6 +17532,7 @@ export namespace Prisma {
     submission_date?: SortOrder
     status?: SortOrder
     total_points?: SortOrderInput | SortOrder
+    eligibility_status?: SortOrderInput | SortOrder
     reviewer_comments?: SortOrderInput | SortOrder
     review_date?: SortOrderInput | SortOrder
     _count?: ApplicationCountOrderByAggregateInput
@@ -17535,6 +17552,7 @@ export namespace Prisma {
     submission_date?: DateTimeWithAggregatesFilter<"Application"> | Date | string
     status?: EnumApplicationStatusWithAggregatesFilter<"Application"> | $Enums.ApplicationStatus
     total_points?: IntNullableWithAggregatesFilter<"Application"> | number | null
+    eligibility_status?: StringNullableWithAggregatesFilter<"Application"> | string | null
     reviewer_comments?: StringNullableWithAggregatesFilter<"Application"> | string | null
     review_date?: DateTimeNullableWithAggregatesFilter<"Application"> | Date | string | null
   }
@@ -18513,6 +18531,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
     student: StudentCreateNestedOneWithoutApplicationsInput
@@ -18529,6 +18548,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
     documents?: DocumentUncheckedCreateNestedManyWithoutApplicationInput
@@ -18540,6 +18560,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student?: StudentUpdateOneRequiredWithoutApplicationsNestedInput
@@ -18556,6 +18577,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     documents?: DocumentUncheckedUpdateManyWithoutApplicationNestedInput
@@ -18570,6 +18592,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
   }
@@ -18578,6 +18601,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -18589,6 +18613,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -19711,6 +19736,7 @@ export namespace Prisma {
     submission_date?: SortOrder
     status?: SortOrder
     total_points?: SortOrder
+    eligibility_status?: SortOrder
     reviewer_comments?: SortOrder
     review_date?: SortOrder
   }
@@ -19729,6 +19755,7 @@ export namespace Prisma {
     submission_date?: SortOrder
     status?: SortOrder
     total_points?: SortOrder
+    eligibility_status?: SortOrder
     reviewer_comments?: SortOrder
     review_date?: SortOrder
   }
@@ -19740,6 +19767,7 @@ export namespace Prisma {
     submission_date?: SortOrder
     status?: SortOrder
     total_points?: SortOrder
+    eligibility_status?: SortOrder
     reviewer_comments?: SortOrder
     review_date?: SortOrder
   }
@@ -21739,6 +21767,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
     scholarship: ScholarshipCreateNestedOneWithoutApplicationsInput
@@ -21753,6 +21782,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
     documents?: DocumentUncheckedCreateNestedManyWithoutApplicationInput
@@ -21946,6 +21976,7 @@ export namespace Prisma {
     submission_date?: DateTimeFilter<"Application"> | Date | string
     status?: EnumApplicationStatusFilter<"Application"> | $Enums.ApplicationStatus
     total_points?: IntNullableFilter<"Application"> | number | null
+    eligibility_status?: StringNullableFilter<"Application"> | string | null
     reviewer_comments?: StringNullableFilter<"Application"> | string | null
     review_date?: DateTimeNullableFilter<"Application"> | Date | string | null
   }
@@ -22190,6 +22221,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
     student: StudentCreateNestedOneWithoutApplicationsInput
@@ -22204,6 +22236,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
     documents?: DocumentUncheckedCreateNestedManyWithoutApplicationInput
@@ -22678,6 +22711,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
     student: StudentCreateNestedOneWithoutApplicationsInput
@@ -22693,6 +22727,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
     reviews?: CommitteeReviewUncheckedCreateNestedManyWithoutApplicationInput
@@ -22763,6 +22798,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student?: StudentUpdateOneRequiredWithoutApplicationsNestedInput
@@ -22778,6 +22814,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviews?: CommitteeReviewUncheckedUpdateManyWithoutApplicationNestedInput
@@ -23067,6 +23104,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
     student: StudentCreateNestedOneWithoutApplicationsInput
@@ -23082,6 +23120,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
     documents?: DocumentUncheckedCreateNestedManyWithoutApplicationInput
@@ -23138,6 +23177,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student?: StudentUpdateOneRequiredWithoutApplicationsNestedInput
@@ -23153,6 +23193,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     documents?: DocumentUncheckedUpdateManyWithoutApplicationNestedInput
@@ -23199,6 +23240,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
     student: StudentCreateNestedOneWithoutApplicationsInput
@@ -23214,6 +23256,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
     documents?: DocumentUncheckedCreateNestedManyWithoutApplicationInput
@@ -23240,6 +23283,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student?: StudentUpdateOneRequiredWithoutApplicationsNestedInput
@@ -23255,6 +23299,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     documents?: DocumentUncheckedUpdateManyWithoutApplicationNestedInput
@@ -23555,6 +23600,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
   }
@@ -23601,6 +23647,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     scholarship?: ScholarshipUpdateOneRequiredWithoutApplicationsNestedInput
@@ -23615,6 +23662,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     documents?: DocumentUncheckedUpdateManyWithoutApplicationNestedInput
@@ -23628,6 +23676,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -23810,6 +23859,7 @@ export namespace Prisma {
     submission_date: Date | string
     status?: $Enums.ApplicationStatus
     total_points?: number | null
+    eligibility_status?: string | null
     reviewer_comments?: string | null
     review_date?: Date | string | null
   }
@@ -23844,6 +23894,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student?: StudentUpdateOneRequiredWithoutApplicationsNestedInput
@@ -23858,6 +23909,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     documents?: DocumentUncheckedUpdateManyWithoutApplicationNestedInput
@@ -23871,6 +23923,7 @@ export namespace Prisma {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     total_points?: NullableIntFieldUpdateOperationsInput | number | null
+    eligibility_status?: NullableStringFieldUpdateOperationsInput | string | null
     reviewer_comments?: NullableStringFieldUpdateOperationsInput | string | null
     review_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }

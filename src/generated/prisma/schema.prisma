@@ -87,14 +87,15 @@ model EligibilityCriteria {
 }
 
 model Application {
-  application_id    Int               @id @default(autoincrement())
-  student_id        Int
-  scholarship_id    Int
-  submission_date   DateTime
-  status            ApplicationStatus @default(pending)
-  total_points      Int?
-  reviewer_comments String?
-  review_date       DateTime?
+  application_id     Int               @id @default(autoincrement())
+  student_id         Int
+  scholarship_id     Int
+  submission_date    DateTime
+  status             ApplicationStatus @default(pending)
+  total_points       Int?
+  eligibility_status String?
+  reviewer_comments  String?
+  review_date        DateTime?
 
   student     Student           @relation(fields: [student_id], references: [student_id])
   scholarship Scholarship       @relation(fields: [scholarship_id], references: [scholarship_id])
