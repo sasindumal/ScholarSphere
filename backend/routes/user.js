@@ -3,6 +3,8 @@ const router = express.Router();
 const { PrismaClient } = require('../../src/generated/prisma');
 const prisma = new PrismaClient();
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 16 * 1024 * 1024 } }); // 16MB limit
 
 // Middleware to verify JWT token
 const authenticateToken = (req, res, next) => {
@@ -396,6 +398,142 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     res.json({ message: 'User deleted' });
   } catch (error) {
     console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Upload documents (NIC front, NIC back, GS certificate)
+router.post('/documents', authenticateToken, upload.fields([
+  { name: 'nicFront', maxCount: 1 },
+  { name: 'nicBack', maxCount: 1 },
+  { name: 'gsCertificate', maxCount: 1 },
+]), async (req, res) => {
+  try {
+    const userId = parseInt(req.user.userId);
+    // Find student and latest application
+    const user = await prisma.user.findUnique({
+      where: { user_id: userId },
+      select: { student: { select: { student_id: true, applications: { orderBy: { submission_date: 'desc' }, take: 1 } } } }
+    });
+    if (!user || !user.student) return res.status(404).json({ error: 'Student profile not found' });
+    let applicationId;
+    if (user.student.applications.length > 0) {
+      applicationId = user.student.applications[0].application_id;
+    } else {
+      // Create a new application if none exists (dummy for document storage)
+      const app = await prisma.application.create({
+        data: {
+          student_id: user.student.student_id,
+          scholarship_id: 1, // You may want to adjust this logic
+          submission_date: new Date(),
+          status: 'pending',
+        },
+      });
+      applicationId = app.application_id;
+    }
+    const files = req.files;
+    const now = new Date();
+    const docs = [];
+    if (files.nicFront) {
+      docs.push(await prisma.document.create({
+        data: {
+          application_id: applicationId,
+          document_type: 'NIC Front',
+          file_name: files.nicFront[0].originalname,
+          file_data: files.nicFront[0].buffer,
+          upload_date: now,
+        },
+      }));
+    }
+    if (files.nicBack) {
+      docs.push(await prisma.document.create({
+        data: {
+          application_id: applicationId,
+          document_type: 'NIC Back',
+          file_name: files.nicBack[0].originalname,
+          file_data: files.nicBack[0].buffer,
+          upload_date: now,
+        },
+      }));
+    }
+    if (files.gsCertificate) {
+      docs.push(await prisma.document.create({
+        data: {
+          application_id: applicationId,
+          document_type: 'GS Certificate',
+          file_name: files.gsCertificate[0].originalname,
+          file_data: files.gsCertificate[0].buffer,
+          upload_date: now,
+        },
+      }));
+    }
+    res.status(201).json({ message: 'Documents uploaded', documents: docs });
+  } catch (error) {
+    console.error('Error uploading documents:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Fetch all documents for the logged-in user
+router.get('/documents', authenticateToken, async (req, res) => {
+  try {
+    const userId = parseInt(req.user.userId);
+    const user = await prisma.user.findUnique({
+      where: { user_id: userId },
+      select: { student: { select: { student_id: true, applications: { select: { application_id: true, documents: true } } } } }
+    });
+    if (!user || !user.student) return res.status(404).json({ error: 'Student profile not found' });
+    // Flatten all documents from all applications
+    const documents = user.student.applications.flatMap(app => app.documents);
+    // Only return metadata, not file_data
+    res.json(documents.map(doc => ({
+      document_id: doc.document_id,
+      document_type: doc.document_type,
+      file_name: doc.file_name,
+      upload_date: doc.upload_date,
+      verification_status: doc.verification_status
+    })));
+  } catch (error) {
+    console.error('Error fetching documents:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Download a specific document
+router.get('/documents/:id', authenticateToken, async (req, res) => {
+  try {
+    const docId = parseInt(req.params.id);
+    const doc = await prisma.document.findUnique({ where: { document_id: docId } });
+    if (!doc) return res.status(404).json({ error: 'Document not found' });
+    res.setHeader('Content-Disposition', `attachment; filename="${doc.file_name}"`);
+    res.setHeader('Content-Type', 'application/octet-stream');
+    res.send(doc.file_data);
+  } catch (error) {
+    console.error('Error downloading document:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Delete a specific document
+router.delete('/documents/:id', authenticateToken, async (req, res) => {
+  try {
+    const docId = parseInt(req.params.id);
+    const userId = parseInt(req.user.userId);
+    // Find the document and ensure it belongs to the user's applications
+    const user = await prisma.user.findUnique({
+      where: { user_id: userId },
+      select: { student: { select: { applications: { select: { application_id: true } } } } }
+    });
+    if (!user || !user.student) return res.status(404).json({ error: 'Student profile not found' });
+    const appIds = user.student.applications.map(app => app.application_id);
+    const doc = await prisma.document.findUnique({ where: { document_id: docId } });
+    if (!doc || !appIds.includes(doc.application_id)) {
+      return res.status(403).json({ error: 'Not authorized to delete this document' });
+    }
+    await prisma.document.delete({ where: { document_id: docId } });
+    res.json({ message: 'Document deleted' });
+  } catch (error) {
+    console.error('Error deleting document:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

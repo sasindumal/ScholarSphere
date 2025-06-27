@@ -8735,7 +8735,7 @@ export namespace Prisma {
     application_id: number | null
     document_type: string | null
     file_name: string | null
-    file_path: string | null
+    file_data: Uint8Array | null
     upload_date: Date | null
     verification_status: $Enums.VerificationStatus | null
   }
@@ -8745,7 +8745,7 @@ export namespace Prisma {
     application_id: number | null
     document_type: string | null
     file_name: string | null
-    file_path: string | null
+    file_data: Uint8Array | null
     upload_date: Date | null
     verification_status: $Enums.VerificationStatus | null
   }
@@ -8755,7 +8755,7 @@ export namespace Prisma {
     application_id: number
     document_type: number
     file_name: number
-    file_path: number
+    file_data: number
     upload_date: number
     verification_status: number
     _all: number
@@ -8777,7 +8777,7 @@ export namespace Prisma {
     application_id?: true
     document_type?: true
     file_name?: true
-    file_path?: true
+    file_data?: true
     upload_date?: true
     verification_status?: true
   }
@@ -8787,7 +8787,7 @@ export namespace Prisma {
     application_id?: true
     document_type?: true
     file_name?: true
-    file_path?: true
+    file_data?: true
     upload_date?: true
     verification_status?: true
   }
@@ -8797,7 +8797,7 @@ export namespace Prisma {
     application_id?: true
     document_type?: true
     file_name?: true
-    file_path?: true
+    file_data?: true
     upload_date?: true
     verification_status?: true
     _all?: true
@@ -8894,7 +8894,7 @@ export namespace Prisma {
     application_id: number
     document_type: string
     file_name: string
-    file_path: string
+    file_data: Uint8Array | null
     upload_date: Date
     verification_status: $Enums.VerificationStatus
     _count: DocumentCountAggregateOutputType | null
@@ -8923,7 +8923,7 @@ export namespace Prisma {
     application_id?: boolean
     document_type?: boolean
     file_name?: boolean
-    file_path?: boolean
+    file_data?: boolean
     upload_date?: boolean
     verification_status?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
@@ -8936,12 +8936,12 @@ export namespace Prisma {
     application_id?: boolean
     document_type?: boolean
     file_name?: boolean
-    file_path?: boolean
+    file_data?: boolean
     upload_date?: boolean
     verification_status?: boolean
   }
 
-  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"document_id" | "application_id" | "document_type" | "file_name" | "file_path" | "upload_date" | "verification_status", ExtArgs["result"]["document"]>
+  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"document_id" | "application_id" | "document_type" | "file_name" | "file_data" | "upload_date" | "verification_status", ExtArgs["result"]["document"]>
   export type DocumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
   }
@@ -8956,7 +8956,7 @@ export namespace Prisma {
       application_id: number
       document_type: string
       file_name: string
-      file_path: string
+      file_data: Uint8Array | null
       upload_date: Date
       verification_status: $Enums.VerificationStatus
     }, ExtArgs["result"]["document"]>
@@ -9333,7 +9333,7 @@ export namespace Prisma {
     readonly application_id: FieldRef<"Document", 'Int'>
     readonly document_type: FieldRef<"Document", 'String'>
     readonly file_name: FieldRef<"Document", 'String'>
-    readonly file_path: FieldRef<"Document", 'String'>
+    readonly file_data: FieldRef<"Document", 'Bytes'>
     readonly upload_date: FieldRef<"Document", 'DateTime'>
     readonly verification_status: FieldRef<"Document", 'VerificationStatus'>
   }
@@ -16653,7 +16653,7 @@ export namespace Prisma {
     application_id: 'application_id',
     document_type: 'document_type',
     file_name: 'file_name',
-    file_path: 'file_path',
+    file_data: 'file_data',
     upload_date: 'upload_date',
     verification_status: 'verification_status'
   };
@@ -16822,8 +16822,7 @@ export namespace Prisma {
 
   export const DocumentOrderByRelevanceFieldEnum: {
     document_type: 'document_type',
-    file_name: 'file_name',
-    file_path: 'file_path'
+    file_name: 'file_name'
   };
 
   export type DocumentOrderByRelevanceFieldEnum = (typeof DocumentOrderByRelevanceFieldEnum)[keyof typeof DocumentOrderByRelevanceFieldEnum]
@@ -16945,6 +16944,13 @@ export namespace Prisma {
    * Reference to a field of type 'ApplicationStatus'
    */
   export type EnumApplicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'Bytes'
+   */
+  export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes'>
     
 
 
@@ -17481,7 +17487,7 @@ export namespace Prisma {
     application_id?: IntFilter<"Document"> | number
     document_type?: StringFilter<"Document"> | string
     file_name?: StringFilter<"Document"> | string
-    file_path?: StringFilter<"Document"> | string
+    file_data?: BytesNullableFilter<"Document"> | Uint8Array | null
     upload_date?: DateTimeFilter<"Document"> | Date | string
     verification_status?: EnumVerificationStatusFilter<"Document"> | $Enums.VerificationStatus
     application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
@@ -17492,7 +17498,7 @@ export namespace Prisma {
     application_id?: SortOrder
     document_type?: SortOrder
     file_name?: SortOrder
-    file_path?: SortOrder
+    file_data?: SortOrderInput | SortOrder
     upload_date?: SortOrder
     verification_status?: SortOrder
     application?: ApplicationOrderByWithRelationInput
@@ -17507,7 +17513,7 @@ export namespace Prisma {
     application_id?: IntFilter<"Document"> | number
     document_type?: StringFilter<"Document"> | string
     file_name?: StringFilter<"Document"> | string
-    file_path?: StringFilter<"Document"> | string
+    file_data?: BytesNullableFilter<"Document"> | Uint8Array | null
     upload_date?: DateTimeFilter<"Document"> | Date | string
     verification_status?: EnumVerificationStatusFilter<"Document"> | $Enums.VerificationStatus
     application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
@@ -17518,7 +17524,7 @@ export namespace Prisma {
     application_id?: SortOrder
     document_type?: SortOrder
     file_name?: SortOrder
-    file_path?: SortOrder
+    file_data?: SortOrderInput | SortOrder
     upload_date?: SortOrder
     verification_status?: SortOrder
     _count?: DocumentCountOrderByAggregateInput
@@ -17536,7 +17542,7 @@ export namespace Prisma {
     application_id?: IntWithAggregatesFilter<"Document"> | number
     document_type?: StringWithAggregatesFilter<"Document"> | string
     file_name?: StringWithAggregatesFilter<"Document"> | string
-    file_path?: StringWithAggregatesFilter<"Document"> | string
+    file_data?: BytesNullableWithAggregatesFilter<"Document"> | Uint8Array | null
     upload_date?: DateTimeWithAggregatesFilter<"Document"> | Date | string
     verification_status?: EnumVerificationStatusWithAggregatesFilter<"Document"> | $Enums.VerificationStatus
   }
@@ -18518,7 +18524,7 @@ export namespace Prisma {
   export type DocumentCreateInput = {
     document_type: string
     file_name: string
-    file_path: string
+    file_data?: Uint8Array | null
     upload_date: Date | string
     verification_status?: $Enums.VerificationStatus
     application: ApplicationCreateNestedOneWithoutDocumentsInput
@@ -18529,7 +18535,7 @@ export namespace Prisma {
     application_id: number
     document_type: string
     file_name: string
-    file_path: string
+    file_data?: Uint8Array | null
     upload_date: Date | string
     verification_status?: $Enums.VerificationStatus
   }
@@ -18537,7 +18543,7 @@ export namespace Prisma {
   export type DocumentUpdateInput = {
     document_type?: StringFieldUpdateOperationsInput | string
     file_name?: StringFieldUpdateOperationsInput | string
-    file_path?: StringFieldUpdateOperationsInput | string
+    file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
     upload_date?: DateTimeFieldUpdateOperationsInput | Date | string
     verification_status?: EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
     application?: ApplicationUpdateOneRequiredWithoutDocumentsNestedInput
@@ -18548,7 +18554,7 @@ export namespace Prisma {
     application_id?: IntFieldUpdateOperationsInput | number
     document_type?: StringFieldUpdateOperationsInput | string
     file_name?: StringFieldUpdateOperationsInput | string
-    file_path?: StringFieldUpdateOperationsInput | string
+    file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
     upload_date?: DateTimeFieldUpdateOperationsInput | Date | string
     verification_status?: EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   }
@@ -18558,7 +18564,7 @@ export namespace Prisma {
     application_id: number
     document_type: string
     file_name: string
-    file_path: string
+    file_data?: Uint8Array | null
     upload_date: Date | string
     verification_status?: $Enums.VerificationStatus
   }
@@ -18566,7 +18572,7 @@ export namespace Prisma {
   export type DocumentUpdateManyMutationInput = {
     document_type?: StringFieldUpdateOperationsInput | string
     file_name?: StringFieldUpdateOperationsInput | string
-    file_path?: StringFieldUpdateOperationsInput | string
+    file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
     upload_date?: DateTimeFieldUpdateOperationsInput | Date | string
     verification_status?: EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   }
@@ -18576,7 +18582,7 @@ export namespace Prisma {
     application_id?: IntFieldUpdateOperationsInput | number
     document_type?: StringFieldUpdateOperationsInput | string
     file_name?: StringFieldUpdateOperationsInput | string
-    file_path?: StringFieldUpdateOperationsInput | string
+    file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
     upload_date?: DateTimeFieldUpdateOperationsInput | Date | string
     verification_status?: EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   }
@@ -19725,6 +19731,13 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type BytesNullableFilter<$PrismaModel = never> = {
+    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel> | null
+    in?: Uint8Array[] | null
+    notIn?: Uint8Array[] | null
+    not?: NestedBytesNullableFilter<$PrismaModel> | Uint8Array | null
+  }
+
   export type EnumVerificationStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.VerificationStatus | EnumVerificationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.VerificationStatus[]
@@ -19748,7 +19761,7 @@ export namespace Prisma {
     application_id?: SortOrder
     document_type?: SortOrder
     file_name?: SortOrder
-    file_path?: SortOrder
+    file_data?: SortOrder
     upload_date?: SortOrder
     verification_status?: SortOrder
   }
@@ -19763,7 +19776,7 @@ export namespace Prisma {
     application_id?: SortOrder
     document_type?: SortOrder
     file_name?: SortOrder
-    file_path?: SortOrder
+    file_data?: SortOrder
     upload_date?: SortOrder
     verification_status?: SortOrder
   }
@@ -19773,7 +19786,7 @@ export namespace Prisma {
     application_id?: SortOrder
     document_type?: SortOrder
     file_name?: SortOrder
-    file_path?: SortOrder
+    file_data?: SortOrder
     upload_date?: SortOrder
     verification_status?: SortOrder
   }
@@ -19781,6 +19794,16 @@ export namespace Prisma {
   export type DocumentSumOrderByAggregateInput = {
     document_id?: SortOrder
     application_id?: SortOrder
+  }
+
+  export type BytesNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel> | null
+    in?: Uint8Array[] | null
+    notIn?: Uint8Array[] | null
+    not?: NestedBytesNullableWithAggregatesFilter<$PrismaModel> | Uint8Array | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBytesNullableFilter<$PrismaModel>
+    _max?: NestedBytesNullableFilter<$PrismaModel>
   }
 
   export type EnumVerificationStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -20811,6 +20834,10 @@ export namespace Prisma {
     connect?: ApplicationWhereUniqueInput
   }
 
+  export type NullableBytesFieldUpdateOperationsInput = {
+    set?: Uint8Array | null
+  }
+
   export type EnumVerificationStatusFieldUpdateOperationsInput = {
     set?: $Enums.VerificationStatus
   }
@@ -21268,11 +21295,28 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type NestedBytesNullableFilter<$PrismaModel = never> = {
+    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel> | null
+    in?: Uint8Array[] | null
+    notIn?: Uint8Array[] | null
+    not?: NestedBytesNullableFilter<$PrismaModel> | Uint8Array | null
+  }
+
   export type NestedEnumVerificationStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.VerificationStatus | EnumVerificationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.VerificationStatus[]
     notIn?: $Enums.VerificationStatus[]
     not?: NestedEnumVerificationStatusFilter<$PrismaModel> | $Enums.VerificationStatus
+  }
+
+  export type NestedBytesNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel> | null
+    in?: Uint8Array[] | null
+    notIn?: Uint8Array[] | null
+    not?: NestedBytesNullableWithAggregatesFilter<$PrismaModel> | Uint8Array | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBytesNullableFilter<$PrismaModel>
+    _max?: NestedBytesNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumVerificationStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -22195,7 +22239,7 @@ export namespace Prisma {
   export type DocumentCreateWithoutApplicationInput = {
     document_type: string
     file_name: string
-    file_path: string
+    file_data?: Uint8Array | null
     upload_date: Date | string
     verification_status?: $Enums.VerificationStatus
   }
@@ -22204,7 +22248,7 @@ export namespace Prisma {
     document_id?: number
     document_type: string
     file_name: string
-    file_path: string
+    file_data?: Uint8Array | null
     upload_date: Date | string
     verification_status?: $Enums.VerificationStatus
   }
@@ -22385,7 +22429,7 @@ export namespace Prisma {
     application_id?: IntFilter<"Document"> | number
     document_type?: StringFilter<"Document"> | string
     file_name?: StringFilter<"Document"> | string
-    file_path?: StringFilter<"Document"> | string
+    file_data?: BytesNullableFilter<"Document"> | Uint8Array | null
     upload_date?: DateTimeFilter<"Document"> | Date | string
     verification_status?: EnumVerificationStatusFilter<"Document"> | $Enums.VerificationStatus
   }
@@ -23495,7 +23539,7 @@ export namespace Prisma {
     document_id?: number
     document_type: string
     file_name: string
-    file_path: string
+    file_data?: Uint8Array | null
     upload_date: Date | string
     verification_status?: $Enums.VerificationStatus
   }
@@ -23522,7 +23566,7 @@ export namespace Prisma {
   export type DocumentUpdateWithoutApplicationInput = {
     document_type?: StringFieldUpdateOperationsInput | string
     file_name?: StringFieldUpdateOperationsInput | string
-    file_path?: StringFieldUpdateOperationsInput | string
+    file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
     upload_date?: DateTimeFieldUpdateOperationsInput | Date | string
     verification_status?: EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   }
@@ -23531,7 +23575,7 @@ export namespace Prisma {
     document_id?: IntFieldUpdateOperationsInput | number
     document_type?: StringFieldUpdateOperationsInput | string
     file_name?: StringFieldUpdateOperationsInput | string
-    file_path?: StringFieldUpdateOperationsInput | string
+    file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
     upload_date?: DateTimeFieldUpdateOperationsInput | Date | string
     verification_status?: EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   }
@@ -23540,7 +23584,7 @@ export namespace Prisma {
     document_id?: IntFieldUpdateOperationsInput | number
     document_type?: StringFieldUpdateOperationsInput | string
     file_name?: StringFieldUpdateOperationsInput | string
-    file_path?: StringFieldUpdateOperationsInput | string
+    file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
     upload_date?: DateTimeFieldUpdateOperationsInput | Date | string
     verification_status?: EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   }

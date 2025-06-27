@@ -108,7 +108,7 @@ model Document {
   application_id      Int
   document_type       String     @db.VarChar(50)
   file_name           String     @db.VarChar(255)
-  file_path           String
+  file_data           Bytes?     @db.MediumBlob
   upload_date         DateTime
   verification_status VerificationStatus @default(pending)
 

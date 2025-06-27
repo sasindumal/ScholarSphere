@@ -195,7 +195,7 @@ exports.Prisma.DocumentScalarFieldEnum = {
   application_id: 'application_id',
   document_type: 'document_type',
   file_name: 'file_name',
-  file_path: 'file_path',
+  file_data: 'file_data',
   upload_date: 'upload_date',
   verification_status: 'verification_status'
 };
@@ -316,8 +316,7 @@ exports.Prisma.ApplicationOrderByRelevanceFieldEnum = {
 
 exports.Prisma.DocumentOrderByRelevanceFieldEnum = {
   document_type: 'document_type',
-  file_name: 'file_name',
-  file_path: 'file_path'
+  file_name: 'file_name'
 };
 
 exports.Prisma.FamilyMemberOrderByRelevanceFieldEnum = {

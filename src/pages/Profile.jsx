@@ -6,6 +6,7 @@ const TABS = [
   { label: 'Basic Info', key: 'basic' },
   { label: 'Password', key: 'password' },
   { label: 'Student Info', key: 'student' },
+  { label: 'Documents Verification', key: 'documents' },
 ];
 
 const YEAR_OPTIONS = [
@@ -46,12 +47,25 @@ const Profile = () => {
   const [fundingForm, setFundingForm] = useState(emptyFunding);
   const [fundingError, setFundingError] = useState('');
   const [showFundingForm, setShowFundingForm] = useState(false);
+  const [nicFront, setNicFront] = useState(null);
+  const [nicBack, setNicBack] = useState(null);
+  const [gsCertificate, setGsCertificate] = useState(null);
+  const [uploadStatus, setUploadStatus] = useState('');
+  const [documents, setDocuments] = useState([]);
+  const [docLoading, setDocLoading] = useState(false);
+  const [docDeleteStatus, setDocDeleteStatus] = useState('');
 
   useEffect(() => {
     fetchProfile();
     fetchFamilyMembers();
     fetchFundings();
   }, []);
+
+  useEffect(() => {
+    if (activeTab === 'documents') {
+      fetchDocuments();
+    }
+  }, [activeTab]);
 
   const fetchProfile = async () => {
     setLoading(true);
@@ -99,6 +113,22 @@ const Profile = () => {
       });
       if (res.ok) setFundings(await res.json());
     } catch {}
+  };
+
+  const fetchDocuments = async () => {
+    setDocLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:5001/api/user/documents', {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('Failed to fetch documents');
+      setDocuments(await res.json());
+    } catch (err) {
+      setUploadStatus('Failed to fetch documents');
+    } finally {
+      setDocLoading(false);
+    }
   };
 
   // Basic Info Update
@@ -298,6 +328,51 @@ const Profile = () => {
     } catch {}
   };
 
+  const handleFileChange = (e, setter) => {
+    setter(e.target.files[0]);
+  };
+  const handleDocumentsUpload = async (e) => {
+    e.preventDefault();
+    setUploadStatus('');
+    const formData = new FormData();
+    if (nicFront) formData.append('nicFront', nicFront);
+    if (nicBack) formData.append('nicBack', nicBack);
+    if (gsCertificate) formData.append('gsCertificate', gsCertificate);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:5001/api/user/documents', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData,
+      });
+      if (!res.ok) throw new Error('Upload failed');
+      setUploadStatus('Documents uploaded successfully!');
+      setNicFront(null);
+      setNicBack(null);
+      setGsCertificate(null);
+      fetchDocuments();
+    } catch (err) {
+      setUploadStatus('Upload failed: ' + err.message);
+    }
+  };
+
+  const handleDeleteDocument = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this document?')) return;
+    setDocDeleteStatus('');
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`http://localhost:5001/api/user/documents/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('Failed to delete document');
+      setDocDeleteStatus('Document deleted successfully.');
+      fetchDocuments();
+    } catch (err) {
+      setDocDeleteStatus('Delete failed: ' + err.message);
+    }
+  };
+
   return (
     <Layout>
       <div className="profile-page">
@@ -431,6 +506,92 @@ const Profile = () => {
                     </div>
                     {fundingError && <p className="error-message">{fundingError}</p>}
                   </form>
+                )}
+              </div>
+            </>
+          )}
+          {activeTab === 'documents' && !loading && (
+            <>
+              <form className="profile-form" onSubmit={handleDocumentsUpload}>
+                <label>
+                  NIC Front
+                  <input type="file" accept="image/*,application/pdf" onChange={e => handleFileChange(e, setNicFront)} required />
+                </label>
+                <label>
+                  NIC Back
+                  <input type="file" accept="image/*,application/pdf" onChange={e => handleFileChange(e, setNicBack)} required />
+                </label>
+                <label>
+                  Financial Proof (GS Certificate)
+                  <input type="file" accept="image/*,application/pdf" onChange={e => handleFileChange(e, setGsCertificate)} required />
+                </label>
+                <button type="submit">Upload Documents</button>
+                {uploadStatus && <p>{uploadStatus}</p>}
+              </form>
+              <div style={{ marginTop: 32 }}>
+                <h3>Previously Uploaded Documents</h3>
+                {docDeleteStatus && <p style={{ color: docDeleteStatus.startsWith('Delete failed') ? 'red' : 'green', marginBottom: 8 }}>{docDeleteStatus}</p>}
+                {docLoading ? <p>Loading documents...</p> : (
+                  documents.length === 0 ? <p>No documents uploaded yet.</p> : (
+                    <div style={{ overflowX: 'auto' }}>
+                      <table style={{
+                        width: '100%',
+                        marginTop: 12,
+                        background: '#fff',
+                        borderRadius: 12,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                        borderCollapse: 'separate',
+                        borderSpacing: 0,
+                        fontSize: 15,
+                        overflow: 'hidden',
+                      }}>
+                        <thead>
+                          <tr style={{ background: '#f4f8fb' }}>
+                            <th style={{ padding: '14px 18px', textAlign: 'left', borderTopLeftRadius: 12 }}>Type</th>
+                            <th style={{ padding: '14px 18px', textAlign: 'left' }}>File Name</th>
+                            <th style={{ padding: '14px 18px', textAlign: 'left' }}>Upload Date</th>
+                            <th style={{ padding: '14px 18px', textAlign: 'left' }}>Status</th>
+                            <th style={{ padding: '14px 18px', textAlign: 'left', borderTopRightRadius: 12 }}>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {documents.map((doc, idx) => (
+                            <tr key={doc.document_id} style={{ background: idx % 2 === 0 ? '#f9fafb' : '#fff', transition: 'background 0.2s', cursor: 'pointer' }}>
+                              <td style={{ padding: '12px 18px', fontWeight: 500 }}>{doc.document_type}</td>
+                              <td style={{ padding: '12px 18px' }}>{doc.file_name}</td>
+                              <td style={{ padding: '12px 18px' }}>{new Date(doc.upload_date).toLocaleString()}</td>
+                              <td style={{ padding: '12px 18px' }}>
+                                <span style={{
+                                  padding: '4px 12px',
+                                  borderRadius: 8,
+                                  background: doc.verification_status === 'verified' ? '#d1fae5' : doc.verification_status === 'rejected' ? '#fee2e2' : '#fef9c3',
+                                  color: doc.verification_status === 'verified' ? '#065f46' : doc.verification_status === 'rejected' ? '#991b1b' : '#92400e',
+                                  fontWeight: 600,
+                                  fontSize: 13,
+                                }}>{doc.verification_status}</span>
+                              </td>
+                              <td style={{ padding: '12px 18px' }}>
+                                <button
+                                  onClick={() => handleDeleteDocument(doc.document_id)}
+                                  style={{
+                                    background: '#f87171',
+                                    color: '#fff',
+                                    border: 'none',
+                                    borderRadius: 8,
+                                    padding: '7px 18px',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+                                    transition: 'background 0.2s',
+                                  }}
+                                >Delete</button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )
                 )}
               </div>
             </>
