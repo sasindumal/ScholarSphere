@@ -218,4 +218,33 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 });
 
+// Coordinator sends a custom notification to a student
+router.post('/notify-student', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'coordinator') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  const { student_id, message } = req.body;
+  if (!student_id || !message) {
+    return res.status(400).json({ error: 'student_id and message are required' });
+  }
+  try {
+    // Find the user_id for the student
+    const student = await prisma.student.findUnique({
+      where: { student_id: parseInt(student_id) },
+      select: { user_id: true }
+    });
+    if (!student) return res.status(404).json({ error: 'Student not found' });
+    await prisma.notification.create({
+      data: {
+        user_id: student.user_id,
+        message,
+      },
+    });
+    res.json({ message: 'Notification sent to student.' });
+  } catch (error) {
+    console.error('Error sending custom notification:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router; 

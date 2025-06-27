@@ -7,6 +7,8 @@ const CoordinatorStudents = () => {
   const [error, setError] = useState(null);
   const [search, setSearch] = useState('');
   const [expanded, setExpanded] = useState({});
+  const [notifInputs, setNotifInputs] = useState({});
+  const [notifStatus, setNotifStatus] = useState({});
 
   useEffect(() => {
     fetchStudents();
@@ -49,6 +51,31 @@ const CoordinatorStudents = () => {
       (stu.username && stu.username.toLowerCase().includes(s)) ||
       (stu.student && stu.student.registration_no && stu.student.registration_no.toLowerCase().includes(s))
     );
+  };
+
+  const handleSendNotification = async (student_id) => {
+    const message = notifInputs[student_id];
+    if (!message || !message.trim()) {
+      setNotifStatus(prev => ({ ...prev, [student_id]: 'Message required.' }));
+      return;
+    }
+    setNotifStatus(prev => ({ ...prev, [student_id]: 'Sending...' }));
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:5001/api/applications/notify-student', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ student_id, message }),
+      });
+      if (!res.ok) throw new Error('Failed to send notification');
+      setNotifStatus(prev => ({ ...prev, [student_id]: 'Notification sent!' }));
+      setNotifInputs(prev => ({ ...prev, [student_id]: '' }));
+    } catch (err) {
+      setNotifStatus(prev => ({ ...prev, [student_id]: 'Error sending notification.' }));
+    }
   };
 
   return (
@@ -193,6 +220,25 @@ const CoordinatorStudents = () => {
                                 </div>
                               </>
                             ) : <p>No student profile data.</p>}
+                          </div>
+                          {/* Custom Notification UI */}
+                          <div style={{ marginTop: 24, background: '#f4f8fb', padding: 16, borderRadius: 8 }}>
+                            <h4>Send Custom Notification</h4>
+                            <textarea
+                              placeholder="Type your message to this student..."
+                              value={notifInputs[stu.student?.student_id] || ''}
+                              onChange={e => setNotifInputs(prev => ({ ...prev, [stu.student?.student_id]: e.target.value }))}
+                              style={{ width: '100%', minHeight: 60, borderRadius: 6, border: '1px solid #ccc', marginBottom: 8 }}
+                            />
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                              <button
+                                onClick={() => handleSendNotification(stu.student?.student_id)}
+                                style={{ background: '#3182ce', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 22px', fontWeight: 600, cursor: 'pointer' }}
+                              >Send</button>
+                              {notifStatus[stu.student?.student_id] && (
+                                <span style={{ color: notifStatus[stu.student?.student_id].includes('sent') ? 'green' : 'red', fontSize: 14 }}>{notifStatus[stu.student?.student_id]}</span>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </td>
