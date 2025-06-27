@@ -31,6 +31,7 @@ const Dashboard = () => {
   const [scholarshipCount, setScholarshipCount] = useState(0);
   const [applicationCount, setApplicationCount] = useState(0);
   const [totalPaid, setTotalPaid] = useState(0);
+  const [recentPayments, setRecentPayments] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -83,10 +84,27 @@ const Dashboard = () => {
       }
     };
 
+    const fetchRecentPayments = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/payments/history', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setRecentPayments(data.slice(0, 5));
+        } else {
+          setRecentPayments([]);
+        }
+      } catch (error) {
+        setRecentPayments([]);
+      }
+    };
+
     fetchUserData();
     fetchScholarshipCount();
     fetchApplicationCount();
     fetchTotalPaid();
+    fetchRecentPayments();
   }, []);
 
   const toggleSidebar = () => {
@@ -143,24 +161,18 @@ const Dashboard = () => {
 
       <section className="bottom-sections">
         <div className="card recent-activity">
-          <h2>Recent Activity</h2>
-          <p className="section-subtitle">Your recent scholarship applications and updates</p>
+          <h2>Recent Payments</h2>
+          <p className="section-subtitle">Your most recent scholarship payments</p>
           <ul>
-            <li>
-              <span className="status-dot green"></span>
-              <p>Application submitted for Engineering Excellence Scholarship</p>
-              <span className="time">2 hours ago</span>
-            </li>
-            <li>
-              <span className="status-dot yellow"></span>
-              <p>Application under review for Academic Merit Award</p>
-              <span className="time">1 day ago</span>
-            </li>
-            <li>
-              <span className="status-dot green"></span>
-              <p>Awarded $1,000 for Community Service Scholarship</p>
-              <span className="time">3 days ago</span>
-            </li>
+            {recentPayments.length === 0 ? (
+              <li><span className="status-dot gray"></span> <p>No recent payments found.</p></li>
+            ) : recentPayments.map((payment, idx) => (
+              <li key={payment.payment_id || idx}>
+                <span className="status-dot green"></span>
+                <p>Received <strong>LKR {payment.amount}</strong> for <strong>{payment.application?.scholarship?.name || 'Scholarship'}</strong></p>
+                <span className="time">{new Date(payment.payment_date).toLocaleDateString()}</span>
+              </li>
+            ))}
           </ul>
         </div>
         <div className="card quick-actions">
