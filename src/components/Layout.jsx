@@ -183,38 +183,42 @@ const Layout = ({ children }) => {
             <MenuIcon />
           </button>
           <div className="header-actions" style={{ position: 'relative' }}>
-            <button className="icon-btn" onClick={handleNotifClick} style={{ position: 'relative' }}>
-              <NotificationsIcon />
-              {unreadCount > 0 && (
-                <span style={{ position: 'absolute', top: 2, right: 2, background: '#e53e3e', color: '#fff', borderRadius: '50%', fontSize: 10, width: 16, height: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{unreadCount}</span>
-              )}
-            </button>
-            {notifOpen && (
-              <div style={{ position: 'absolute', right: 0, top: 36, background: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', borderRadius: 8, width: 320, zIndex: 10, padding: 12 }}>
-                <div style={{ fontWeight: 600, marginBottom: 4 }}>Notifications</div>
-                <div style={{ color: '#888', fontSize: 12, marginBottom: 8 }}>
-                  Showing your 5 most recent notifications
-                </div>
-                {latestNotifications.length === 0 ? (
-                  <div style={{ color: '#888', fontSize: 14 }}>No notifications</div>
-                ) : (
-                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                    {latestNotifications.map(n => (
-                      <li key={n.notification_id} style={{ background: n.is_read ? '#f9f9f9' : '#e6f7ff', padding: 8, borderRadius: 5, marginBottom: 6 }}>
-                        <div style={{ fontWeight: n.is_read ? 400 : 600 }}>{n.message}</div>
-                        <div style={{ fontSize: 11, color: '#888' }}>{new Date(n.created_at).toLocaleString()}</div>
-                      </li>
-                    ))}
-                  </ul>
+            {user && user.role === 'student' && (
+              <>
+                <button className="icon-btn" onClick={handleNotifClick} style={{ position: 'relative' }}>
+                  <NotificationsIcon />
+                  {unreadCount > 0 && (
+                    <span style={{ position: 'absolute', top: 2, right: 2, background: '#e53e3e', color: '#fff', borderRadius: '50%', fontSize: 10, width: 16, height: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{unreadCount}</span>
+                  )}
+                </button>
+                {notifOpen && (
+                  <div style={{ position: 'absolute', right: 0, top: 36, background: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', borderRadius: 8, width: 320, zIndex: 10, padding: 12 }}>
+                    <div style={{ fontWeight: 600, marginBottom: 4 }}>Notifications</div>
+                    <div style={{ color: '#888', fontSize: 12, marginBottom: 8 }}>
+                      Showing your 5 most recent notifications
+                    </div>
+                    {latestNotifications.length === 0 ? (
+                      <div style={{ color: '#888', fontSize: 14 }}>No notifications</div>
+                    ) : (
+                      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                        {latestNotifications.map(n => (
+                          <li key={n.notification_id} style={{ background: n.is_read ? '#f9f9f9' : '#e6f7ff', padding: 8, borderRadius: 5, marginBottom: 6 }}>
+                            <div style={{ fontWeight: n.is_read ? 400 : 600 }}>{n.message}</div>
+                            <div style={{ fontSize: 11, color: '#888' }}>{new Date(n.created_at).toLocaleString()}</div>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    <div style={{ textAlign: 'right', marginTop: 8 }}>
+                      <Link to="/notifications" onClick={() => setNotifOpen(false)} style={{ color: '#3182ce', fontWeight: 500, fontSize: 14 }}>View more</Link>
+                    </div>
+                  </div>
                 )}
-                <div style={{ textAlign: 'right', marginTop: 8 }}>
-                  <Link to="/notifications" onClick={() => setNotifOpen(false)} style={{ color: '#3182ce', fontWeight: 500, fontSize: 14 }}>View more</Link>
-                </div>
-              </div>
+                <Link to="/profile" className="user-avatar modern-avatar" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  {getInitials()}
+                </Link>
+              </>
             )}
-            <Link to="/profile" className="user-avatar modern-avatar" style={{ textDecoration: 'none', color: 'inherit' }}>
-              {getInitials()}
-            </Link>
           </div>
         </header>
 

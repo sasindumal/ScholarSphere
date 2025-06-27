@@ -184,4 +184,38 @@ router.get('/pending', authenticateToken, async (req, res) => {
   }
 });
 
+// Create a new application (student)
+router.post('/', authenticateToken, async (req, res) => {
+  try {
+    const student = await prisma.student.findUnique({
+      where: { user_id: parseInt(req.user.userId) },
+    });
+    if (!student) {
+      return res.status(404).json({ error: 'Student profile not found.' });
+    }
+    const { scholarship_id } = req.body;
+    const application = await prisma.application.create({
+      data: {
+        student_id: student.student_id,
+        scholarship_id: parseInt(scholarship_id),
+        submission_date: new Date(),
+        status: 'pending',
+      },
+    });
+    // Notify all coordinators
+    const coordinators = await prisma.user.findMany({ where: { role: 'coordinator' } });
+    const notifications = coordinators.map(c => ({
+      user_id: c.user_id,
+      message: `A new application has been submitted and is pending your review.`,
+    }));
+    if (notifications.length > 0) {
+      await prisma.notification.createMany({ data: notifications });
+    }
+    res.status(201).json(application);
+  } catch (error) {
+    console.error('Error creating application:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router; 
