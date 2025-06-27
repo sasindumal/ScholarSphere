@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { PrismaClient } = require('../../src/generated/prisma');
+const { PrismaClient } = require('../generated/prisma');
 const prisma = new PrismaClient();
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
