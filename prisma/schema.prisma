@@ -44,6 +44,7 @@ model Student {
   familyMembers      FamilyMember[]
   otherFunding       OtherFunding[]
   siblingEducation   SiblingEducation[]
+  documents          Document[]
 }
 
 model ScholarshipProvider {
@@ -106,6 +107,7 @@ model Application {
 model Document {
   document_id         Int        @id @default(autoincrement())
   application_id      Int
+  student_id          Int
   document_type       String     @db.VarChar(50)
   file_name           String     @db.VarChar(255)
   file_data           Bytes?     @db.MediumBlob
@@ -113,6 +115,7 @@ model Document {
   verification_status VerificationStatus @default(pending)
 
   application         Application @relation(fields: [application_id], references: [application_id])
+  student             Student     @relation(fields: [student_id], references: [student_id])
 }
 
 model FamilyMember {

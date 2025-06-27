@@ -2067,6 +2067,7 @@ export namespace Prisma {
     familyMembers: number
     otherFunding: number
     siblingEducation: number
+    documents: number
   }
 
   export type StudentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2074,6 +2075,7 @@ export namespace Prisma {
     familyMembers?: boolean | StudentCountOutputTypeCountFamilyMembersArgs
     otherFunding?: boolean | StudentCountOutputTypeCountOtherFundingArgs
     siblingEducation?: boolean | StudentCountOutputTypeCountSiblingEducationArgs
+    documents?: boolean | StudentCountOutputTypeCountDocumentsArgs
   }
 
   // Custom InputTypes
@@ -2113,6 +2115,13 @@ export namespace Prisma {
    */
   export type StudentCountOutputTypeCountSiblingEducationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SiblingEducationWhereInput
+  }
+
+  /**
+   * StudentCountOutputType without action
+   */
+  export type StudentCountOutputTypeCountDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DocumentWhereInput
   }
 
 
@@ -3623,6 +3632,7 @@ export namespace Prisma {
     familyMembers?: boolean | Student$familyMembersArgs<ExtArgs>
     otherFunding?: boolean | Student$otherFundingArgs<ExtArgs>
     siblingEducation?: boolean | Student$siblingEducationArgs<ExtArgs>
+    documents?: boolean | Student$documentsArgs<ExtArgs>
     _count?: boolean | StudentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["student"]>
 
@@ -3651,6 +3661,7 @@ export namespace Prisma {
     familyMembers?: boolean | Student$familyMembersArgs<ExtArgs>
     otherFunding?: boolean | Student$otherFundingArgs<ExtArgs>
     siblingEducation?: boolean | Student$siblingEducationArgs<ExtArgs>
+    documents?: boolean | Student$documentsArgs<ExtArgs>
     _count?: boolean | StudentCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -3662,6 +3673,7 @@ export namespace Prisma {
       familyMembers: Prisma.$FamilyMemberPayload<ExtArgs>[]
       otherFunding: Prisma.$OtherFundingPayload<ExtArgs>[]
       siblingEducation: Prisma.$SiblingEducationPayload<ExtArgs>[]
+      documents: Prisma.$DocumentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       student_id: number
@@ -4022,6 +4034,7 @@ export namespace Prisma {
     familyMembers<T extends Student$familyMembersArgs<ExtArgs> = {}>(args?: Subset<T, Student$familyMembersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     otherFunding<T extends Student$otherFundingArgs<ExtArgs> = {}>(args?: Subset<T, Student$otherFundingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OtherFundingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     siblingEducation<T extends Student$siblingEducationArgs<ExtArgs> = {}>(args?: Subset<T, Student$siblingEducationArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SiblingEducationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    documents<T extends Student$documentsArgs<ExtArgs> = {}>(args?: Subset<T, Student$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4500,6 +4513,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SiblingEducationScalarFieldEnum | SiblingEducationScalarFieldEnum[]
+  }
+
+  /**
+   * Student.documents
+   */
+  export type Student$documentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Document
+     */
+    select?: DocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Document
+     */
+    omit?: DocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocumentInclude<ExtArgs> | null
+    where?: DocumentWhereInput
+    orderBy?: DocumentOrderByWithRelationInput | DocumentOrderByWithRelationInput[]
+    cursor?: DocumentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DocumentScalarFieldEnum | DocumentScalarFieldEnum[]
   }
 
   /**
@@ -8723,16 +8760,19 @@ export namespace Prisma {
   export type DocumentAvgAggregateOutputType = {
     document_id: number | null
     application_id: number | null
+    student_id: number | null
   }
 
   export type DocumentSumAggregateOutputType = {
     document_id: number | null
     application_id: number | null
+    student_id: number | null
   }
 
   export type DocumentMinAggregateOutputType = {
     document_id: number | null
     application_id: number | null
+    student_id: number | null
     document_type: string | null
     file_name: string | null
     file_data: Uint8Array | null
@@ -8743,6 +8783,7 @@ export namespace Prisma {
   export type DocumentMaxAggregateOutputType = {
     document_id: number | null
     application_id: number | null
+    student_id: number | null
     document_type: string | null
     file_name: string | null
     file_data: Uint8Array | null
@@ -8753,6 +8794,7 @@ export namespace Prisma {
   export type DocumentCountAggregateOutputType = {
     document_id: number
     application_id: number
+    student_id: number
     document_type: number
     file_name: number
     file_data: number
@@ -8765,16 +8807,19 @@ export namespace Prisma {
   export type DocumentAvgAggregateInputType = {
     document_id?: true
     application_id?: true
+    student_id?: true
   }
 
   export type DocumentSumAggregateInputType = {
     document_id?: true
     application_id?: true
+    student_id?: true
   }
 
   export type DocumentMinAggregateInputType = {
     document_id?: true
     application_id?: true
+    student_id?: true
     document_type?: true
     file_name?: true
     file_data?: true
@@ -8785,6 +8830,7 @@ export namespace Prisma {
   export type DocumentMaxAggregateInputType = {
     document_id?: true
     application_id?: true
+    student_id?: true
     document_type?: true
     file_name?: true
     file_data?: true
@@ -8795,6 +8841,7 @@ export namespace Prisma {
   export type DocumentCountAggregateInputType = {
     document_id?: true
     application_id?: true
+    student_id?: true
     document_type?: true
     file_name?: true
     file_data?: true
@@ -8892,6 +8939,7 @@ export namespace Prisma {
   export type DocumentGroupByOutputType = {
     document_id: number
     application_id: number
+    student_id: number
     document_type: string
     file_name: string
     file_data: Uint8Array | null
@@ -8921,12 +8969,14 @@ export namespace Prisma {
   export type DocumentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     document_id?: boolean
     application_id?: boolean
+    student_id?: boolean
     document_type?: boolean
     file_name?: boolean
     file_data?: boolean
     upload_date?: boolean
     verification_status?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
+    student?: boolean | StudentDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["document"]>
 
 
@@ -8934,6 +8984,7 @@ export namespace Prisma {
   export type DocumentSelectScalar = {
     document_id?: boolean
     application_id?: boolean
+    student_id?: boolean
     document_type?: boolean
     file_name?: boolean
     file_data?: boolean
@@ -8941,19 +8992,22 @@ export namespace Prisma {
     verification_status?: boolean
   }
 
-  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"document_id" | "application_id" | "document_type" | "file_name" | "file_data" | "upload_date" | "verification_status", ExtArgs["result"]["document"]>
+  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"document_id" | "application_id" | "student_id" | "document_type" | "file_name" | "file_data" | "upload_date" | "verification_status", ExtArgs["result"]["document"]>
   export type DocumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
+    student?: boolean | StudentDefaultArgs<ExtArgs>
   }
 
   export type $DocumentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Document"
     objects: {
       application: Prisma.$ApplicationPayload<ExtArgs>
+      student: Prisma.$StudentPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       document_id: number
       application_id: number
+      student_id: number
       document_type: string
       file_name: string
       file_data: Uint8Array | null
@@ -9300,6 +9354,7 @@ export namespace Prisma {
   export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     application<T extends ApplicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ApplicationDefaultArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    student<T extends StudentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StudentDefaultArgs<ExtArgs>>): Prisma__StudentClient<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9331,6 +9386,7 @@ export namespace Prisma {
   interface DocumentFieldRefs {
     readonly document_id: FieldRef<"Document", 'Int'>
     readonly application_id: FieldRef<"Document", 'Int'>
+    readonly student_id: FieldRef<"Document", 'Int'>
     readonly document_type: FieldRef<"Document", 'String'>
     readonly file_name: FieldRef<"Document", 'String'>
     readonly file_data: FieldRef<"Document", 'Bytes'>
@@ -16651,6 +16707,7 @@ export namespace Prisma {
   export const DocumentScalarFieldEnum: {
     document_id: 'document_id',
     application_id: 'application_id',
+    student_id: 'student_id',
     document_type: 'document_type',
     file_name: 'file_name',
     file_data: 'file_data',
@@ -17086,6 +17143,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberListRelationFilter
     otherFunding?: OtherFundingListRelationFilter
     siblingEducation?: SiblingEducationListRelationFilter
+    documents?: DocumentListRelationFilter
   }
 
   export type StudentOrderByWithRelationInput = {
@@ -17107,6 +17165,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberOrderByRelationAggregateInput
     otherFunding?: OtherFundingOrderByRelationAggregateInput
     siblingEducation?: SiblingEducationOrderByRelationAggregateInput
+    documents?: DocumentOrderByRelationAggregateInput
     _relevance?: StudentOrderByRelevanceInput
   }
 
@@ -17132,6 +17191,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberListRelationFilter
     otherFunding?: OtherFundingListRelationFilter
     siblingEducation?: SiblingEducationListRelationFilter
+    documents?: DocumentListRelationFilter
   }, "student_id" | "user_id" | "registration_no">
 
   export type StudentOrderByWithAggregationInput = {
@@ -17485,23 +17545,27 @@ export namespace Prisma {
     NOT?: DocumentWhereInput | DocumentWhereInput[]
     document_id?: IntFilter<"Document"> | number
     application_id?: IntFilter<"Document"> | number
+    student_id?: IntFilter<"Document"> | number
     document_type?: StringFilter<"Document"> | string
     file_name?: StringFilter<"Document"> | string
     file_data?: BytesNullableFilter<"Document"> | Uint8Array | null
     upload_date?: DateTimeFilter<"Document"> | Date | string
     verification_status?: EnumVerificationStatusFilter<"Document"> | $Enums.VerificationStatus
     application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
+    student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
   }
 
   export type DocumentOrderByWithRelationInput = {
     document_id?: SortOrder
     application_id?: SortOrder
+    student_id?: SortOrder
     document_type?: SortOrder
     file_name?: SortOrder
     file_data?: SortOrderInput | SortOrder
     upload_date?: SortOrder
     verification_status?: SortOrder
     application?: ApplicationOrderByWithRelationInput
+    student?: StudentOrderByWithRelationInput
     _relevance?: DocumentOrderByRelevanceInput
   }
 
@@ -17511,17 +17575,20 @@ export namespace Prisma {
     OR?: DocumentWhereInput[]
     NOT?: DocumentWhereInput | DocumentWhereInput[]
     application_id?: IntFilter<"Document"> | number
+    student_id?: IntFilter<"Document"> | number
     document_type?: StringFilter<"Document"> | string
     file_name?: StringFilter<"Document"> | string
     file_data?: BytesNullableFilter<"Document"> | Uint8Array | null
     upload_date?: DateTimeFilter<"Document"> | Date | string
     verification_status?: EnumVerificationStatusFilter<"Document"> | $Enums.VerificationStatus
     application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
+    student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
   }, "document_id">
 
   export type DocumentOrderByWithAggregationInput = {
     document_id?: SortOrder
     application_id?: SortOrder
+    student_id?: SortOrder
     document_type?: SortOrder
     file_name?: SortOrder
     file_data?: SortOrderInput | SortOrder
@@ -17540,6 +17607,7 @@ export namespace Prisma {
     NOT?: DocumentScalarWhereWithAggregatesInput | DocumentScalarWhereWithAggregatesInput[]
     document_id?: IntWithAggregatesFilter<"Document"> | number
     application_id?: IntWithAggregatesFilter<"Document"> | number
+    student_id?: IntWithAggregatesFilter<"Document"> | number
     document_type?: StringWithAggregatesFilter<"Document"> | string
     file_name?: StringWithAggregatesFilter<"Document"> | string
     file_data?: BytesNullableWithAggregatesFilter<"Document"> | Uint8Array | null
@@ -18105,6 +18173,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberCreateNestedManyWithoutStudentInput
     otherFunding?: OtherFundingCreateNestedManyWithoutStudentInput
     siblingEducation?: SiblingEducationCreateNestedManyWithoutStudentInput
+    documents?: DocumentCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateInput = {
@@ -18125,6 +18194,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutStudentInput
     otherFunding?: OtherFundingUncheckedCreateNestedManyWithoutStudentInput
     siblingEducation?: SiblingEducationUncheckedCreateNestedManyWithoutStudentInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUpdateInput = {
@@ -18144,6 +18214,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberUpdateManyWithoutStudentNestedInput
     otherFunding?: OtherFundingUpdateManyWithoutStudentNestedInput
     siblingEducation?: SiblingEducationUpdateManyWithoutStudentNestedInput
+    documents?: DocumentUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateInput = {
@@ -18164,6 +18235,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberUncheckedUpdateManyWithoutStudentNestedInput
     otherFunding?: OtherFundingUncheckedUpdateManyWithoutStudentNestedInput
     siblingEducation?: SiblingEducationUncheckedUpdateManyWithoutStudentNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentCreateManyInput = {
@@ -18528,11 +18600,13 @@ export namespace Prisma {
     upload_date: Date | string
     verification_status?: $Enums.VerificationStatus
     application: ApplicationCreateNestedOneWithoutDocumentsInput
+    student: StudentCreateNestedOneWithoutDocumentsInput
   }
 
   export type DocumentUncheckedCreateInput = {
     document_id?: number
     application_id: number
+    student_id: number
     document_type: string
     file_name: string
     file_data?: Uint8Array | null
@@ -18547,11 +18621,13 @@ export namespace Prisma {
     upload_date?: DateTimeFieldUpdateOperationsInput | Date | string
     verification_status?: EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
     application?: ApplicationUpdateOneRequiredWithoutDocumentsNestedInput
+    student?: StudentUpdateOneRequiredWithoutDocumentsNestedInput
   }
 
   export type DocumentUncheckedUpdateInput = {
     document_id?: IntFieldUpdateOperationsInput | number
     application_id?: IntFieldUpdateOperationsInput | number
+    student_id?: IntFieldUpdateOperationsInput | number
     document_type?: StringFieldUpdateOperationsInput | string
     file_name?: StringFieldUpdateOperationsInput | string
     file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
@@ -18562,6 +18638,7 @@ export namespace Prisma {
   export type DocumentCreateManyInput = {
     document_id?: number
     application_id: number
+    student_id: number
     document_type: string
     file_name: string
     file_data?: Uint8Array | null
@@ -18580,6 +18657,7 @@ export namespace Prisma {
   export type DocumentUncheckedUpdateManyInput = {
     document_id?: IntFieldUpdateOperationsInput | number
     application_id?: IntFieldUpdateOperationsInput | number
+    student_id?: IntFieldUpdateOperationsInput | number
     document_type?: StringFieldUpdateOperationsInput | string
     file_name?: StringFieldUpdateOperationsInput | string
     file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
@@ -19230,6 +19308,12 @@ export namespace Prisma {
     none?: SiblingEducationWhereInput
   }
 
+  export type DocumentListRelationFilter = {
+    every?: DocumentWhereInput
+    some?: DocumentWhereInput
+    none?: DocumentWhereInput
+  }
+
   export type ApplicationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -19243,6 +19327,10 @@ export namespace Prisma {
   }
 
   export type SiblingEducationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DocumentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -19595,12 +19683,6 @@ export namespace Prisma {
     isNot?: StudentWhereInput
   }
 
-  export type DocumentListRelationFilter = {
-    every?: DocumentWhereInput
-    some?: DocumentWhereInput
-    none?: DocumentWhereInput
-  }
-
   export type PaymentListRelationFilter = {
     every?: PaymentWhereInput
     some?: PaymentWhereInput
@@ -19610,10 +19692,6 @@ export namespace Prisma {
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
-  }
-
-  export type DocumentOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type PaymentOrderByRelationAggregateInput = {
@@ -19759,6 +19837,7 @@ export namespace Prisma {
   export type DocumentCountOrderByAggregateInput = {
     document_id?: SortOrder
     application_id?: SortOrder
+    student_id?: SortOrder
     document_type?: SortOrder
     file_name?: SortOrder
     file_data?: SortOrder
@@ -19769,11 +19848,13 @@ export namespace Prisma {
   export type DocumentAvgOrderByAggregateInput = {
     document_id?: SortOrder
     application_id?: SortOrder
+    student_id?: SortOrder
   }
 
   export type DocumentMaxOrderByAggregateInput = {
     document_id?: SortOrder
     application_id?: SortOrder
+    student_id?: SortOrder
     document_type?: SortOrder
     file_name?: SortOrder
     file_data?: SortOrder
@@ -19784,6 +19865,7 @@ export namespace Prisma {
   export type DocumentMinOrderByAggregateInput = {
     document_id?: SortOrder
     application_id?: SortOrder
+    student_id?: SortOrder
     document_type?: SortOrder
     file_name?: SortOrder
     file_data?: SortOrder
@@ -19794,6 +19876,7 @@ export namespace Prisma {
   export type DocumentSumOrderByAggregateInput = {
     document_id?: SortOrder
     application_id?: SortOrder
+    student_id?: SortOrder
   }
 
   export type BytesNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -20336,6 +20419,13 @@ export namespace Prisma {
     connect?: SiblingEducationWhereUniqueInput | SiblingEducationWhereUniqueInput[]
   }
 
+  export type DocumentCreateNestedManyWithoutStudentInput = {
+    create?: XOR<DocumentCreateWithoutStudentInput, DocumentUncheckedCreateWithoutStudentInput> | DocumentCreateWithoutStudentInput[] | DocumentUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: DocumentCreateOrConnectWithoutStudentInput | DocumentCreateOrConnectWithoutStudentInput[]
+    createMany?: DocumentCreateManyStudentInputEnvelope
+    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+  }
+
   export type ApplicationUncheckedCreateNestedManyWithoutStudentInput = {
     create?: XOR<ApplicationCreateWithoutStudentInput, ApplicationUncheckedCreateWithoutStudentInput> | ApplicationCreateWithoutStudentInput[] | ApplicationUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: ApplicationCreateOrConnectWithoutStudentInput | ApplicationCreateOrConnectWithoutStudentInput[]
@@ -20362,6 +20452,13 @@ export namespace Prisma {
     connectOrCreate?: SiblingEducationCreateOrConnectWithoutStudentInput | SiblingEducationCreateOrConnectWithoutStudentInput[]
     createMany?: SiblingEducationCreateManyStudentInputEnvelope
     connect?: SiblingEducationWhereUniqueInput | SiblingEducationWhereUniqueInput[]
+  }
+
+  export type DocumentUncheckedCreateNestedManyWithoutStudentInput = {
+    create?: XOR<DocumentCreateWithoutStudentInput, DocumentUncheckedCreateWithoutStudentInput> | DocumentCreateWithoutStudentInput[] | DocumentUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: DocumentCreateOrConnectWithoutStudentInput | DocumentCreateOrConnectWithoutStudentInput[]
+    createMany?: DocumentCreateManyStudentInputEnvelope
+    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
   }
 
   export type EnumGenderFieldUpdateOperationsInput = {
@@ -20432,6 +20529,20 @@ export namespace Prisma {
     deleteMany?: SiblingEducationScalarWhereInput | SiblingEducationScalarWhereInput[]
   }
 
+  export type DocumentUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<DocumentCreateWithoutStudentInput, DocumentUncheckedCreateWithoutStudentInput> | DocumentCreateWithoutStudentInput[] | DocumentUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: DocumentCreateOrConnectWithoutStudentInput | DocumentCreateOrConnectWithoutStudentInput[]
+    upsert?: DocumentUpsertWithWhereUniqueWithoutStudentInput | DocumentUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: DocumentCreateManyStudentInputEnvelope
+    set?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    disconnect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    delete?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    update?: DocumentUpdateWithWhereUniqueWithoutStudentInput | DocumentUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: DocumentUpdateManyWithWhereWithoutStudentInput | DocumentUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
+  }
+
   export type ApplicationUncheckedUpdateManyWithoutStudentNestedInput = {
     create?: XOR<ApplicationCreateWithoutStudentInput, ApplicationUncheckedCreateWithoutStudentInput> | ApplicationCreateWithoutStudentInput[] | ApplicationUncheckedCreateWithoutStudentInput[]
     connectOrCreate?: ApplicationCreateOrConnectWithoutStudentInput | ApplicationCreateOrConnectWithoutStudentInput[]
@@ -20486,6 +20597,20 @@ export namespace Prisma {
     update?: SiblingEducationUpdateWithWhereUniqueWithoutStudentInput | SiblingEducationUpdateWithWhereUniqueWithoutStudentInput[]
     updateMany?: SiblingEducationUpdateManyWithWhereWithoutStudentInput | SiblingEducationUpdateManyWithWhereWithoutStudentInput[]
     deleteMany?: SiblingEducationScalarWhereInput | SiblingEducationScalarWhereInput[]
+  }
+
+  export type DocumentUncheckedUpdateManyWithoutStudentNestedInput = {
+    create?: XOR<DocumentCreateWithoutStudentInput, DocumentUncheckedCreateWithoutStudentInput> | DocumentCreateWithoutStudentInput[] | DocumentUncheckedCreateWithoutStudentInput[]
+    connectOrCreate?: DocumentCreateOrConnectWithoutStudentInput | DocumentCreateOrConnectWithoutStudentInput[]
+    upsert?: DocumentUpsertWithWhereUniqueWithoutStudentInput | DocumentUpsertWithWhereUniqueWithoutStudentInput[]
+    createMany?: DocumentCreateManyStudentInputEnvelope
+    set?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    disconnect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    delete?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+    update?: DocumentUpdateWithWhereUniqueWithoutStudentInput | DocumentUpdateWithWhereUniqueWithoutStudentInput[]
+    updateMany?: DocumentUpdateManyWithWhereWithoutStudentInput | DocumentUpdateManyWithWhereWithoutStudentInput[]
+    deleteMany?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
   }
 
   export type ScholarshipCreateNestedManyWithoutProviderInput = {
@@ -20834,6 +20959,12 @@ export namespace Prisma {
     connect?: ApplicationWhereUniqueInput
   }
 
+  export type StudentCreateNestedOneWithoutDocumentsInput = {
+    create?: XOR<StudentCreateWithoutDocumentsInput, StudentUncheckedCreateWithoutDocumentsInput>
+    connectOrCreate?: StudentCreateOrConnectWithoutDocumentsInput
+    connect?: StudentWhereUniqueInput
+  }
+
   export type NullableBytesFieldUpdateOperationsInput = {
     set?: Uint8Array | null
   }
@@ -20848,6 +20979,14 @@ export namespace Prisma {
     upsert?: ApplicationUpsertWithoutDocumentsInput
     connect?: ApplicationWhereUniqueInput
     update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutDocumentsInput, ApplicationUpdateWithoutDocumentsInput>, ApplicationUncheckedUpdateWithoutDocumentsInput>
+  }
+
+  export type StudentUpdateOneRequiredWithoutDocumentsNestedInput = {
+    create?: XOR<StudentCreateWithoutDocumentsInput, StudentUncheckedCreateWithoutDocumentsInput>
+    connectOrCreate?: StudentCreateOrConnectWithoutDocumentsInput
+    upsert?: StudentUpsertWithoutDocumentsInput
+    connect?: StudentWhereUniqueInput
+    update?: XOR<XOR<StudentUpdateToOneWithWhereWithoutDocumentsInput, StudentUpdateWithoutDocumentsInput>, StudentUncheckedUpdateWithoutDocumentsInput>
   }
 
   export type StudentCreateNestedOneWithoutFamilyMembersInput = {
@@ -21379,6 +21518,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberCreateNestedManyWithoutStudentInput
     otherFunding?: OtherFundingCreateNestedManyWithoutStudentInput
     siblingEducation?: SiblingEducationCreateNestedManyWithoutStudentInput
+    documents?: DocumentCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutUserInput = {
@@ -21398,6 +21538,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutStudentInput
     otherFunding?: OtherFundingUncheckedCreateNestedManyWithoutStudentInput
     siblingEducation?: SiblingEducationUncheckedCreateNestedManyWithoutStudentInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutUserInput = {
@@ -21484,6 +21625,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberUpdateManyWithoutStudentNestedInput
     otherFunding?: OtherFundingUpdateManyWithoutStudentNestedInput
     siblingEducation?: SiblingEducationUpdateManyWithoutStudentNestedInput
+    documents?: DocumentUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutUserInput = {
@@ -21503,6 +21645,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberUncheckedUpdateManyWithoutStudentNestedInput
     otherFunding?: OtherFundingUncheckedUpdateManyWithoutStudentNestedInput
     siblingEducation?: SiblingEducationUncheckedUpdateManyWithoutStudentNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type CommitteeReviewUpsertWithWhereUniqueWithoutReviewerInput = {
@@ -21712,6 +21855,35 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DocumentCreateWithoutStudentInput = {
+    document_type: string
+    file_name: string
+    file_data?: Uint8Array | null
+    upload_date: Date | string
+    verification_status?: $Enums.VerificationStatus
+    application: ApplicationCreateNestedOneWithoutDocumentsInput
+  }
+
+  export type DocumentUncheckedCreateWithoutStudentInput = {
+    document_id?: number
+    application_id: number
+    document_type: string
+    file_name: string
+    file_data?: Uint8Array | null
+    upload_date: Date | string
+    verification_status?: $Enums.VerificationStatus
+  }
+
+  export type DocumentCreateOrConnectWithoutStudentInput = {
+    where: DocumentWhereUniqueInput
+    create: XOR<DocumentCreateWithoutStudentInput, DocumentUncheckedCreateWithoutStudentInput>
+  }
+
+  export type DocumentCreateManyStudentInputEnvelope = {
+    data: DocumentCreateManyStudentInput | DocumentCreateManyStudentInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutStudentInput = {
     update: XOR<UserUpdateWithoutStudentInput, UserUncheckedUpdateWithoutStudentInput>
     create: XOR<UserCreateWithoutStudentInput, UserUncheckedCreateWithoutStudentInput>
@@ -21864,6 +22036,36 @@ export namespace Prisma {
     institution?: StringFilter<"SiblingEducation"> | string
     year_grade?: StringFilter<"SiblingEducation"> | string
     registration_course?: StringFilter<"SiblingEducation"> | string
+  }
+
+  export type DocumentUpsertWithWhereUniqueWithoutStudentInput = {
+    where: DocumentWhereUniqueInput
+    update: XOR<DocumentUpdateWithoutStudentInput, DocumentUncheckedUpdateWithoutStudentInput>
+    create: XOR<DocumentCreateWithoutStudentInput, DocumentUncheckedCreateWithoutStudentInput>
+  }
+
+  export type DocumentUpdateWithWhereUniqueWithoutStudentInput = {
+    where: DocumentWhereUniqueInput
+    data: XOR<DocumentUpdateWithoutStudentInput, DocumentUncheckedUpdateWithoutStudentInput>
+  }
+
+  export type DocumentUpdateManyWithWhereWithoutStudentInput = {
+    where: DocumentScalarWhereInput
+    data: XOR<DocumentUpdateManyMutationInput, DocumentUncheckedUpdateManyWithoutStudentInput>
+  }
+
+  export type DocumentScalarWhereInput = {
+    AND?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
+    OR?: DocumentScalarWhereInput[]
+    NOT?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
+    document_id?: IntFilter<"Document"> | number
+    application_id?: IntFilter<"Document"> | number
+    student_id?: IntFilter<"Document"> | number
+    document_type?: StringFilter<"Document"> | string
+    file_name?: StringFilter<"Document"> | string
+    file_data?: BytesNullableFilter<"Document"> | Uint8Array | null
+    upload_date?: DateTimeFilter<"Document"> | Date | string
+    verification_status?: EnumVerificationStatusFilter<"Document"> | $Enums.VerificationStatus
   }
 
   export type ScholarshipCreateWithoutProviderInput = {
@@ -22178,6 +22380,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberCreateNestedManyWithoutStudentInput
     otherFunding?: OtherFundingCreateNestedManyWithoutStudentInput
     siblingEducation?: SiblingEducationCreateNestedManyWithoutStudentInput
+    documents?: DocumentCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutApplicationsInput = {
@@ -22197,6 +22400,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutStudentInput
     otherFunding?: OtherFundingUncheckedCreateNestedManyWithoutStudentInput
     siblingEducation?: SiblingEducationUncheckedCreateNestedManyWithoutStudentInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutApplicationsInput = {
@@ -22242,10 +22446,12 @@ export namespace Prisma {
     file_data?: Uint8Array | null
     upload_date: Date | string
     verification_status?: $Enums.VerificationStatus
+    student: StudentCreateNestedOneWithoutDocumentsInput
   }
 
   export type DocumentUncheckedCreateWithoutApplicationInput = {
     document_id?: number
+    student_id: number
     document_type: string
     file_name: string
     file_data?: Uint8Array | null
@@ -22346,6 +22552,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberUpdateManyWithoutStudentNestedInput
     otherFunding?: OtherFundingUpdateManyWithoutStudentNestedInput
     siblingEducation?: SiblingEducationUpdateManyWithoutStudentNestedInput
+    documents?: DocumentUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutApplicationsInput = {
@@ -22365,6 +22572,7 @@ export namespace Prisma {
     familyMembers?: FamilyMemberUncheckedUpdateManyWithoutStudentNestedInput
     otherFunding?: OtherFundingUncheckedUpdateManyWithoutStudentNestedInput
     siblingEducation?: SiblingEducationUncheckedUpdateManyWithoutStudentNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type ScholarshipUpsertWithoutApplicationsInput = {
@@ -22419,19 +22627,6 @@ export namespace Prisma {
   export type DocumentUpdateManyWithWhereWithoutApplicationInput = {
     where: DocumentScalarWhereInput
     data: XOR<DocumentUpdateManyMutationInput, DocumentUncheckedUpdateManyWithoutApplicationInput>
-  }
-
-  export type DocumentScalarWhereInput = {
-    AND?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
-    OR?: DocumentScalarWhereInput[]
-    NOT?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
-    document_id?: IntFilter<"Document"> | number
-    application_id?: IntFilter<"Document"> | number
-    document_type?: StringFilter<"Document"> | string
-    file_name?: StringFilter<"Document"> | string
-    file_data?: BytesNullableFilter<"Document"> | Uint8Array | null
-    upload_date?: DateTimeFilter<"Document"> | Date | string
-    verification_status?: EnumVerificationStatusFilter<"Document"> | $Enums.VerificationStatus
   }
 
   export type CommitteeReviewUpsertWithWhereUniqueWithoutApplicationInput = {
@@ -22509,6 +22704,50 @@ export namespace Prisma {
     create: XOR<ApplicationCreateWithoutDocumentsInput, ApplicationUncheckedCreateWithoutDocumentsInput>
   }
 
+  export type StudentCreateWithoutDocumentsInput = {
+    full_name: string
+    registration_no: string
+    date_of_birth: Date | string
+    permanent_address: string
+    admission_date: Date | string
+    year_of_study: number
+    gender: $Enums.Gender
+    phone_number: string
+    email: string
+    school_name: string
+    unmarried_siblings: number
+    user: UserCreateNestedOneWithoutStudentInput
+    applications?: ApplicationCreateNestedManyWithoutStudentInput
+    familyMembers?: FamilyMemberCreateNestedManyWithoutStudentInput
+    otherFunding?: OtherFundingCreateNestedManyWithoutStudentInput
+    siblingEducation?: SiblingEducationCreateNestedManyWithoutStudentInput
+  }
+
+  export type StudentUncheckedCreateWithoutDocumentsInput = {
+    student_id?: number
+    user_id: number
+    full_name: string
+    registration_no: string
+    date_of_birth: Date | string
+    permanent_address: string
+    admission_date: Date | string
+    year_of_study: number
+    gender: $Enums.Gender
+    phone_number: string
+    email: string
+    school_name: string
+    unmarried_siblings: number
+    applications?: ApplicationUncheckedCreateNestedManyWithoutStudentInput
+    familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutStudentInput
+    otherFunding?: OtherFundingUncheckedCreateNestedManyWithoutStudentInput
+    siblingEducation?: SiblingEducationUncheckedCreateNestedManyWithoutStudentInput
+  }
+
+  export type StudentCreateOrConnectWithoutDocumentsInput = {
+    where: StudentWhereUniqueInput
+    create: XOR<StudentCreateWithoutDocumentsInput, StudentUncheckedCreateWithoutDocumentsInput>
+  }
+
   export type ApplicationUpsertWithoutDocumentsInput = {
     update: XOR<ApplicationUpdateWithoutDocumentsInput, ApplicationUncheckedUpdateWithoutDocumentsInput>
     create: XOR<ApplicationCreateWithoutDocumentsInput, ApplicationUncheckedCreateWithoutDocumentsInput>
@@ -22545,6 +22784,56 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutApplicationNestedInput
   }
 
+  export type StudentUpsertWithoutDocumentsInput = {
+    update: XOR<StudentUpdateWithoutDocumentsInput, StudentUncheckedUpdateWithoutDocumentsInput>
+    create: XOR<StudentCreateWithoutDocumentsInput, StudentUncheckedCreateWithoutDocumentsInput>
+    where?: StudentWhereInput
+  }
+
+  export type StudentUpdateToOneWithWhereWithoutDocumentsInput = {
+    where?: StudentWhereInput
+    data: XOR<StudentUpdateWithoutDocumentsInput, StudentUncheckedUpdateWithoutDocumentsInput>
+  }
+
+  export type StudentUpdateWithoutDocumentsInput = {
+    full_name?: StringFieldUpdateOperationsInput | string
+    registration_no?: StringFieldUpdateOperationsInput | string
+    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    permanent_address?: StringFieldUpdateOperationsInput | string
+    admission_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    year_of_study?: IntFieldUpdateOperationsInput | number
+    gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+    phone_number?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    school_name?: StringFieldUpdateOperationsInput | string
+    unmarried_siblings?: IntFieldUpdateOperationsInput | number
+    user?: UserUpdateOneRequiredWithoutStudentNestedInput
+    applications?: ApplicationUpdateManyWithoutStudentNestedInput
+    familyMembers?: FamilyMemberUpdateManyWithoutStudentNestedInput
+    otherFunding?: OtherFundingUpdateManyWithoutStudentNestedInput
+    siblingEducation?: SiblingEducationUpdateManyWithoutStudentNestedInput
+  }
+
+  export type StudentUncheckedUpdateWithoutDocumentsInput = {
+    student_id?: IntFieldUpdateOperationsInput | number
+    user_id?: IntFieldUpdateOperationsInput | number
+    full_name?: StringFieldUpdateOperationsInput | string
+    registration_no?: StringFieldUpdateOperationsInput | string
+    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
+    permanent_address?: StringFieldUpdateOperationsInput | string
+    admission_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    year_of_study?: IntFieldUpdateOperationsInput | number
+    gender?: EnumGenderFieldUpdateOperationsInput | $Enums.Gender
+    phone_number?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    school_name?: StringFieldUpdateOperationsInput | string
+    unmarried_siblings?: IntFieldUpdateOperationsInput | number
+    applications?: ApplicationUncheckedUpdateManyWithoutStudentNestedInput
+    familyMembers?: FamilyMemberUncheckedUpdateManyWithoutStudentNestedInput
+    otherFunding?: OtherFundingUncheckedUpdateManyWithoutStudentNestedInput
+    siblingEducation?: SiblingEducationUncheckedUpdateManyWithoutStudentNestedInput
+  }
+
   export type StudentCreateWithoutFamilyMembersInput = {
     full_name: string
     registration_no: string
@@ -22561,6 +22850,7 @@ export namespace Prisma {
     applications?: ApplicationCreateNestedManyWithoutStudentInput
     otherFunding?: OtherFundingCreateNestedManyWithoutStudentInput
     siblingEducation?: SiblingEducationCreateNestedManyWithoutStudentInput
+    documents?: DocumentCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutFamilyMembersInput = {
@@ -22580,6 +22870,7 @@ export namespace Prisma {
     applications?: ApplicationUncheckedCreateNestedManyWithoutStudentInput
     otherFunding?: OtherFundingUncheckedCreateNestedManyWithoutStudentInput
     siblingEducation?: SiblingEducationUncheckedCreateNestedManyWithoutStudentInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutFamilyMembersInput = {
@@ -22639,6 +22930,7 @@ export namespace Prisma {
     applications?: ApplicationUpdateManyWithoutStudentNestedInput
     otherFunding?: OtherFundingUpdateManyWithoutStudentNestedInput
     siblingEducation?: SiblingEducationUpdateManyWithoutStudentNestedInput
+    documents?: DocumentUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutFamilyMembersInput = {
@@ -22658,6 +22950,7 @@ export namespace Prisma {
     applications?: ApplicationUncheckedUpdateManyWithoutStudentNestedInput
     otherFunding?: OtherFundingUncheckedUpdateManyWithoutStudentNestedInput
     siblingEducation?: SiblingEducationUncheckedUpdateManyWithoutStudentNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type SiblingEducationUpsertWithWhereUniqueWithoutMemberInput = {
@@ -22692,6 +22985,7 @@ export namespace Prisma {
     applications?: ApplicationCreateNestedManyWithoutStudentInput
     familyMembers?: FamilyMemberCreateNestedManyWithoutStudentInput
     siblingEducation?: SiblingEducationCreateNestedManyWithoutStudentInput
+    documents?: DocumentCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutOtherFundingInput = {
@@ -22711,6 +23005,7 @@ export namespace Prisma {
     applications?: ApplicationUncheckedCreateNestedManyWithoutStudentInput
     familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutStudentInput
     siblingEducation?: SiblingEducationUncheckedCreateNestedManyWithoutStudentInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutOtherFundingInput = {
@@ -22745,6 +23040,7 @@ export namespace Prisma {
     applications?: ApplicationUpdateManyWithoutStudentNestedInput
     familyMembers?: FamilyMemberUpdateManyWithoutStudentNestedInput
     siblingEducation?: SiblingEducationUpdateManyWithoutStudentNestedInput
+    documents?: DocumentUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutOtherFundingInput = {
@@ -22764,6 +23060,7 @@ export namespace Prisma {
     applications?: ApplicationUncheckedUpdateManyWithoutStudentNestedInput
     familyMembers?: FamilyMemberUncheckedUpdateManyWithoutStudentNestedInput
     siblingEducation?: SiblingEducationUncheckedUpdateManyWithoutStudentNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type ApplicationCreateWithoutReviewsInput = {
@@ -22980,6 +23277,7 @@ export namespace Prisma {
     applications?: ApplicationCreateNestedManyWithoutStudentInput
     familyMembers?: FamilyMemberCreateNestedManyWithoutStudentInput
     otherFunding?: OtherFundingCreateNestedManyWithoutStudentInput
+    documents?: DocumentCreateNestedManyWithoutStudentInput
   }
 
   export type StudentUncheckedCreateWithoutSiblingEducationInput = {
@@ -22999,6 +23297,7 @@ export namespace Prisma {
     applications?: ApplicationUncheckedCreateNestedManyWithoutStudentInput
     familyMembers?: FamilyMemberUncheckedCreateNestedManyWithoutStudentInput
     otherFunding?: OtherFundingUncheckedCreateNestedManyWithoutStudentInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutStudentInput
   }
 
   export type StudentCreateOrConnectWithoutSiblingEducationInput = {
@@ -23061,6 +23360,7 @@ export namespace Prisma {
     applications?: ApplicationUpdateManyWithoutStudentNestedInput
     familyMembers?: FamilyMemberUpdateManyWithoutStudentNestedInput
     otherFunding?: OtherFundingUpdateManyWithoutStudentNestedInput
+    documents?: DocumentUpdateManyWithoutStudentNestedInput
   }
 
   export type StudentUncheckedUpdateWithoutSiblingEducationInput = {
@@ -23080,6 +23380,7 @@ export namespace Prisma {
     applications?: ApplicationUncheckedUpdateManyWithoutStudentNestedInput
     familyMembers?: FamilyMemberUncheckedUpdateManyWithoutStudentNestedInput
     otherFunding?: OtherFundingUncheckedUpdateManyWithoutStudentNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutStudentNestedInput
   }
 
   export type FamilyMemberUpsertWithoutSiblingEducationInput = {
@@ -23286,6 +23587,16 @@ export namespace Prisma {
     registration_course: string
   }
 
+  export type DocumentCreateManyStudentInput = {
+    document_id?: number
+    application_id: number
+    document_type: string
+    file_name: string
+    file_data?: Uint8Array | null
+    upload_date: Date | string
+    verification_status?: $Enums.VerificationStatus
+  }
+
   export type ApplicationUpdateWithoutStudentInput = {
     submission_date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
@@ -23402,6 +23713,35 @@ export namespace Prisma {
     institution?: StringFieldUpdateOperationsInput | string
     year_grade?: StringFieldUpdateOperationsInput | string
     registration_course?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type DocumentUpdateWithoutStudentInput = {
+    document_type?: StringFieldUpdateOperationsInput | string
+    file_name?: StringFieldUpdateOperationsInput | string
+    file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
+    upload_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    verification_status?: EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+    application?: ApplicationUpdateOneRequiredWithoutDocumentsNestedInput
+  }
+
+  export type DocumentUncheckedUpdateWithoutStudentInput = {
+    document_id?: IntFieldUpdateOperationsInput | number
+    application_id?: IntFieldUpdateOperationsInput | number
+    document_type?: StringFieldUpdateOperationsInput | string
+    file_name?: StringFieldUpdateOperationsInput | string
+    file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
+    upload_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    verification_status?: EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  }
+
+  export type DocumentUncheckedUpdateManyWithoutStudentInput = {
+    document_id?: IntFieldUpdateOperationsInput | number
+    application_id?: IntFieldUpdateOperationsInput | number
+    document_type?: StringFieldUpdateOperationsInput | string
+    file_name?: StringFieldUpdateOperationsInput | string
+    file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
+    upload_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    verification_status?: EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
   }
 
   export type ScholarshipCreateManyProviderInput = {
@@ -23537,6 +23877,7 @@ export namespace Prisma {
 
   export type DocumentCreateManyApplicationInput = {
     document_id?: number
+    student_id: number
     document_type: string
     file_name: string
     file_data?: Uint8Array | null
@@ -23569,10 +23910,12 @@ export namespace Prisma {
     file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
     upload_date?: DateTimeFieldUpdateOperationsInput | Date | string
     verification_status?: EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+    student?: StudentUpdateOneRequiredWithoutDocumentsNestedInput
   }
 
   export type DocumentUncheckedUpdateWithoutApplicationInput = {
     document_id?: IntFieldUpdateOperationsInput | number
+    student_id?: IntFieldUpdateOperationsInput | number
     document_type?: StringFieldUpdateOperationsInput | string
     file_name?: StringFieldUpdateOperationsInput | string
     file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
@@ -23582,6 +23925,7 @@ export namespace Prisma {
 
   export type DocumentUncheckedUpdateManyWithoutApplicationInput = {
     document_id?: IntFieldUpdateOperationsInput | number
+    student_id?: IntFieldUpdateOperationsInput | number
     document_type?: StringFieldUpdateOperationsInput | string
     file_name?: StringFieldUpdateOperationsInput | string
     file_data?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null

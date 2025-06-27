@@ -193,6 +193,7 @@ exports.Prisma.ApplicationScalarFieldEnum = {
 exports.Prisma.DocumentScalarFieldEnum = {
   document_id: 'document_id',
   application_id: 'application_id',
+  student_id: 'student_id',
   document_type: 'document_type',
   file_name: 'file_name',
   file_data: 'file_data',

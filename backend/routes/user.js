@@ -438,6 +438,7 @@ router.post('/documents', authenticateToken, upload.fields([
       docs.push(await prisma.document.create({
         data: {
           application_id: applicationId,
+          student_id: user.student.student_id,
           document_type: 'NIC Front',
           file_name: files.nicFront[0].originalname,
           file_data: files.nicFront[0].buffer,
@@ -449,6 +450,7 @@ router.post('/documents', authenticateToken, upload.fields([
       docs.push(await prisma.document.create({
         data: {
           application_id: applicationId,
+          student_id: user.student.student_id,
           document_type: 'NIC Back',
           file_name: files.nicBack[0].originalname,
           file_data: files.nicBack[0].buffer,
@@ -460,6 +462,7 @@ router.post('/documents', authenticateToken, upload.fields([
       docs.push(await prisma.document.create({
         data: {
           application_id: applicationId,
+          student_id: user.student.student_id,
           document_type: 'GS Certificate',
           file_name: files.gsCertificate[0].originalname,
           file_data: files.gsCertificate[0].buffer,
@@ -480,11 +483,14 @@ router.get('/documents', authenticateToken, async (req, res) => {
     const userId = parseInt(req.user.userId);
     const user = await prisma.user.findUnique({
       where: { user_id: userId },
-      select: { student: { select: { student_id: true, applications: { select: { application_id: true, documents: true } } } } }
+      select: { student: { select: { student_id: true } } }
     });
     if (!user || !user.student) return res.status(404).json({ error: 'Student profile not found' });
-    // Flatten all documents from all applications
-    const documents = user.student.applications.flatMap(app => app.documents);
+    // Fetch all documents for this student
+    const documents = await prisma.document.findMany({
+      where: { student_id: user.student.student_id },
+      orderBy: { upload_date: 'desc' },
+    });
     // Only return metadata, not file_data
     res.json(documents.map(doc => ({
       document_id: doc.document_id,
@@ -519,15 +525,14 @@ router.delete('/documents/:id', authenticateToken, async (req, res) => {
   try {
     const docId = parseInt(req.params.id);
     const userId = parseInt(req.user.userId);
-    // Find the document and ensure it belongs to the user's applications
+    // Find the document and ensure it belongs to the user's student
     const user = await prisma.user.findUnique({
       where: { user_id: userId },
-      select: { student: { select: { applications: { select: { application_id: true } } } } }
+      select: { student: { select: { student_id: true } } }
     });
     if (!user || !user.student) return res.status(404).json({ error: 'Student profile not found' });
-    const appIds = user.student.applications.map(app => app.application_id);
     const doc = await prisma.document.findUnique({ where: { document_id: docId } });
-    if (!doc || !appIds.includes(doc.application_id)) {
+    if (!doc || doc.student_id !== user.student.student_id) {
       return res.status(403).json({ error: 'Not authorized to delete this document' });
     }
     await prisma.document.delete({ where: { document_id: docId } });
