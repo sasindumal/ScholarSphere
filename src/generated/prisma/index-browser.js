@@ -186,6 +186,7 @@ exports.Prisma.ApplicationScalarFieldEnum = {
   submission_date: 'submission_date',
   status: 'status',
   total_points: 'total_points',
+  eligibility_status: 'eligibility_status',
   reviewer_comments: 'reviewer_comments',
   review_date: 'review_date'
 };
@@ -193,9 +194,10 @@ exports.Prisma.ApplicationScalarFieldEnum = {
 exports.Prisma.DocumentScalarFieldEnum = {
   document_id: 'document_id',
   application_id: 'application_id',
+  student_id: 'student_id',
   document_type: 'document_type',
   file_name: 'file_name',
-  file_path: 'file_path',
+  file_data: 'file_data',
   upload_date: 'upload_date',
   verification_status: 'verification_status'
 };
@@ -260,6 +262,11 @@ exports.Prisma.NotificationScalarFieldEnum = {
   is_read: 'is_read'
 };
 
+exports.Prisma.SettingScalarFieldEnum = {
+  key: 'key',
+  value: 'value'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -306,13 +313,13 @@ exports.Prisma.NullsOrder = {
 };
 
 exports.Prisma.ApplicationOrderByRelevanceFieldEnum = {
+  eligibility_status: 'eligibility_status',
   reviewer_comments: 'reviewer_comments'
 };
 
 exports.Prisma.DocumentOrderByRelevanceFieldEnum = {
   document_type: 'document_type',
-  file_name: 'file_name',
-  file_path: 'file_path'
+  file_name: 'file_name'
 };
 
 exports.Prisma.FamilyMemberOrderByRelevanceFieldEnum = {
@@ -345,6 +352,11 @@ exports.Prisma.SiblingEducationOrderByRelevanceFieldEnum = {
 
 exports.Prisma.NotificationOrderByRelevanceFieldEnum = {
   message: 'message'
+};
+
+exports.Prisma.SettingOrderByRelevanceFieldEnum = {
+  key: 'key',
+  value: 'value'
 };
 exports.Role = exports.$Enums.Role = {
   student: 'student',
@@ -395,7 +407,8 @@ exports.Prisma.ModelName = {
   CommitteeReview: 'CommitteeReview',
   Payment: 'Payment',
   SiblingEducation: 'SiblingEducation',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  Setting: 'Setting'
 };
 
 /**

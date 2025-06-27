@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -45,6 +44,7 @@ model Student {
   familyMembers      FamilyMember[]
   otherFunding       OtherFunding[]
   siblingEducation   SiblingEducation[]
+  documents          Document[]
 }
 
 model ScholarshipProvider {
@@ -94,6 +94,7 @@ model Application {
   submission_date   DateTime
   status            ApplicationStatus @default(pending)
   total_points      Int?
+  eligibility_status String?
   reviewer_comments String?
   review_date       DateTime?
 
@@ -107,13 +108,15 @@ model Application {
 model Document {
   document_id         Int        @id @default(autoincrement())
   application_id      Int
+  student_id          Int
   document_type       String     @db.VarChar(50)
   file_name           String     @db.VarChar(255)
-  file_path           String
+  file_data           Bytes?     @db.MediumBlob
   upload_date         DateTime
   verification_status VerificationStatus @default(pending)
 
   application         Application @relation(fields: [application_id], references: [application_id])
+  student             Student     @relation(fields: [student_id], references: [student_id])
 }
 
 model FamilyMember {
@@ -189,6 +192,11 @@ model Notification {
   is_read         Boolean  @default(false)
 
   user            User     @relation(fields: [user_id], references: [user_id])
+}
+
+model Setting {
+  key   String @id
+  value String
 }
 
 // ENUMS

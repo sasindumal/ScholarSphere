@@ -1,6 +1,4 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "next/typescript"
-  ]
-}
+  "extends": ["react-app"],
+  "ignorePatterns": ["src/generated/**/*"]
+} 
