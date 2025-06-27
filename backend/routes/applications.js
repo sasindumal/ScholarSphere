@@ -92,12 +92,43 @@ router.get('/all', authenticateToken, async (req, res) => {
             otherFunding: true,
           }
         },
+        documents: {
+          select: {
+            document_id: true,
+            document_type: true,
+            file_name: true,
+            upload_date: true,
+            verification_status: true,
+          }
+        },
       },
       orderBy: { submission_date: 'desc' },
     });
     res.json(applications);
   } catch (error) {
     console.error('Error fetching all applications:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Approve or reject a document (coordinator only)
+router.post('/documents/:id/verify', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'coordinator') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  const { id } = req.params;
+  const { status } = req.body; // status: 'verified' or 'rejected'
+  if (!['verified', 'rejected'].includes(status)) {
+    return res.status(400).json({ error: 'Invalid status' });
+  }
+  try {
+    const doc = await prisma.document.update({
+      where: { document_id: parseInt(id) },
+      data: { verification_status: status },
+    });
+    res.json({ message: `Document ${status}` });
+  } catch (error) {
+    console.error('Error updating document status:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

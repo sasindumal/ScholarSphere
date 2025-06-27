@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import './MyApplications.css';
+import Modal from 'react-modal';
 
 const statusOptions = [
   { value: '', label: 'All Statuses' },
@@ -26,6 +27,9 @@ const CoordinatorApplications = () => {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [order, setOrder] = useState('date_desc');
+  const [docActionLoading, setDocActionLoading] = useState({});
+  const [previewModal, setPreviewModal] = useState({ open: false, url: '', type: '', name: '' });
+  const [downloadLoading, setDownloadLoading] = useState({});
 
   useEffect(() => {
     fetchApplications();
@@ -82,6 +86,27 @@ const CoordinatorApplications = () => {
     }
   };
 
+  const handleDocumentVerify = async (docId, status) => {
+    setDocActionLoading(prev => ({ ...prev, [docId]: true }));
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`http://localhost:5001/api/applications/documents/${docId}/verify`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status }),
+      });
+      if (!res.ok) throw new Error('Failed to update document status');
+      await fetchApplications();
+    } catch (err) {
+      alert('Error updating document status.');
+    } finally {
+      setDocActionLoading(prev => ({ ...prev, [docId]: false }));
+    }
+  };
+
   const renderStatus = (status) => {
     const statusClass = `status-${status.toLowerCase()}`;
     return <span className={`status-badge ${statusClass}`}>{status}</span>;
@@ -114,6 +139,46 @@ const CoordinatorApplications = () => {
       filtered.sort((a, b) => Number(a.scholarship.amount) - Number(b.scholarship.amount));
     }
     return filtered;
+  };
+
+  // Helper to get file extension
+  const getFileExtension = (filename) => filename.split('.').pop().toLowerCase();
+  // Helper to get download URL
+  const getDownloadUrl = (docId) => `http://localhost:5001/api/user/documents/${docId}`;
+
+  // Secure fetch and preview/download
+  const handlePreviewDocument = async (doc) => {
+    setDownloadLoading(prev => ({ ...prev, [doc.document_id]: true }));
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`http://localhost:5001/api/user/documents/${doc.document_id}`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('Failed to fetch document');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const ext = getFileExtension(doc.file_name);
+      if (["jpg","jpeg","png","gif"].includes(ext) || ext === "pdf") {
+        setPreviewModal({ open: true, url, type: ext, name: doc.file_name });
+      } else {
+        // Download
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = doc.file_name;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+    } catch (err) {
+      alert('Error fetching document.');
+    } finally {
+      setDownloadLoading(prev => ({ ...prev, [doc.document_id]: false }));
+    }
+  };
+  const closePreviewModal = () => {
+    if (previewModal.url) URL.revokeObjectURL(previewModal.url);
+    setPreviewModal({ open: false, url: '', type: '', name: '' });
   };
 
   const renderContent = () => {
@@ -309,6 +374,92 @@ const CoordinatorApplications = () => {
                 ) : <p>No other fundings reported.</p>}
               </div>
 
+              {/* Uploaded Documents */}
+              <div className="review-section">
+                <h4>Uploaded Documents</h4>
+                {app.documents && app.documents.length > 0 ? (
+                  <table style={{ width: '100%', marginBottom: 10, background: '#fff', borderRadius: 8 }}>
+                    <thead>
+                      <tr style={{ background: '#f4f8fb' }}>
+                        <th style={{ padding: '10px 14px', textAlign: 'left' }}>Type</th>
+                        <th style={{ padding: '10px 14px', textAlign: 'left' }}>File Name</th>
+                        <th style={{ padding: '10px 14px', textAlign: 'left' }}>Upload Date</th>
+                        <th style={{ padding: '10px 14px', textAlign: 'left' }}>Status</th>
+                        <th style={{ padding: '10px 14px', textAlign: 'left' }}>Preview</th>
+                        <th style={{ padding: '10px 14px', textAlign: 'left' }}>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {app.documents.map(doc => {
+                        const ext = getFileExtension(doc.file_name);
+                        const downloadUrl = getDownloadUrl(doc.document_id);
+                        return (
+                          <tr key={doc.document_id}>
+                            <td style={{ padding: '10px 14px' }}>{doc.document_type}</td>
+                            <td style={{ padding: '10px 14px' }}>{doc.file_name}</td>
+                            <td style={{ padding: '10px 14px' }}>{new Date(doc.upload_date).toLocaleString()}</td>
+                            <td style={{ padding: '10px 14px' }}>
+                              <span style={{
+                                padding: '4px 12px',
+                                borderRadius: 8,
+                                background: doc.verification_status === 'verified' ? '#d1fae5' : doc.verification_status === 'rejected' ? '#fee2e2' : '#fef9c3',
+                                color: doc.verification_status === 'verified' ? '#065f46' : doc.verification_status === 'rejected' ? '#991b1b' : '#92400e',
+                                fontWeight: 600,
+                                fontSize: 13,
+                              }}>{doc.verification_status}</span>
+                            </td>
+                            <td style={{ padding: '10px 14px', minWidth: 120 }}>
+                              {['jpg', 'jpeg', 'png', 'gif'].includes(ext) ? (
+                                <button
+                                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                                  onClick={() => handlePreviewDocument(doc)}
+                                  disabled={downloadLoading[doc.document_id]}
+                                  title="Preview Image"
+                                >
+                                  <span style={{ display: 'inline-block', border: '1px solid #eee', borderRadius: 6, overflow: 'hidden', width: 80, height: 80, background: '#f9fafb' }}>
+                                    <img src="/preview-placeholder.png" alt="Preview" style={{ width: 80, height: 80, objectFit: 'cover', opacity: 0.7 }} />
+                                  </span>
+                                </button>
+                              ) : ext === 'pdf' ? (
+                                <button
+                                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#2563eb', textDecoration: 'underline' }}
+                                  onClick={() => handlePreviewDocument(doc)}
+                                  disabled={downloadLoading[doc.document_id]}
+                                  title="Preview PDF"
+                                >Preview PDF</button>
+                              ) : (
+                                <button
+                                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#2563eb', textDecoration: 'underline' }}
+                                  onClick={() => handlePreviewDocument(doc)}
+                                  disabled={downloadLoading[doc.document_id]}
+                                  title="Download File"
+                                >Download</button>
+                              )}
+                            </td>
+                            <td style={{ padding: '10px 14px' }}>
+                              <button
+                                style={{
+                                  background: '#34d399', color: '#fff', border: 'none', borderRadius: 8, padding: '6px 14px', fontWeight: 600, marginRight: 8, cursor: 'pointer', opacity: docActionLoading[doc.document_id] ? 0.6 : 1
+                                }}
+                                disabled={docActionLoading[doc.document_id] || doc.verification_status === 'verified'}
+                                onClick={() => handleDocumentVerify(doc.document_id, 'verified')}
+                              >Approve</button>
+                              <button
+                                style={{
+                                  background: '#f87171', color: '#fff', border: 'none', borderRadius: 8, padding: '6px 14px', fontWeight: 600, cursor: 'pointer', opacity: docActionLoading[doc.document_id] ? 0.6 : 1
+                                }}
+                                disabled={docActionLoading[doc.document_id] || doc.verification_status === 'rejected'}
+                                onClick={() => handleDocumentVerify(doc.document_id, 'rejected')}
+                              >Reject</button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                ) : <p>No documents uploaded.</p>}
+              </div>
+
               {app.reviewer_comments && (
                 <div className="review-section">
                   <h4>Coordinator Comment</h4>
@@ -382,6 +533,27 @@ const CoordinatorApplications = () => {
         </div>
         {renderContent()}
       </div>
+      {/* Preview Modal */}
+      <Modal
+        isOpen={previewModal.open}
+        onRequestClose={closePreviewModal}
+        contentLabel="Document Preview"
+        style={{
+          overlay: { backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 1000 },
+          content: { maxWidth: 600, margin: 'auto', borderRadius: 12, padding: 24, minHeight: 200 }
+        }}
+        ariaHideApp={false}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <h2 style={{ margin: 0, fontSize: 20 }}>Preview: {previewModal.name}</h2>
+          <button onClick={closePreviewModal} style={{ fontSize: 18, background: 'none', border: 'none', cursor: 'pointer' }}>&times;</button>
+        </div>
+        {['jpg', 'jpeg', 'png', 'gif'].includes(previewModal.type) ? (
+          <img src={previewModal.url} alt={previewModal.name} style={{ maxWidth: '100%', maxHeight: 400, borderRadius: 8, border: '1px solid #eee' }} />
+        ) : previewModal.type === 'pdf' ? (
+          <iframe src={previewModal.url} title={previewModal.name} style={{ width: '100%', height: 500, border: '1px solid #eee', borderRadius: 8 }} />
+        ) : null}
+      </Modal>
     </Layout>
   );
 };
