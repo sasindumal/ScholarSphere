@@ -12,11 +12,15 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: '*',
+  origin: 'https://artistic-kindness-production.up.railway.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
-app.options('*', cors());
+app.options('*', cors({
+  origin: 'https://artistic-kindness-production.up.railway.app',
+  credentials: true
+}));
 
 app.use(express.json());
 
