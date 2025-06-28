@@ -4,9 +4,9 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 RUN apk update && apk add --no-cache openssl3
 
-COPY backend/package*.json ./
+COPY package*.json ./
 RUN npm install
-COPY backend/. .
+COPY . .
 RUN npx prisma generate
 
 # Production stage
