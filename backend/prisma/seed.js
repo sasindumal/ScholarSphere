@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient, Role, Gender, ApplicationStatus, VerificationStatus, ReviewStatus, PaymentStatus } = require('../src/generated/prisma');
 const { faker } = require('@faker-js/faker');
 const bcrypt = require('bcryptjs');
 
@@ -195,6 +195,29 @@ async function main() {
     });
   }
   console.log(`Created welcome notifications for all users.`);
+
+  // --- Update Admin and Coordinator Passwords ---
+  const adminUser = await prisma.user.create({
+    data: {
+      first_name: 'Arjuna',
+      last_name: 'Wickramasinghe',
+      email: 'admin@eng.jfn.ac.lk',
+      username: 'admin',
+      password: '$2b$10$ypKxRFiqKMFynVk/wBiT5OyfoXpV2.QD0gGlbSom6TzjIhvxBtJAq', // password: 12345678
+      role: Role.admin,
+    },
+  });
+
+  const coordinatorUser = await prisma.user.create({
+    data: {
+      first_name: 'Priya',
+      last_name: 'Fernando',
+      email: 'coordinator@eng.jfn.ac.lk',
+      username: 'coordinator',
+      password: '$2b$10$ypKxRFiqKMFynVk/wBiT5OyfoXpV2.QD0gGlbSom6TzjIhvxBtJAq', // password: 12345678
+      role: Role.coordinator,
+    },
+  });
 
   console.log('Seeding finished.');
 }

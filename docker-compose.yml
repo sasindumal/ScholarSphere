@@ -16,6 +16,7 @@ services:
     container_name: backend
     ports:
       - "5001:5001"
+      - "5555:5555"
     depends_on:
       - mysql
     environment:

@@ -18,4 +18,4 @@ RUN npm install && npx prisma generate
 EXPOSE 5001
 
 # Start the server
-CMD ["node", "server.js"] 
+CMD ["sh", "-c", "npx prisma migrate deploy && node server.js"]
