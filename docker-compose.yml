@@ -33,9 +33,7 @@ services:
       - backend
     stdin_open: true
     tty: true
-    volumes:
-      - ./frontend:/app
-      - /frontend/node_modules
+
 
 volumes:
   mysql-data:
