@@ -20,7 +20,7 @@ services:
       - mysql
     volumes:
       - ./backend:/app
-      - /backend/node_modules:/app/node_modules
+      - /backend/node_modules
     environment:
       - DATABASE_URL="mysql://root:12345678@mysql:3306/scholarspheredb"
   
@@ -35,7 +35,7 @@ services:
     tty: true
     volumes:
       - ./frontend:/app
-      - /frontend/node_modules:/app/node_modules
+      - /frontend/node_modules
 
 volumes:
   mysql-data:
