@@ -12,7 +12,7 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: 'http://localhost:3000', // React app's URL
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000', // Use env variable or default
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
