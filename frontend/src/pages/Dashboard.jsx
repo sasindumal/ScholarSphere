@@ -32,7 +32,7 @@ const Dashboard = () => {
   const [totalPaid, setTotalPaid] = useState(0);
   const [recentPayments, setRecentPayments] = useState([]);
 
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const token = localStorage.getItem('token');

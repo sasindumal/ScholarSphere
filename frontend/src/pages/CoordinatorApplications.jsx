@@ -31,7 +31,7 @@ const CoordinatorApplications = () => {
   const [previewModal, setPreviewModal] = useState({ open: false, url: '', type: '', name: '' });
   const [downloadLoading, setDownloadLoading] = useState({});
 
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchApplications();

@@ -22,7 +22,7 @@ const CoordinatorScholarships = () => {
   const [submitting, setSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
 
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchAll();

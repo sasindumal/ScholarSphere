@@ -74,7 +74,7 @@ const AdminUsers = () => {
   const [formError, setFormError] = useState('');
   const [actionLoading, setActionLoading] = useState(false);
 
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchUsers();

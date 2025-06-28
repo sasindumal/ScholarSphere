@@ -10,7 +10,7 @@ const CoordinatorStudents = () => {
   const [notifInputs, setNotifInputs] = useState({});
   const [notifStatus, setNotifStatus] = useState({});
 
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchStudents();

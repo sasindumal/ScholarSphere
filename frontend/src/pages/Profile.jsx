@@ -55,7 +55,7 @@ const Profile = () => {
   const [docLoading, setDocLoading] = useState(false);
   const [docDeleteStatus, setDocDeleteStatus] = useState('');
 
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchProfile();

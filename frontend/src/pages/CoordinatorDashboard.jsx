@@ -32,7 +32,7 @@ const CoordinatorDashboard = () => {
     const fetchCounts = () => {
       const token = localStorage.getItem('token');
       setLoading(true);
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const apiUrl = process.env.REACT_APP_API_URL;
       Promise.all([
         fetch(`${apiUrl}/api/applications/pending`, {
           headers: { 'Authorization': `Bearer ${token}` }

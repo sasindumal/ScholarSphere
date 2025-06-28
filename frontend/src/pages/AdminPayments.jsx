@@ -74,7 +74,7 @@ const AdminPayments = () => {
   const [resolveLoading, setResolveLoading] = useState(false);
   const [resolveError, setResolveError] = useState('');
 
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchPayments();

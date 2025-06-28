@@ -51,7 +51,7 @@ const Layout = ({ children }) => {
       try {
         const token = localStorage.getItem('token');
         if (!token) return;
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+        const apiUrl = process.env.REACT_APP_API_URL;
         const res = await fetch(`${apiUrl}/api/user/profile`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
@@ -73,7 +73,7 @@ const Layout = ({ children }) => {
     const fetchNotificationData = async () => {
       try {
         // Fetch unread count
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+        const apiUrl = process.env.REACT_APP_API_URL;
         const countRes = await fetch(`${apiUrl}/api/notifications/unread-count`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
@@ -120,7 +120,7 @@ const Layout = ({ children }) => {
       const notificationIdsToMark = latestNotifications.map(n => n.notification_id);
 
       try {
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+        const apiUrl = process.env.REACT_APP_API_URL;
         const res = await fetch(`${apiUrl}/api/notifications/mark-as-read`, {
           method: 'POST',
           headers: {
