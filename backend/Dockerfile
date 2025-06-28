@@ -3,6 +3,7 @@ FROM node:22-alpine
 
 # Set working directory
 WORKDIR /app
+RUN apk update && apk add --no-cache openssl3
 
 # Copy package files and install dependencies
 COPY package*.json ./
