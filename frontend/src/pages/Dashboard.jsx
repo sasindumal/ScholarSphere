@@ -32,12 +32,14 @@ const Dashboard = () => {
   const [totalPaid, setTotalPaid] = useState(0);
   const [recentPayments, setRecentPayments] = useState([]);
 
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     
     const fetchUserData = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/user/profile', {
+        const response = await fetch(`${apiUrl}/api/user/profile`, {
           headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
         });
         if (response.ok) setUserData(await response.json());
@@ -49,7 +51,7 @@ const Dashboard = () => {
 
     const fetchScholarshipCount = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/scholarships/count', {
+        const response = await fetch(`${apiUrl}/api/scholarships/count`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (response.ok) setScholarshipCount((await response.json()).count);
@@ -61,7 +63,7 @@ const Dashboard = () => {
 
     const fetchApplicationCount = async () => {
         try {
-          const response = await fetch('http://localhost:5001/api/applications/count', {
+          const response = await fetch(`${apiUrl}/api/applications/count`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           if (response.ok) setApplicationCount((await response.json()).count);
@@ -73,7 +75,7 @@ const Dashboard = () => {
 
     const fetchTotalPaid = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/payments/total', {
+        const response = await fetch(`${apiUrl}/api/payments/total`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (response.ok) setTotalPaid((await response.json()).total);
@@ -85,7 +87,7 @@ const Dashboard = () => {
 
     const fetchRecentPayments = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/payments/history', {
+        const response = await fetch(`${apiUrl}/api/payments/history`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (response.ok) {

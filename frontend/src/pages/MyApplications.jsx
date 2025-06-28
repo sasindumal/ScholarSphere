@@ -7,6 +7,8 @@ const MyApplications = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
   useEffect(() => {
     fetchApplications();
   }, []);
@@ -15,7 +17,7 @@ const MyApplications = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/applications', {
+      const response = await fetch(`${apiUrl}/api/applications`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

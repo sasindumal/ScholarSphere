@@ -16,8 +16,9 @@ const Notifications = () => {
         return;
       }
 
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
       try {
-        const response = await fetch('http://localhost:5001/api/notifications', {
+        const response = await fetch(`${apiUrl}/api/notifications`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
 

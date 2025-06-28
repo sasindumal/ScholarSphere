@@ -74,6 +74,8 @@ const AdminUsers = () => {
   const [formError, setFormError] = useState('');
   const [actionLoading, setActionLoading] = useState(false);
 
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -83,7 +85,7 @@ const AdminUsers = () => {
     setError(null);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/api/user/all', {
+      const res = await fetch(`${apiUrl}/api/user/all`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (res.ok) {
@@ -122,7 +124,7 @@ const AdminUsers = () => {
     setActionLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5001/api/user/${id}`, {
+      const res = await fetch(`${apiUrl}/api/user/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });
@@ -146,13 +148,13 @@ const AdminUsers = () => {
     try {
       let res;
       if (editingId) {
-        res = await fetch(`http://localhost:5001/api/user/${editingId}`, {
+        res = await fetch(`${apiUrl}/api/user/${editingId}`, {
           method: 'PUT',
           headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify(form),
         });
       } else {
-        res = await fetch('http://localhost:5001/api/user', {
+        res = await fetch(`${apiUrl}/api/user`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify(form),

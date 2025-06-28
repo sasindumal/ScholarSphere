@@ -14,6 +14,8 @@ const AvailableScholarships = () => {
 
   const navigate = useNavigate();
 
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
   useEffect(() => {
     fetchInitialData();
   }, []);
@@ -24,10 +26,10 @@ const AvailableScholarships = () => {
       const token = localStorage.getItem('token');
       // Fetch both scholarships and user's applications in parallel
       const [scholarshipsRes, applicationsRes] = await Promise.all([
-        fetch('http://localhost:5001/api/scholarships', {
+        fetch(`${apiUrl}/api/scholarships`, {
           headers: { 'Authorization': `Bearer ${token}` }
         }),
-        fetch('http://localhost:5001/api/applications', {
+        fetch(`${apiUrl}/api/applications`, {
             headers: { 'Authorization': `Bearer ${token}` }
         })
       ]);
@@ -53,7 +55,7 @@ const AvailableScholarships = () => {
   const handleApply = async (scholarshipId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/scholarships/apply', {
+      const response = await fetch(`${apiUrl}/api/scholarships/apply`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

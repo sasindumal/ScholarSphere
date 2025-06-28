@@ -22,6 +22,8 @@ const CoordinatorScholarships = () => {
   const [submitting, setSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
 
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
   useEffect(() => {
     fetchAll();
     // eslint-disable-next-line
@@ -32,8 +34,8 @@ const CoordinatorScholarships = () => {
     try {
       const token = localStorage.getItem('token');
       const [schRes, provRes] = await Promise.all([
-        fetch('http://localhost:5001/api/scholarships', { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch('http://localhost:5001/api/scholarships/providers', { headers: { 'Authorization': `Bearer ${token}` } })
+        fetch(`${apiUrl}/api/scholarships`, { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch(`${apiUrl}/api/scholarships/providers`, { headers: { 'Authorization': `Bearer ${token}` } })
       ]);
       const scholarships = schRes.ok ? await schRes.json() : [];
       const providers = provRes.ok ? await provRes.json() : [];
@@ -89,7 +91,7 @@ const CoordinatorScholarships = () => {
     }
     try {
       const method = editingId ? 'PUT' : 'POST';
-      const url = editingId ? `http://localhost:5001/api/scholarships/${editingId}` : 'http://localhost:5001/api/scholarships';
+      const url = editingId ? `${apiUrl}/api/scholarships/${editingId}` : `${apiUrl}/api/scholarships`;
       const res = await fetch(url, {
         method,
         headers: {
@@ -113,7 +115,7 @@ const CoordinatorScholarships = () => {
     setDeletingId(id);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5001/api/scholarships/${id}`, {
+      const res = await fetch(`${apiUrl}/api/scholarships/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });

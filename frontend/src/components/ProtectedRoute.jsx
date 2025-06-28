@@ -8,7 +8,8 @@ const ProtectedRoute = ({ children, role }) => {
 
   useEffect(() => {
     if (role && token) {
-      fetch('http://localhost:5001/api/user/profile', {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      fetch(`${apiUrl}/api/user/profile`, {
         headers: { 'Authorization': `Bearer ${token}` },
       })
         .then(res => res.ok ? res.json() : Promise.reject())

@@ -10,6 +10,8 @@ const CoordinatorStudents = () => {
   const [notifInputs, setNotifInputs] = useState({});
   const [notifStatus, setNotifStatus] = useState({});
 
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
   useEffect(() => {
     fetchStudents();
     // eslint-disable-next-line
@@ -20,7 +22,7 @@ const CoordinatorStudents = () => {
     setError(null);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/user/students', {
+      const response = await fetch(`${apiUrl}/api/user/students`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -62,7 +64,7 @@ const CoordinatorStudents = () => {
     setNotifStatus(prev => ({ ...prev, [student_id]: 'Sending...' }));
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/api/applications/notify-student', {
+      const res = await fetch(`${apiUrl}/api/applications/notify-student`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

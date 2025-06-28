@@ -11,6 +11,8 @@ const AdminSettings = () => {
   const [addError, setAddError] = useState('');
   const [actionLoading, setActionLoading] = useState(false);
 
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
   useEffect(() => {
     fetchSettings();
   }, []);
@@ -20,7 +22,7 @@ const AdminSettings = () => {
     setError(null);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/api/user/settings', {
+      const res = await fetch(`${apiUrl}/api/user/settings`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (res.ok) {
@@ -44,7 +46,7 @@ const AdminSettings = () => {
     setActionLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5001/api/user/settings/${key}`, {
+      const res = await fetch(`${apiUrl}/api/user/settings/${key}`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ value: editValue }),
@@ -68,7 +70,7 @@ const AdminSettings = () => {
     setActionLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5001/api/user/settings/${key}`, {
+      const res = await fetch(`${apiUrl}/api/user/settings/${key}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });
@@ -95,7 +97,7 @@ const AdminSettings = () => {
     setActionLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/api/user/settings', {
+      const res = await fetch(`${apiUrl}/api/user/settings`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify(addForm),

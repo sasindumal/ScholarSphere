@@ -7,13 +7,15 @@ const PaymentsHistory = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
   useEffect(() => {
     const fetchPayments = async () => {
       setLoading(true);
       setError(null);
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:5001/api/payments/history', {
+        const response = await fetch(`${apiUrl}/api/payments/history`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (!response.ok) throw new Error('Failed to fetch payments');

@@ -55,6 +55,8 @@ const Profile = () => {
   const [docLoading, setDocLoading] = useState(false);
   const [docDeleteStatus, setDocDeleteStatus] = useState('');
 
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
   useEffect(() => {
     fetchProfile();
     fetchFamilyMembers();
@@ -72,7 +74,7 @@ const Profile = () => {
     setError('');
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/api/user/full-profile', {
+      const res = await fetch(`${apiUrl}/api/user/full-profile`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to fetch profile');
@@ -98,7 +100,7 @@ const Profile = () => {
   const fetchFamilyMembers = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/api/user/family-members', {
+      const res = await fetch(`${apiUrl}/api/user/family-members`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (res.ok) setFamilyMembers(await res.json());
@@ -108,7 +110,7 @@ const Profile = () => {
   const fetchFundings = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/api/user/other-funding', {
+      const res = await fetch(`${apiUrl}/api/user/other-funding`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (res.ok) setFundings(await res.json());
@@ -119,7 +121,7 @@ const Profile = () => {
     setDocLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/api/user/documents', {
+      const res = await fetch(`${apiUrl}/api/user/documents`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to fetch documents');
@@ -139,7 +141,7 @@ const Profile = () => {
     setError('');
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/api/user/profile', {
+      const res = await fetch(`${apiUrl}/api/user/profile`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -160,7 +162,7 @@ const Profile = () => {
     setError('');
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/api/auth/password', {
+      const res = await fetch(`${apiUrl}/api/auth/password`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify(passwordForm),
@@ -199,7 +201,7 @@ const Profile = () => {
     }
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/api/user/student', {
+      const res = await fetch(`${apiUrl}/api/user/student`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify(studentForm),
@@ -253,7 +255,7 @@ const Profile = () => {
     }
     try {
       const token = localStorage.getItem('token');
-      const url = editingMember ? `http://localhost:5001/api/user/family-members/${editingMember.member_id}` : 'http://localhost:5001/api/user/family-members';
+      const url = editingMember ? `${apiUrl}/api/user/family-members/${editingMember.member_id}` : `${apiUrl}/api/user/family-members`;
       const method = editingMember ? 'PUT' : 'POST';
       const res = await fetch(url, {
         method,
@@ -271,7 +273,7 @@ const Profile = () => {
     if (!window.confirm('Delete this family member?')) return;
     try {
       const token = localStorage.getItem('token');
-      await fetch(`http://localhost:5001/api/user/family-members/${id}`, {
+      await fetch(`${apiUrl}/api/user/family-members/${id}`, {
         method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` },
       });
       fetchFamilyMembers();
@@ -303,7 +305,7 @@ const Profile = () => {
     setFundingError('');
     try {
       const token = localStorage.getItem('token');
-      const url = editingFunding ? `http://localhost:5001/api/user/other-funding/${editingFunding.funding_id}` : 'http://localhost:5001/api/user/other-funding';
+      const url = editingFunding ? `${apiUrl}/api/user/other-funding/${editingFunding.funding_id}` : `${apiUrl}/api/user/other-funding`;
       const method = editingFunding ? 'PUT' : 'POST';
       const res = await fetch(url, {
         method,
@@ -321,7 +323,7 @@ const Profile = () => {
     if (!window.confirm('Delete this funding?')) return;
     try {
       const token = localStorage.getItem('token');
-      await fetch(`http://localhost:5001/api/user/other-funding/${id}`, {
+      await fetch(`${apiUrl}/api/user/other-funding/${id}`, {
         method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` },
       });
       fetchFundings();
@@ -340,7 +342,7 @@ const Profile = () => {
     if (gsCertificate) formData.append('gsCertificate', gsCertificate);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/api/user/documents', {
+      const res = await fetch(`${apiUrl}/api/user/documents`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
         body: formData,
@@ -361,7 +363,7 @@ const Profile = () => {
     setDocDeleteStatus('');
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5001/api/user/documents/${id}`, {
+      const res = await fetch(`${apiUrl}/api/user/documents/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });

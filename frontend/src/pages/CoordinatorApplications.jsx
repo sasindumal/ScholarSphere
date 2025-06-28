@@ -31,6 +31,8 @@ const CoordinatorApplications = () => {
   const [previewModal, setPreviewModal] = useState({ open: false, url: '', type: '', name: '' });
   const [downloadLoading, setDownloadLoading] = useState({});
 
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
   useEffect(() => {
     fetchApplications();
     // eslint-disable-next-line
@@ -40,7 +42,7 @@ const CoordinatorApplications = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/applications/all', {
+      const response = await fetch(`${apiUrl}/api/applications/all`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -61,7 +63,7 @@ const CoordinatorApplications = () => {
     setActionLoading(prev => ({ ...prev, [id]: true }));
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/applications/${id}/review`, {
+      const response = await fetch(`${apiUrl}/api/applications/${id}/review`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -90,7 +92,7 @@ const CoordinatorApplications = () => {
     setDocActionLoading(prev => ({ ...prev, [docId]: true }));
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5001/api/applications/documents/${docId}/verify`, {
+      const res = await fetch(`${apiUrl}/api/applications/documents/${docId}/verify`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -144,14 +146,14 @@ const CoordinatorApplications = () => {
   // Helper to get file extension
   const getFileExtension = (filename) => filename.split('.').pop().toLowerCase();
   // Helper to get download URL
-  const getDownloadUrl = (docId) => `http://localhost:5001/api/user/documents/${docId}`;
+  const getDownloadUrl = (docId) => `${apiUrl}/api/user/documents/${docId}`;
 
   // Secure fetch and preview/download
   const handlePreviewDocument = async (doc) => {
     setDownloadLoading(prev => ({ ...prev, [doc.document_id]: true }));
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5001/api/user/documents/${doc.document_id}`, {
+      const res = await fetch(`${apiUrl}/api/user/documents/${doc.document_id}`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to fetch document');
@@ -185,7 +187,7 @@ const CoordinatorApplications = () => {
   const handleOverrideEligibility = async (applicationId, newStatus) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5001/api/applications/${applicationId}/eligibility-status`, {
+      const response = await fetch(`${apiUrl}/api/applications/${applicationId}/eligibility-status`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

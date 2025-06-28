@@ -74,6 +74,8 @@ const AdminPayments = () => {
   const [resolveLoading, setResolveLoading] = useState(false);
   const [resolveError, setResolveError] = useState('');
 
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+
   useEffect(() => {
     fetchPayments();
   }, []);
@@ -83,7 +85,7 @@ const AdminPayments = () => {
     setError(null);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/api/payments/all', {
+      const res = await fetch(`${apiUrl}/api/payments/all`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (res.ok) {
@@ -128,7 +130,7 @@ const AdminPayments = () => {
     setResolveError('');
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5001/api/payments/${selected.payment_id}`, {
+      const res = await fetch(`${apiUrl}/api/payments/${selected.payment_id}`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: resolveStatus }),

@@ -71,6 +71,7 @@ const AdminProviders = () => {
   const [editingId, setEditingId] = useState(null);
   const [formError, setFormError] = useState('');
   const [actionLoading, setActionLoading] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 
   useEffect(() => {
     fetchProviders();
@@ -81,7 +82,7 @@ const AdminProviders = () => {
     setError(null);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5001/api/scholarships/providers', {
+      const res = await fetch(`${apiUrl}/api/scholarships/providers`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (res.ok) {
@@ -120,7 +121,7 @@ const AdminProviders = () => {
     setActionLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5001/api/scholarships/providers/${id}`, {
+      const res = await fetch(`${apiUrl}/api/scholarships/providers/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });
@@ -144,13 +145,13 @@ const AdminProviders = () => {
     try {
       let res;
       if (editingId) {
-        res = await fetch(`http://localhost:5001/api/scholarships/providers/${editingId}`, {
+        res = await fetch(`${apiUrl}/api/scholarships/providers/${editingId}`, {
           method: 'PUT',
           headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify(form),
         });
       } else {
-        res = await fetch('http://localhost:5001/api/scholarships/providers', {
+        res = await fetch(`${apiUrl}/api/scholarships/providers`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
           body: JSON.stringify(form),

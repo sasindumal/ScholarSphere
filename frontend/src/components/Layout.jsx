@@ -51,7 +51,8 @@ const Layout = ({ children }) => {
       try {
         const token = localStorage.getItem('token');
         if (!token) return;
-        const res = await fetch('http://localhost:5001/api/user/profile', {
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+        const res = await fetch(`${apiUrl}/api/user/profile`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         if (res.ok) {
@@ -72,7 +73,8 @@ const Layout = ({ children }) => {
     const fetchNotificationData = async () => {
       try {
         // Fetch unread count
-        const countRes = await fetch('http://localhost:5001/api/notifications/unread-count', {
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+        const countRes = await fetch(`${apiUrl}/api/notifications/unread-count`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         if (countRes.ok) {
@@ -81,7 +83,7 @@ const Layout = ({ children }) => {
         }
 
         // Fetch recent notifications for the dropdown
-        const recentRes = await fetch('http://localhost:5001/api/notifications/recent', {
+        const recentRes = await fetch(`${apiUrl}/api/notifications/recent`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         if (recentRes.ok) {
@@ -118,7 +120,8 @@ const Layout = ({ children }) => {
       const notificationIdsToMark = latestNotifications.map(n => n.notification_id);
 
       try {
-        const res = await fetch('http://localhost:5001/api/notifications/mark-as-read', {
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+        const res = await fetch(`${apiUrl}/api/notifications/mark-as-read`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

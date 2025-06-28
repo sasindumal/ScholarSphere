@@ -32,11 +32,12 @@ const CoordinatorDashboard = () => {
     const fetchCounts = () => {
       const token = localStorage.getItem('token');
       setLoading(true);
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
       Promise.all([
-        fetch('http://localhost:5001/api/applications/pending', {
+        fetch(`${apiUrl}/api/applications/pending`, {
           headers: { 'Authorization': `Bearer ${token}` }
         }).then(res => res.ok ? res.json() : { count: 0 }),
-        fetch('http://localhost:5001/api/scholarships/count', {
+        fetch(`${apiUrl}/api/scholarships/count`, {
           headers: { 'Authorization': `Bearer ${token}` }
         }).then(res => res.ok ? res.json() : { count: 0 }),
       ]).then(([pending, scholarships]) => {
