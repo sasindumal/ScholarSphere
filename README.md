@@ -243,7 +243,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you have any questions or need support, please:
 
-- 📧 Email: support@scholarsphere.com
+- 📧 Email: 2022e126@eng.jfn.ac.lk
 - 🐛 Report bugs: [GitHub Issues](https://github.com/sasindumal/scholarsphere/issues)
 - 💬 Discussions: [GitHub Discussions](https://github.com/sasindumal/scholarsphere/discussions)
 
