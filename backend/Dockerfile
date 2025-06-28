@@ -1,21 +1,18 @@
-# Use official Node.js LTS image
-FROM node:22-alpine
+# Builder stage
+FROM node:22-alpine AS builder
 
-# Set working directory
 WORKDIR /app
 RUN apk update && apk add --no-cache openssl3
 
-# Copy package files and install dependencies
 COPY package*.json ./
-
-
-# Copy backend source code
+RUN npm install
 COPY . .
+RUN npx prisma generate
 
-RUN npm install && npx prisma generate
-
-# Expose backend port
+# Production stage
+FROM node:22-alpine AS production
+WORKDIR /app
+RUN apk update && apk add --no-cache openssl3
+COPY --from=builder /app /app
 EXPOSE 5001
-
-# Start the server
 CMD ["sh", "-c", "npx prisma migrate deploy && node server.js"]
