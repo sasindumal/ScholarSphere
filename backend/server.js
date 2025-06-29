@@ -10,17 +10,15 @@ const notificationRoutes = require('./routes/notifications');
 
 const app = express();
 
-// CORS configuration
-app.use(cors({
-  origin: 'https://artistic-kindness-production.up.railway.app',
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
-}));
-app.options('*', cors({
-  origin: 'https://artistic-kindness-production.up.railway.app',
-  credentials: true
-}));
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 
