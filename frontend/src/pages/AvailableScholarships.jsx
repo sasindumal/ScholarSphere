@@ -34,12 +34,20 @@ const AvailableScholarships = () => {
         })
       ]);
 
-      if (!scholarshipsRes.ok || !applicationsRes.ok) {
-        throw new Error('Failed to fetch data');
+      if (!scholarshipsRes.ok) {
+        throw new Error('Failed to fetch scholarships');
       }
 
       const scholarshipsData = await scholarshipsRes.json();
-      const applicationsData = await applicationsRes.json();
+      let applicationsData = [];
+      if (applicationsRes.ok) {
+        applicationsData = await applicationsRes.json();
+      } else if (applicationsRes.status === 404) {
+        // No applications for new user, treat as empty
+        applicationsData = [];
+      } else {
+        throw new Error('Failed to fetch applications');
+      }
       
       setScholarships(scholarshipsData);
       setAppliedScholarshipIds(new Set(applicationsData.map(app => app.scholarship_id)));
