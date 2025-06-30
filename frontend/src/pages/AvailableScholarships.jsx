@@ -7,6 +7,9 @@ const AvailableScholarships = () => {
   const [appliedScholarshipIds, setAppliedScholarshipIds] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [studentProfile, setStudentProfile] = useState(null);
+  const [documents, setDocuments] = useState([]);
+  const [profileLoading, setProfileLoading] = useState(true);
   
   // New state for search and filter
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,6 +21,8 @@ const AvailableScholarships = () => {
 
   useEffect(() => {
     fetchInitialData();
+    fetchStudentProfile();
+    fetchDocuments();
   }, []);
 
   const fetchInitialData = async () => {
@@ -60,7 +65,69 @@ const AvailableScholarships = () => {
     }
   };
 
+  const fetchStudentProfile = async () => {
+    setProfileLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${apiUrl}/api/user/full-profile`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('Failed to fetch profile');
+      const data = await res.json();
+      setStudentProfile(data.student);
+    } catch (err) {
+      setStudentProfile(null);
+    } finally {
+      setProfileLoading(false);
+    }
+  };
+
+  const fetchDocuments = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${apiUrl}/api/user/documents`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('Failed to fetch documents');
+      const data = await res.json();
+      setDocuments(data);
+    } catch (err) {
+      setDocuments([]);
+    }
+  };
+
+  // Helper to check if student info is complete
+  const isStudentInfoComplete = () => {
+    if (!studentProfile) return false;
+    const requiredFields = [
+      'full_name', 'registration_no', 'date_of_birth', 'permanent_address', 'admission_date',
+      'year_of_study', 'gender', 'phone_number', 'email', 'school_name'
+    ];
+    for (const field of requiredFields) {
+      if (!studentProfile[field] || studentProfile[field] === '' || studentProfile[field] === 'To be updated' || studentProfile[field] === '0000000000') {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  // Helper to check if required documents are uploaded (and optionally verified)
+  const isDocumentsComplete = () => {
+    // You can adjust this logic based on your requirements
+    const requiredTypes = ['NIC Front', 'NIC Back', 'GS Certificate'];
+    const uploadedTypes = documents.map(doc => doc.document_type);
+    return requiredTypes.every(type => uploadedTypes.includes(type));
+  };
+
   const handleApply = async (scholarshipId) => {
+    if (!isStudentInfoComplete()) {
+      alert('Please complete your student profile before applying for a scholarship.');
+      return;
+    }
+    if (!isDocumentsComplete()) {
+      alert('Please upload all required documents before applying for a scholarship.');
+      return;
+    }
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`${apiUrl}/api/scholarships/apply`, {
@@ -74,7 +141,6 @@ const AvailableScholarships = () => {
 
       if (response.ok) {
         alert('Application submitted successfully!');
-        // Add the new application to our state to update the UI instantly
         setAppliedScholarshipIds(prevIds => new Set(prevIds).add(scholarshipId));
       } else {
         const errorData = await response.json();

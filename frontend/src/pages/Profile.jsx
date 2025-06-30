@@ -17,6 +17,12 @@ const YEAR_OPTIONS = [
 ];
 const GENDER_OPTIONS = ['male', 'female', 'other'];
 
+const RELATIONSHIP_OPTIONS = [
+  { value: 'Father', label: 'Father' },
+  { value: 'Mother', label: 'Mother' },
+  { value: 'Sibling', label: 'Sibling' },
+];
+
 const emptyMember = {
   full_name: '', age: '', relationship: '', designation: '', annual_income: '', workplace: '', phone_number: '',
   siblingEducation: { institution: '', year_grade: '', registration_course: '' }
@@ -88,18 +94,50 @@ const Profile = () => {
         username: data.username,
       });
       if (data.student) {
+        function getField(obj, snake, camel, fallback) {
+          if (snake === 'registration_no' && obj[snake] && obj[snake].startsWith('UGC/NEW/')) return '';
+          if (snake === 'registration_no' && obj[camel] && obj[camel].startsWith('UGC/NEW/')) return '';
+          if (obj[snake] !== undefined && obj[snake] !== null && obj[snake] !== '' && obj[snake] !== 'To be updated' && obj[snake] !== '0000000000') return obj[snake];
+          if (obj[camel] !== undefined && obj[camel] !== null && obj[camel] !== '' && obj[camel] !== 'To be updated' && obj[camel] !== '0000000000') return obj[camel];
+          return fallback;
+        }
+        const snakeCamelMap = {
+          full_name: 'fullName',
+          registration_no: 'registrationNo',
+          date_of_birth: 'dateOfBirth',
+          gender: 'gender',
+          permanent_address: 'permanentAddress',
+          admission_date: 'admissionDate',
+          year_of_study: 'yearOfStudy',
+          phone_number: 'phoneNumber',
+          email: 'email',
+          school_name: 'schoolName',
+          unmarried_siblings: 'unmarriedSiblings',
+        };
+        const requiredFields = Object.keys(snakeCamelMap);
+        const defaults = {
+          gender: 'male',
+          year_of_study: 1,
+          unmarried_siblings: 0,
+        };
+        const form = {};
+        for (const f of requiredFields) {
+          form[f] = getField(data.student, f, snakeCamelMap[f], defaults[f] !== undefined ? defaults[f] : '');
+        }
+        setStudentForm(form);
+      } else {
         setStudentForm({
-          full_name: data.student.full_name || data.student.fullName || '',
-          registration_no: data.student.registration_no || data.student.registrationNo || '',
-          date_of_birth: data.student.date_of_birth || data.student.dateOfBirth || '',
-          gender: data.student.gender || '',
-          permanent_address: data.student.permanent_address || data.student.permanentAddress || '',
-          admission_date: data.student.admission_date || data.student.admissionDate || '',
-          year_of_study: data.student.year_of_study || data.student.yearOfStudy || '',
-          phone_number: data.student.phone_number || data.student.phoneNumber || '',
-          email: data.student.email || '',
-          school_name: data.student.school_name || data.student.schoolName || '',
-          unmarried_siblings: data.student.unmarried_siblings || data.student.unmarriedSiblings || 0,
+          full_name: '',
+          registration_no: '',
+          date_of_birth: '',
+          gender: 'male',
+          permanent_address: '',
+          admission_date: '',
+          year_of_study: 1,
+          phone_number: '',
+          email: '',
+          school_name: '',
+          unmarried_siblings: 0,
         });
       }
     } catch (err) {
@@ -198,25 +236,23 @@ const Profile = () => {
     e.preventDefault();
     setStudentSuccess('');
     setStudentError('');
-    // Validation
-    if (!/^20\d{2}E\d{3}$/.test(studentForm.registration_no || '')) {
-      setStudentError('Registration number must be in 20YYEXXX format');
-      return;
-    }
-    // Required fields
-    const required = ['full_name','registration_no','date_of_birth','gender','permanent_address','admission_date','year_of_study','phone_number','email','school_name','unmarried_siblings'];
-    for (let f of required) {
-      if (!studentForm[f]) {
-        setStudentError('All fields are required');
-        return;
-      }
-    }
     try {
       const token = localStorage.getItem('token');
+      // Convert date fields to ISO-8601 strings if not empty
+      const payload = { ...studentForm };
+      if (payload.date_of_birth) {
+        payload.date_of_birth = new Date(payload.date_of_birth).toISOString();
+      }
+      if (payload.admission_date) {
+        payload.admission_date = new Date(payload.admission_date).toISOString();
+      }
+      if (payload.unmarried_siblings !== undefined && payload.unmarried_siblings !== null && payload.unmarried_siblings !== '') {
+        payload.unmarried_siblings = Number(payload.unmarried_siblings);
+      }
       const res = await fetch(`${apiUrl}/api/user/student`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify(studentForm),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error('Failed to update student info');
       setStudentSuccess('Student info updated successfully');
@@ -259,23 +295,40 @@ const Profile = () => {
   const handleMemberSubmit = async e => {
     e.preventDefault();
     setMemberError('');
-    const body = { ...memberForm };
-    if (memberForm.relationship === 'student') {
-      body.siblingEducation = memberForm.siblingEducation;
-    } else {
-      delete body.siblingEducation;
-    }
     try {
       const token = localStorage.getItem('token');
+      // Convert age and annual_income to numbers
+      const payload = { ...memberForm };
+      if (payload.age !== undefined && payload.age !== null && payload.age !== '') {
+        payload.age = Number(payload.age);
+      }
+      if (payload.annual_income !== undefined && payload.annual_income !== null && payload.annual_income !== '') {
+        payload.annual_income = Number(payload.annual_income);
+      }
+      // Only include siblingEducation if relationship is 'sibling' and all fields are filled
+      if (payload.relationship === 'Sibling') {
+        const se = payload.siblingEducation || {};
+        if (se.institution && se.year_grade && se.registration_course) {
+          payload.siblingEducation = {
+            institution: se.institution,
+            year_grade: se.year_grade,
+            registration_course: se.registration_course,
+          };
+        } else {
+          delete payload.siblingEducation;
+        }
+      } else {
+        delete payload.siblingEducation;
+      }
       const url = editingMember ? `${apiUrl}/api/user/family-members/${editingMember.member_id}` : `${apiUrl}/api/user/family-members`;
       const method = editingMember ? 'PUT' : 'POST';
       const res = await fetch(url, {
         method,
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error('Failed to save family member');
-      closeMemberForm();
+      setShowMemberForm(false);
       fetchFamilyMembers();
     } catch (err) {
       setMemberError(err.message);
@@ -469,22 +522,26 @@ const Profile = () => {
                   <form className="profile-inline-form" onSubmit={handleMemberSubmit}>
                     <label>Full Name<input name="full_name" value={memberForm.full_name} onChange={handleMemberChange} required /></label>
                     <label>Age<input name="age" type="number" value={memberForm.age} onChange={handleMemberChange} required /></label>
-                    <label>Relationship<input name="relationship" value={memberForm.relationship} onChange={handleMemberChange} required /></label>
+                    <label>Relationship
+                      <select name="relationship" value={memberForm.relationship} onChange={handleMemberChange} required>
+                        <option value="">Select Relationship</option>
+                        {RELATIONSHIP_OPTIONS.map(opt => (
+                          <option key={opt.value} value={opt.value}>{opt.label}</option>
+                        ))}
+                      </select>
+                    </label>
                     <label>Designation<input name="designation" value={memberForm.designation} onChange={handleMemberChange} required /></label>
                     <label>Annual Income<input name="annual_income" type="number" value={memberForm.annual_income} onChange={handleMemberChange} required /></label>
                     <label>Workplace<input name="workplace" value={memberForm.workplace} onChange={handleMemberChange} required /></label>
                     <label>Phone Number<input name="phone_number" value={memberForm.phone_number} onChange={handleMemberChange} required /></label>
-                    {memberForm.relationship === 'student' && (
+                    {memberForm.relationship === 'Sibling' && (
                       <>
                         <label>Institution<input name="siblingEducation.institution" value={memberForm.siblingEducation.institution} onChange={handleMemberChange} required /></label>
                         <label>Year/Grade<input name="siblingEducation.year_grade" value={memberForm.siblingEducation.year_grade} onChange={handleMemberChange} required /></label>
                         <label>Registration/Course<input name="siblingEducation.registration_course" value={memberForm.siblingEducation.registration_course} onChange={handleMemberChange} required /></label>
                       </>
                     )}
-                    <div className="profile-inline-actions">
-                      <button type="submit">{editingMember ? 'Update' : 'Add'} Member</button>
-                      <button type="button" onClick={closeMemberForm}>Cancel</button>
-                    </div>
+                    <button type="submit">{editingMember ? 'Update' : 'Add'} Family Member</button>
                     {memberError && <p className="error-message">{memberError}</p>}
                   </form>
                 )}

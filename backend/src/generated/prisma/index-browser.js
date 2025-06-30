@@ -324,7 +324,6 @@ exports.Prisma.DocumentOrderByRelevanceFieldEnum = {
 
 exports.Prisma.FamilyMemberOrderByRelevanceFieldEnum = {
   full_name: 'full_name',
-  relationship: 'relationship',
   designation: 'designation',
   workplace: 'workplace',
   phone_number: 'phone_number'
@@ -381,6 +380,12 @@ exports.VerificationStatus = exports.$Enums.VerificationStatus = {
   pending: 'pending',
   verified: 'verified',
   rejected: 'rejected'
+};
+
+exports.RelationshipType = exports.$Enums.RelationshipType = {
+  Father: 'Father',
+  Mother: 'Mother',
+  Sibling: 'Sibling'
 };
 
 exports.ReviewStatus = exports.$Enums.ReviewStatus = {

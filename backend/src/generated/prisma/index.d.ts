@@ -141,6 +141,15 @@ export const PaymentStatus: {
 
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
 
+
+export const RelationshipType: {
+  Father: 'Father',
+  Mother: 'Mother',
+  Sibling: 'Sibling'
+};
+
+export type RelationshipType = (typeof RelationshipType)[keyof typeof RelationshipType]
+
 }
 
 export type Role = $Enums.Role
@@ -166,6 +175,10 @@ export const ReviewStatus: typeof $Enums.ReviewStatus
 export type PaymentStatus = $Enums.PaymentStatus
 
 export const PaymentStatus: typeof $Enums.PaymentStatus
+
+export type RelationshipType = $Enums.RelationshipType
+
+export const RelationshipType: typeof $Enums.RelationshipType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -9795,7 +9808,7 @@ export namespace Prisma {
     student_id: number | null
     full_name: string | null
     age: number | null
-    relationship: string | null
+    relationship: $Enums.RelationshipType | null
     designation: string | null
     annual_income: Decimal | null
     workplace: string | null
@@ -9807,7 +9820,7 @@ export namespace Prisma {
     student_id: number | null
     full_name: string | null
     age: number | null
-    relationship: string | null
+    relationship: $Enums.RelationshipType | null
     designation: string | null
     annual_income: Decimal | null
     workplace: string | null
@@ -9970,7 +9983,7 @@ export namespace Prisma {
     student_id: number
     full_name: string
     age: number
-    relationship: string
+    relationship: $Enums.RelationshipType
     designation: string
     annual_income: Decimal
     workplace: string
@@ -10043,7 +10056,7 @@ export namespace Prisma {
       student_id: number
       full_name: string
       age: number
-      relationship: string
+      relationship: $Enums.RelationshipType
       designation: string
       annual_income: Prisma.Decimal
       workplace: string
@@ -10423,7 +10436,7 @@ export namespace Prisma {
     readonly student_id: FieldRef<"FamilyMember", 'Int'>
     readonly full_name: FieldRef<"FamilyMember", 'String'>
     readonly age: FieldRef<"FamilyMember", 'Int'>
-    readonly relationship: FieldRef<"FamilyMember", 'String'>
+    readonly relationship: FieldRef<"FamilyMember", 'RelationshipType'>
     readonly designation: FieldRef<"FamilyMember", 'String'>
     readonly annual_income: FieldRef<"FamilyMember", 'Decimal'>
     readonly workplace: FieldRef<"FamilyMember", 'String'>
@@ -16900,7 +16913,6 @@ export namespace Prisma {
 
   export const FamilyMemberOrderByRelevanceFieldEnum: {
     full_name: 'full_name',
-    relationship: 'relationship',
     designation: 'designation',
     workplace: 'workplace',
     phone_number: 'phone_number'
@@ -17028,6 +17040,13 @@ export namespace Prisma {
    * Reference to a field of type 'VerificationStatus'
    */
   export type EnumVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'RelationshipType'
+   */
+  export type EnumRelationshipTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RelationshipType'>
     
 
 
@@ -17641,7 +17660,7 @@ export namespace Prisma {
     student_id?: IntFilter<"FamilyMember"> | number
     full_name?: StringFilter<"FamilyMember"> | string
     age?: IntFilter<"FamilyMember"> | number
-    relationship?: StringFilter<"FamilyMember"> | string
+    relationship?: EnumRelationshipTypeFilter<"FamilyMember"> | $Enums.RelationshipType
     designation?: StringFilter<"FamilyMember"> | string
     annual_income?: DecimalFilter<"FamilyMember"> | Decimal | DecimalJsLike | number | string
     workplace?: StringFilter<"FamilyMember"> | string
@@ -17673,7 +17692,7 @@ export namespace Prisma {
     student_id?: IntFilter<"FamilyMember"> | number
     full_name?: StringFilter<"FamilyMember"> | string
     age?: IntFilter<"FamilyMember"> | number
-    relationship?: StringFilter<"FamilyMember"> | string
+    relationship?: EnumRelationshipTypeFilter<"FamilyMember"> | $Enums.RelationshipType
     designation?: StringFilter<"FamilyMember"> | string
     annual_income?: DecimalFilter<"FamilyMember"> | Decimal | DecimalJsLike | number | string
     workplace?: StringFilter<"FamilyMember"> | string
@@ -17707,7 +17726,7 @@ export namespace Prisma {
     student_id?: IntWithAggregatesFilter<"FamilyMember"> | number
     full_name?: StringWithAggregatesFilter<"FamilyMember"> | string
     age?: IntWithAggregatesFilter<"FamilyMember"> | number
-    relationship?: StringWithAggregatesFilter<"FamilyMember"> | string
+    relationship?: EnumRelationshipTypeWithAggregatesFilter<"FamilyMember"> | $Enums.RelationshipType
     designation?: StringWithAggregatesFilter<"FamilyMember"> | string
     annual_income?: DecimalWithAggregatesFilter<"FamilyMember"> | Decimal | DecimalJsLike | number | string
     workplace?: StringWithAggregatesFilter<"FamilyMember"> | string
@@ -18693,7 +18712,7 @@ export namespace Prisma {
   export type FamilyMemberCreateInput = {
     full_name: string
     age: number
-    relationship: string
+    relationship: $Enums.RelationshipType
     designation: string
     annual_income: Decimal | DecimalJsLike | number | string
     workplace: string
@@ -18707,7 +18726,7 @@ export namespace Prisma {
     student_id: number
     full_name: string
     age: number
-    relationship: string
+    relationship: $Enums.RelationshipType
     designation: string
     annual_income: Decimal | DecimalJsLike | number | string
     workplace: string
@@ -18718,7 +18737,7 @@ export namespace Prisma {
   export type FamilyMemberUpdateInput = {
     full_name?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
-    relationship?: StringFieldUpdateOperationsInput | string
+    relationship?: EnumRelationshipTypeFieldUpdateOperationsInput | $Enums.RelationshipType
     designation?: StringFieldUpdateOperationsInput | string
     annual_income?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     workplace?: StringFieldUpdateOperationsInput | string
@@ -18732,7 +18751,7 @@ export namespace Prisma {
     student_id?: IntFieldUpdateOperationsInput | number
     full_name?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
-    relationship?: StringFieldUpdateOperationsInput | string
+    relationship?: EnumRelationshipTypeFieldUpdateOperationsInput | $Enums.RelationshipType
     designation?: StringFieldUpdateOperationsInput | string
     annual_income?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     workplace?: StringFieldUpdateOperationsInput | string
@@ -18745,7 +18764,7 @@ export namespace Prisma {
     student_id: number
     full_name: string
     age: number
-    relationship: string
+    relationship: $Enums.RelationshipType
     designation: string
     annual_income: Decimal | DecimalJsLike | number | string
     workplace: string
@@ -18755,7 +18774,7 @@ export namespace Prisma {
   export type FamilyMemberUpdateManyMutationInput = {
     full_name?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
-    relationship?: StringFieldUpdateOperationsInput | string
+    relationship?: EnumRelationshipTypeFieldUpdateOperationsInput | $Enums.RelationshipType
     designation?: StringFieldUpdateOperationsInput | string
     annual_income?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     workplace?: StringFieldUpdateOperationsInput | string
@@ -18767,7 +18786,7 @@ export namespace Prisma {
     student_id?: IntFieldUpdateOperationsInput | number
     full_name?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
-    relationship?: StringFieldUpdateOperationsInput | string
+    relationship?: EnumRelationshipTypeFieldUpdateOperationsInput | $Enums.RelationshipType
     designation?: StringFieldUpdateOperationsInput | string
     annual_income?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     workplace?: StringFieldUpdateOperationsInput | string
@@ -19927,6 +19946,13 @@ export namespace Prisma {
     _max?: NestedEnumVerificationStatusFilter<$PrismaModel>
   }
 
+  export type EnumRelationshipTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.RelationshipType | EnumRelationshipTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.RelationshipType[]
+    notIn?: $Enums.RelationshipType[]
+    not?: NestedEnumRelationshipTypeFilter<$PrismaModel> | $Enums.RelationshipType
+  }
+
   export type FamilyMemberOrderByRelevanceInput = {
     fields: FamilyMemberOrderByRelevanceFieldEnum | FamilyMemberOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -19981,6 +20007,16 @@ export namespace Prisma {
     student_id?: SortOrder
     age?: SortOrder
     annual_income?: SortOrder
+  }
+
+  export type EnumRelationshipTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RelationshipType | EnumRelationshipTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.RelationshipType[]
+    notIn?: $Enums.RelationshipType[]
+    not?: NestedEnumRelationshipTypeWithAggregatesFilter<$PrismaModel> | $Enums.RelationshipType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRelationshipTypeFilter<$PrismaModel>
+    _max?: NestedEnumRelationshipTypeFilter<$PrismaModel>
   }
 
   export type OtherFundingOrderByRelevanceInput = {
@@ -21037,6 +21073,10 @@ export namespace Prisma {
     connect?: SiblingEducationWhereUniqueInput | SiblingEducationWhereUniqueInput[]
   }
 
+  export type EnumRelationshipTypeFieldUpdateOperationsInput = {
+    set?: $Enums.RelationshipType
+  }
+
   export type StudentUpdateOneRequiredWithoutFamilyMembersNestedInput = {
     create?: XOR<StudentCreateWithoutFamilyMembersInput, StudentUncheckedCreateWithoutFamilyMembersInput>
     connectOrCreate?: StudentCreateOrConnectWithoutFamilyMembersInput
@@ -21496,6 +21536,23 @@ export namespace Prisma {
     _max?: NestedEnumVerificationStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumRelationshipTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.RelationshipType | EnumRelationshipTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.RelationshipType[]
+    notIn?: $Enums.RelationshipType[]
+    not?: NestedEnumRelationshipTypeFilter<$PrismaModel> | $Enums.RelationshipType
+  }
+
+  export type NestedEnumRelationshipTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RelationshipType | EnumRelationshipTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.RelationshipType[]
+    notIn?: $Enums.RelationshipType[]
+    not?: NestedEnumRelationshipTypeWithAggregatesFilter<$PrismaModel> | $Enums.RelationshipType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRelationshipTypeFilter<$PrismaModel>
+    _max?: NestedEnumRelationshipTypeFilter<$PrismaModel>
+  }
+
   export type NestedEnumReviewStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.ReviewStatus | EnumReviewStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ReviewStatus[]
@@ -21803,7 +21860,7 @@ export namespace Prisma {
   export type FamilyMemberCreateWithoutStudentInput = {
     full_name: string
     age: number
-    relationship: string
+    relationship: $Enums.RelationshipType
     designation: string
     annual_income: Decimal | DecimalJsLike | number | string
     workplace: string
@@ -21815,7 +21872,7 @@ export namespace Prisma {
     member_id?: number
     full_name: string
     age: number
-    relationship: string
+    relationship: $Enums.RelationshipType
     designation: string
     annual_income: Decimal | DecimalJsLike | number | string
     workplace: string
@@ -22005,7 +22062,7 @@ export namespace Prisma {
     student_id?: IntFilter<"FamilyMember"> | number
     full_name?: StringFilter<"FamilyMember"> | string
     age?: IntFilter<"FamilyMember"> | number
-    relationship?: StringFilter<"FamilyMember"> | string
+    relationship?: EnumRelationshipTypeFilter<"FamilyMember"> | $Enums.RelationshipType
     designation?: StringFilter<"FamilyMember"> | string
     annual_income?: DecimalFilter<"FamilyMember"> | Decimal | DecimalJsLike | number | string
     workplace?: StringFilter<"FamilyMember"> | string
@@ -23353,7 +23410,7 @@ export namespace Prisma {
   export type FamilyMemberCreateWithoutSiblingEducationInput = {
     full_name: string
     age: number
-    relationship: string
+    relationship: $Enums.RelationshipType
     designation: string
     annual_income: Decimal | DecimalJsLike | number | string
     workplace: string
@@ -23366,7 +23423,7 @@ export namespace Prisma {
     student_id: number
     full_name: string
     age: number
-    relationship: string
+    relationship: $Enums.RelationshipType
     designation: string
     annual_income: Decimal | DecimalJsLike | number | string
     workplace: string
@@ -23442,7 +23499,7 @@ export namespace Prisma {
   export type FamilyMemberUpdateWithoutSiblingEducationInput = {
     full_name?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
-    relationship?: StringFieldUpdateOperationsInput | string
+    relationship?: EnumRelationshipTypeFieldUpdateOperationsInput | $Enums.RelationshipType
     designation?: StringFieldUpdateOperationsInput | string
     annual_income?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     workplace?: StringFieldUpdateOperationsInput | string
@@ -23455,7 +23512,7 @@ export namespace Prisma {
     student_id?: IntFieldUpdateOperationsInput | number
     full_name?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
-    relationship?: StringFieldUpdateOperationsInput | string
+    relationship?: EnumRelationshipTypeFieldUpdateOperationsInput | $Enums.RelationshipType
     designation?: StringFieldUpdateOperationsInput | string
     annual_income?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     workplace?: StringFieldUpdateOperationsInput | string
@@ -23609,7 +23666,7 @@ export namespace Prisma {
     member_id?: number
     full_name: string
     age: number
-    relationship: string
+    relationship: $Enums.RelationshipType
     designation: string
     annual_income: Decimal | DecimalJsLike | number | string
     workplace: string
@@ -23684,7 +23741,7 @@ export namespace Prisma {
   export type FamilyMemberUpdateWithoutStudentInput = {
     full_name?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
-    relationship?: StringFieldUpdateOperationsInput | string
+    relationship?: EnumRelationshipTypeFieldUpdateOperationsInput | $Enums.RelationshipType
     designation?: StringFieldUpdateOperationsInput | string
     annual_income?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     workplace?: StringFieldUpdateOperationsInput | string
@@ -23696,7 +23753,7 @@ export namespace Prisma {
     member_id?: IntFieldUpdateOperationsInput | number
     full_name?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
-    relationship?: StringFieldUpdateOperationsInput | string
+    relationship?: EnumRelationshipTypeFieldUpdateOperationsInput | $Enums.RelationshipType
     designation?: StringFieldUpdateOperationsInput | string
     annual_income?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     workplace?: StringFieldUpdateOperationsInput | string
@@ -23708,7 +23765,7 @@ export namespace Prisma {
     member_id?: IntFieldUpdateOperationsInput | number
     full_name?: StringFieldUpdateOperationsInput | string
     age?: IntFieldUpdateOperationsInput | number
-    relationship?: StringFieldUpdateOperationsInput | string
+    relationship?: EnumRelationshipTypeFieldUpdateOperationsInput | $Enums.RelationshipType
     designation?: StringFieldUpdateOperationsInput | string
     annual_income?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     workplace?: StringFieldUpdateOperationsInput | string

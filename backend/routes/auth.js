@@ -7,7 +7,7 @@ const router = express.Router();
 
 // Signup Route
 router.post('/signup', async (req, res) => {
-  const { firstName, lastName, username, email, password } = req.body;
+  const { firstName, lastName, username, email, password, role } = req.body;
 
   if (!password || password.length < 8) {
     return res.status(400).json({ error: 'Password must be at least 8 characters long.' });
@@ -21,6 +21,7 @@ router.post('/signup', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Create user
     const user = await prisma.user.create({
       data: {
         first_name: firstName,
@@ -28,8 +29,29 @@ router.post('/signup', async (req, res) => {
         username,
         email,
         password: hashedPassword,
+        role: role || 'student',
       },
     });
+
+    // If the user is a student, create a corresponding student row
+    if ((role || 'student') === 'student') {
+      await prisma.student.create({
+        data: {
+          user_id: user.user_id,
+          full_name: `${firstName} ${lastName}`,
+          registration_no: `UGC/NEW/${user.user_id}`,
+          date_of_birth: new Date('2000-01-01'), // Placeholder, should be updated by user later
+          permanent_address: 'To be updated',
+          admission_date: new Date(), // Placeholder, should be updated by user later
+          year_of_study: 1, // Default to 1st year
+          gender: 'other', // Placeholder, should be updated by user later
+          phone_number: '0000000000', // Placeholder
+          email: email,
+          school_name: 'To be updated',
+          unmarried_siblings: 0, // Default
+        },
+      });
+    }
 
     res.status(201).json({ message: 'User created successfully!', userId: user.user_id });
 

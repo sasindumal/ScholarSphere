@@ -104,7 +104,10 @@ router.put('/student', authenticateToken, async (req, res) => {
     res.json({ message: 'Student info updated', student: updated });
   } catch (error) {
     console.error('Error updating student info:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    if (error.meta) {
+      console.error('Prisma error meta:', error.meta);
+    }
+    res.status(500).json({ error: 'Internal server error', details: error.message, meta: error.meta || null });
   }
 });
 
