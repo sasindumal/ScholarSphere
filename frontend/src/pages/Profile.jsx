@@ -88,7 +88,19 @@ const Profile = () => {
         username: data.username,
       });
       if (data.student) {
-        setStudentForm({ ...data.student });
+        setStudentForm({
+          full_name: data.student.full_name || data.student.fullName || '',
+          registration_no: data.student.registration_no || data.student.registrationNo || '',
+          date_of_birth: data.student.date_of_birth || data.student.dateOfBirth || '',
+          gender: data.student.gender || '',
+          permanent_address: data.student.permanent_address || data.student.permanentAddress || '',
+          admission_date: data.student.admission_date || data.student.admissionDate || '',
+          year_of_study: data.student.year_of_study || data.student.yearOfStudy || '',
+          phone_number: data.student.phone_number || data.student.phoneNumber || '',
+          email: data.student.email || '',
+          school_name: data.student.school_name || data.student.schoolName || '',
+          unmarried_siblings: data.student.unmarried_siblings || data.student.unmarriedSiblings || 0,
+        });
       }
     } catch (err) {
       setError(err.message);
