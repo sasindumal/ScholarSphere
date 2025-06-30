@@ -120,15 +120,15 @@ model Document {
 }
 
 model FamilyMember {
-  member_id     Int     @id @default(autoincrement())
+  member_id     Int              @id @default(autoincrement())
   student_id    Int
-  full_name     String  @db.VarChar(150)
+  full_name     String           @db.VarChar(150)
   age           Int
-  relationship  String  @db.VarChar(50)
-  designation   String  @db.VarChar(100)
-  annual_income Decimal @db.Decimal(10, 2)
-  workplace     String  @db.VarChar(150)
-  phone_number  String  @db.VarChar(20)
+  relationship  RelationshipType
+  designation   String           @db.VarChar(100)
+  annual_income Decimal          @db.Decimal(10, 2)
+  workplace     String           @db.VarChar(150)
+  phone_number  String           @db.VarChar(20)
 
   student          Student            @relation(fields: [student_id], references: [student_id])
   siblingEducation SiblingEducation[]
@@ -235,4 +235,10 @@ enum PaymentStatus {
   pending
   completed
   failed
+}
+
+enum RelationshipType {
+  Father
+  Mother
+  Sibling
 }

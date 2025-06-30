@@ -125,7 +125,7 @@ model FamilyMember {
   student_id    Int
   full_name     String   @db.VarChar(150)
   age           Int
-  relationship  String   @db.VarChar(50)
+  relationship  RelationshipType
   designation   String   @db.VarChar(100)
   annual_income Decimal  @db.Decimal(10, 2)
   workplace     String   @db.VarChar(150)
@@ -236,4 +236,10 @@ enum PaymentStatus {
   pending
   completed
   failed
+}
+
+enum RelationshipType {
+  Father
+  Mother
+  Sibling
 }
