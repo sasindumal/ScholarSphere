@@ -421,7 +421,7 @@ const Profile = () => {
                 <label>Gender<select name="gender" value={studentForm.gender || ''} onChange={handleStudentChange} required>{GENDER_OPTIONS.map(g => <option key={g} value={g}>{g}</option>)}</select></label>
                 <label>Permanent Address<input name="permanent_address" value={studentForm.permanent_address || ''} onChange={handleStudentChange} required /></label>
                 <label>Admission Date<input name="admission_date" type="date" value={studentForm.admission_date ? studentForm.admission_date.slice(0,10) : ''} onChange={handleStudentChange} required /></label>
-                <label>Year of Study<select name="year_of_study" value={studentForm.year_of_study || ''} onChange={handleStudentChange} required>{YEAR_OPTIONS.map(y => <option key={y.value} value={y.value}>{y.label}</option>)}</select></label>
+                <label>Year of Study<select name="year_of_study" value={studentForm.year_of_study || ''} onChange={handleStudentChange} required>{[1,2,3,4].map(y => <option key={y} value={y}>{y}</option>)}</select></label>
                 <label>Phone Number<input name="phone_number" value={studentForm.phone_number || ''} onChange={handleStudentChange} required /></label>
                 <label>Email<input name="email" type="email" value={studentForm.email || ''} onChange={handleStudentChange} required /></label>
                 <label>School Name<input name="school_name" value={studentForm.school_name || ''} onChange={handleStudentChange} required /></label>
